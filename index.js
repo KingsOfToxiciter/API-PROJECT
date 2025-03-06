@@ -1,0 +1,389 @@
+const express = require("express");
+const axios = require("axios");
+const FormData = require("form-data");
+const fs = require("fs");
+const path = require("path");
+
+const app = express();
+const PORT = 3000;
+
+app.get("/infinity", async (req, res) => {
+  const prompt = req.query.prompt;
+  const model = req.query.model || "realistic";
+  const ratio = req.query.ratio || "1:1";
+
+  if (!prompt) return res.status(400).json({ error: "Prompt is required" });
+
+  res.setHeader("Content-Type", "image/png");
+
+  try {
+    const form = new FormData();
+    form.append("prompt", prompt);
+    form.append("style", model);
+    form.append("aspect_ratio", ratio);
+
+    const response = await axios.post("https://api.vyro.ai/v2/image/generations", form, {
+      headers: {
+        ...form.getHeaders(),
+        Authorization: `Bearer vk-lepIIQ262uBDmPa6olnD0LG2uto1VwWEmJY0tkgNwB33RF` // .env থেকে টোকেন নিন
+      },
+      responseType: "stream",
+    });
+
+    response.data.pipe(res); // ইমেজ ডাটা সরাসরি পাঠান
+  } catch (error) {
+    console.error("❌ Error:", error.message);
+    res.status(500).json({ error: "Image generation failed", details: error.message });
+  }
+});
+
+app.get("/var", async (req, res) => {
+  const prompt = req.query.prompt;
+  if (!prompt) return res.status(400).json({ error: "Prompt is required" });
+
+  res.setHeader("Content-Type", "image/png"); // স্ট্রিমিং আউটপুট টেক্সট হিসেবে পাঠানো
+
+  try {
+    const form = new FormData();
+    form.append('prompt', `${prompt}`);
+    form.append("style", "anime");
+    form.append("aspect_ratio", "1:1");
+
+
+    const response = await axios.post(
+      "https://api.vyro.ai/v2/image/generations",
+      form,
+      {
+        headers: {
+          ...form.getHeaders(),
+          Authorization: `Bearer vk-3tsIrXR52EVUtV3qFrVyRpBB0DKdd5K4QTgBkBucQVNa8u`,
+        },
+        responseType: "stream", // স্ট্রিমিং মোড অন করুন
+      }
+    );
+
+    response.data.on("data", (chunk) => {
+      res.write(chunk); // প্রতিটি অংশ আলাদাভাবে পাঠানো হবে
+    });
+
+    response.data.on("end", () => {
+      res.write("\n🎉 Image generation complete!\n");
+      res.end();
+    });
+  } catch (error) {
+    console.error("❌ Error:", error.message);
+    res.write(`\n❌ Image generation failed: ${error.message}\n`);
+    res.end();
+  }
+});
+
+app.get("/anigen", async(req,res)=>{
+  const { prompt } = req.query;
+        try {
+            const response = await axios.post(
+                "https://api-inference.huggingface.co/models/brushpenbob/flux-midjourney-anime",
+              //your api url
+                { "inputs": prompt },
+              //payload body for request data
+                {
+                    headers: {
+                        Authorization: "Bearer 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",
+                        "Content-Type": "application/json",
+                    },
+                    responseType: 'stream',
+                }
+            );
+
+        res.setHeader('Content-Type', 'image/png');
+        response.data.pipe(res)
+    } catch (error) {
+          console.log("imagine error",error)
+        res.status(500).send('Error processing the request');
+        }
+});
+
+const DOWNLOAD_FOLDER = path.join(__dirname, "downloads");
+
+if (!fs.existsSync(DOWNLOAD_FOLDER)) {
+    fs.mkdirSync(DOWNLOAD_FOLDER);
+}
+
+app.get("/enhance", async (req, res) => {
+    const { imageUrl } = req.query;
+
+    if (!imageUrl) {
+        return res.status(400).send("Please provide an image URL!");
+    }
+
+    const imagePath = path.join(DOWNLOAD_FOLDER, "input.jpg");
+
+    try {
+       
+        const response = await axios.get(imageUrl, { responseType: "stream" });
+        const writer = fs.createWriteStream(imagePath);
+
+        response.data.pipe(writer);
+
+        writer.on("finish", async () => {
+            console.log("Image downloaded successfully:", imagePath);
+
+            
+            const form = new FormData();
+            form.append("image", fs.createReadStream(imagePath));
+
+            try {
+                const enhanceResponse = await axios.post(
+                    "https://api.vyro.ai/v2/image/enhance",
+                    form,
+                    {
+                        headers: {
+                            ...form.getHeaders(),
+                            Authorization: "Bearer vk-lepIIQ262uBDmPa6olnD0LG2uto1VwWEmJY0tkgNwB33RF", 
+                        },
+                        responseType: "stream",
+                    }
+                );
+
+               
+                res.setHeader("Content-Type", "image/jpeg");
+                enhanceResponse.data.pipe(res);
+            } catch (error) {
+                console.error("Enhance error:", error);
+                res.status(500).send("Error enhancing the image");
+            }
+        });
+
+        writer.on("error", (err) => {
+            console.error("Download error:", err);
+            res.status(500).send("Error downloading the image");
+        });
+    } catch (error) {
+        console.error("Download request error:", error);
+        res.status(500).send("Error fetching the image from the URL");
+    }
+});
+
+
+app.get("/enhance2", async (req, res) => {
+    const { imageUrl } = req.query;
+
+    if (!imageUrl) {
+        return res.status(400).send("Please provide an image URL!");
+    }
+
+    try {
+        
+        const response = await axios.get(`http://www.arch2devs.ct.ws/api/upscale?url=${encodeURIComponent(imageUrl)}`, {
+            responseType: "stream",
+        });
+
+       
+        res.setHeader("Content-Type", "image/jpeg");
+        response.data.pipe(res);
+
+    } catch (error) {
+        console.error("Upscale error:", error.response ? error.response.data : error.message);
+        res.status(500).send("Error upscaling the image");
+    }
+});
+
+
+
+app.get("/rbg", async (req, res) => {
+    const { imageUrl } = req.query; 
+    if (!imageUrl) {
+        return res.status(400).send("Please provide an image URL!");
+    }
+
+    const imagePath = path.join(DOWNLOAD_FOLDER, "input.jpg");
+
+    try {
+        
+        const response = await axios.get(imageUrl, { responseType: "stream" });
+        const writer = fs.createWriteStream(imagePath);
+
+        response.data.pipe(writer);
+
+        writer.on("finish", async () => {
+            console.log("Image downloaded successfully:", imagePath);
+
+            
+            const form = new FormData();
+            form.append("image", fs.createReadStream(imagePath));
+
+            try {
+                const enhanceResponse = await axios.post(
+                    "https://api.vyro.ai/v2/image/background/remover",
+                    form,
+                    {
+                        headers: {
+                            ...form.getHeaders(),
+                            Authorization: "Bearer vk-lepIIQ262uBDmPa6olnD0LG2uto1VwWEmJY0tkgNwB33RF", // এখানে তোমার আসল API টোকেন বসাও
+                        },
+                        responseType: "stream",
+                    }
+                );
+
+                // প্রসেস করা ইমেজ ব্রাউজারে পাঠানো
+                res.setHeader("Content-Type", "image/jpeg");
+                enhanceResponse.data.pipe(res);
+            } catch (error) {
+                console.error("Enhance error:", error);
+                res.status(500).send("Error enhancing the image");
+            }
+        });
+
+        writer.on("error", (err) => {
+            console.error("Download error:", err);
+            res.status(500).send("Error downloading the image");
+        });
+    } catch (error) {
+        console.error("Download request error:", error);
+        res.status(500).send("Error fetching the image from the URL");
+    }
+});
+
+
+
+app.get("/midjourney", async(req,res)=>{
+  const { prompt } = req.query;
+        try {
+            const response = await axios.post(
+                "https://api-inference.huggingface.co/models/Jovie/Midjourney",
+              //your api url
+                { "inputs": prompt },
+              //payload body for request data
+                {
+                    headers: {
+                        Authorization: "Bearer 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",
+                        "Content-Type": "application/json",
+                    },
+                    responseType: 'stream',
+                }
+            );
+
+        res.setHeader('Content-Type', 'image/png');
+        response.data.pipe(res)
+    } catch (error) {
+          console.log("imagine error",error)
+        res.status(500).send('Error processing the request');
+        }
+});
+
+
+app.get("/flux", async(req,res)=>{
+  const { prompt } = req.query;
+        try {
+            const response = await axios.post(
+                "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev",
+              //your api url
+                { "inputs": prompt },
+              //payload body for request data
+                {
+                    headers: {
+                        Authorization: "Bearer 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",
+                        "Content-Type": "application/json",
+                    },
+                    responseType: 'stream',
+                }
+            );
+
+        res.setHeader('Content-Type', 'image/png');
+        response.data.pipe(res)
+    } catch (error) {
+          console.log("imagine error",error)
+        res.status(500).send('Error processing the request');
+        }
+});
+
+
+
+
+app.get("/imagine", async (req, res) => {
+  const prompt = req.query.prompt;
+  if (!prompt) return res.status(400).json({ error: "Prompt is required" });
+
+  res.setHeader("Content-Type", "image/png"); // স্ট্রিমিং আউটপুট টেক্সট হিসেবে পাঠানো
+
+  try {
+    const form = new FormData();
+    form.append('prompt', `${prompt}`);
+    form.append("style", "flux-schnell");
+    form.append("aspect_ratio", "1:1");
+
+
+    const response = await axios.post(
+      "https://api.vyro.ai/v2/image/generations",
+      form,
+      {
+        headers: {
+          ...form.getHeaders(),
+          Authorization: `Bearer vk-3tsIrXR52EVUtV3qFrVyRpBB0DKdd5K4QTgBkBucQVNa8u`,
+        },
+        responseType: "stream", // স্ট্রিমিং মোড অন করুন
+      }
+    );
+
+    response.data.on("data", (chunk) => {
+      res.write(chunk); // প্রতিটি অংশ আলাদাভাবে পাঠানো হবে
+    });
+
+    response.data.on("end", () => {
+      res.write("\n🎉 Image generation complete!\n");
+      res.end();
+    });
+  } catch (error) {
+    console.error("❌ Error:", error.message);
+    res.write(`\n❌ Image generation failed: ${error.message}\n`);
+    res.end();
+  }
+});
+
+
+
+const cors = require("cors");
+
+const YT_API_KEY = "AIzaSyAr5vEmnvwtmZmGODjCIZqmCGa9KXKEEdk"; // YouTube API Key from .env
+
+app.use(cors());
+
+app.get("/ytb-search", async (req, res) => {
+    const songName = req.query.songName;
+    
+    if (!songName) {
+        return res.status(400).json({ error: "songName required" });
+    }
+
+    try {
+        const response = await axios.get("https://www.googleapis.com/youtube/v3/search", {
+            params: {
+                part: "snippet",
+                q: songName,
+                type: "video",
+                key: YT_API_KEY,
+                maxResults: 5
+            }
+        });
+
+        
+        const videos = response.data.items.map(item => ({
+            title: item.snippet.title,
+            videoId: item.id.videoId,
+            videoUrl: `https://www.youtube.com/watch?v=${item.id.videoId}`,
+            thumbnail: item.snippet.thumbnails.high.url
+        }));
+
+        res.json(videos);
+    } catch (error) {
+        console.error("YouTube API ত্রুটি:", error.message);
+        res.status(500).json({ error: "YouTube API error", details: error.message });
+    }
+});
+
+
+
+
+
+app.listen(PORT, () => {
+  console.log(`🔥 Hasan's API is running on port ${PORT}`);
+});
