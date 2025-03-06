@@ -1,0 +1,16 @@
+{
+  "name": "__𝐻𝐴𝑆𝐴𝑁'𝑆_𝐴𝑃𝐼__",
+  "version": "1.0.0",
+  "description": "Many Express API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "express": "^4.21.2",
+    "form-data": "^4.0.2"
+  },
+  "author": "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎",
+  "license": "ISC"
+}
