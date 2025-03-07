@@ -164,7 +164,7 @@ app.get("/enhance", async (req, res) => {
 });
 
 
-app.get("/enhance2", async (req, res) => {
+app.get("/upscale", async (req, res) => {
     const { imageUrl } = req.query;
 
     if (!imageUrl) {
@@ -172,12 +172,12 @@ app.get("/enhance2", async (req, res) => {
     }
 
     try {
-        
+        // Arch2Devs API-তে অনুরোধ পাঠানো
         const response = await axios.get(`http://www.arch2devs.ct.ws/api/upscale?url=${encodeURIComponent(imageUrl)}`, {
             responseType: "stream",
         });
 
-       
+        // আপস্কেল করা ইমেজ ব্রাউজারে পাঠানো
         res.setHeader("Content-Type", "image/jpeg");
         response.data.pipe(res);
 
@@ -186,7 +186,6 @@ app.get("/enhance2", async (req, res) => {
         res.status(500).send("Error upscaling the image");
     }
 });
-
 
 
 app.get("/rbg", async (req, res) => {
