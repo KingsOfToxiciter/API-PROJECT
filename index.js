@@ -280,7 +280,7 @@ app.get("/flux", async(req,res)=>{
               //payload body for request data
                 {
                     headers: {
-                        Authorization: "Bearer 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",
+                        Authorization: "Bearer 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",
                         "Content-Type": "application/json",
                     },
                     responseType: 'stream',
