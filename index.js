@@ -360,7 +360,7 @@ app.get("/ytb-search", async (req, res) => {
                 q: songName,
                 type: "video",
                 key: YT_API_KEY,
-                maxResults: 5
+                maxResults: 10
             }
         });
 
