@@ -249,13 +249,13 @@ app.get("/midjourney", async(req,res)=>{
   const { prompt } = req.query;
         try {
             const response = await axios.post(
-                "https://api-inference.huggingface.co/models/Jovie/Midjourney",
+                "https://api-inference.huggingface.co/models/Keltezaa/midjourney-v6-1-meets-flux-sdxl",
               //your api url
                 { "inputs": prompt },
               //payload body for request data
                 {
                     headers: {
-                        Authorization: "Bearer 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",
+                        Authorization: "Bearer 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",
                         "Content-Type": "application/json",
                     },
                     responseType: 'stream',
