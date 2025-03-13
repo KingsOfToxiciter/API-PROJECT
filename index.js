@@ -382,7 +382,6 @@ app.get("/ytb-search", async (req, res) => {
 
 
 
-const DOWNLOAD_FOLDER = path.join(__dirname, "downloads");
 
 if (!fs.existsSync(DOWNLOAD_FOLDER)) {
     fs.mkdirSync(DOWNLOAD_FOLDER);
