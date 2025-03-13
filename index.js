@@ -3,6 +3,7 @@ const axios = require("axios");
 const FormData = require("form-data");
 const fs = require("fs");
 const path = require("path");
+const util = require("util");
 
 const app = express();
 const PORT = 3000;
@@ -379,6 +380,52 @@ app.get("/ytb-search", async (req, res) => {
     }
 });
 
+
+
+const DOWNLOAD_FOLDER = path.join(__dirname, "downloads");
+
+if (!fs.existsSync(DOWNLOAD_FOLDER)) {
+    fs.mkdirSync(DOWNLOAD_FOLDER);
+}
+
+app.get("/cbg", async (req, res) => {
+    const { imageUrl, prompt } = req.query;
+
+    if (!imageUrl || !prompt) {
+        return res.status(400).json({ error: "Please provide both imageUrl and prompt" });
+    }
+
+    const imagePath = path.join(DOWNLOAD_FOLDER, "input.jpg");
+
+    try {
+        const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
+        await util.promisify(fs.writeFile)(imagePath, response.data);
+
+        console.log("Image downloaded successfully:", imagePath);
+
+        const form = new FormData();
+        form.append("image", fs.createReadStream(imagePath));
+        form.append("prompt", prompt);
+
+        const enhanceResponse = await axios.post(
+            "https://api.vyro.ai/v2/image/generations/ai-background",
+            form,
+            {
+                headers: {
+                    ...form.getHeaders(),
+                    Authorization: `Bearer vk-lepIIQ262uBDmPa6olnD0LG2uto1VwWEmJY0tkgNwB33RF`,
+                },
+                responseType: "arraybuffer",
+            }
+        );
+
+        res.setHeader("Content-Type", "image/jpeg");
+        res.send(Buffer.from(enhanceResponse.data));
+    } catch (error) {
+        console.error("Error:", error.message);
+        res.status(500).json({ error: "An error occurred while processing the image" });
+    }
+});
 
 
 
