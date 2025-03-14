@@ -445,15 +445,28 @@ app.get("/quiz", (req, res) => {
     res.json(quiz);
 });
 
-
 app.post("/quiz/check", (req, res) => {
     const { id, answer } = req.body;
+
+    if (!id || !answer) {
+        return res.status(400).json({ error: "Please provide both 'id' and 'answer'." });
+    }
+
     const quizzes = loadQuizData();
     const quiz = quizzes.find(q => q.id === id);
-    if (!quiz) return res.status(404).json({ error: "Quiz not found." });
 
-    const isCorrect = quiz.correctAnswer.toLowerCase() === answer.toLowerCase();
-    res.json({ id, isCorrect, correctAnswer: quiz.correctAnswer });
+    if (!quiz) {
+        return res.status(404).json({ error: "Quiz not found." });
+    }
+
+    const isCorrect = quiz.correctAnswer.toLowerCase().trim() === answer.toLowerCase().trim();
+
+    res.json({ 
+        id, 
+        isCorrect, 
+        correctAnswer: quiz.correctAnswer, 
+        message: isCorrect ? "✅ Correct Answer!" : "❌ Wrong Answer. Try Again!"
+    });
 });
 
 
