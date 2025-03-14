@@ -1504,5 +1504,215 @@
         "question": "What is the powerhouse of the cell?",
         "options": { "a": "Nucleus", "b": "Mitochondria", "c": "Ribosome", "d": "Golgi apparatus" },
         "correctAnswer": "b"
+    },
+    {
+        "id": 216,
+        "category": "english",
+        "question": "Who discovered the law of gravity?",
+        "options": { "a": "Albert Einstein", "b": "Galileo Galilei", "c": "Isaac Newton", "d": "Niels Bohr" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 217,
+        "category": "english",
+        "question": "What is the capital of Australia?",
+        "options": { "a": "Sydney", "b": "Melbourne", "c": "Canberra", "d": "Brisbane" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 218,
+        "category": "english",
+        "question": "Which planet has the largest rings in our solar system?",
+        "options": { "a": "Jupiter", "b": "Saturn", "c": "Neptune", "d": "Uranus" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 219,
+        "category": "english",
+        "question": "Who developed the theory of relativity?",
+        "options": { "a": "Isaac Newton", "b": "Galileo Galilei", "c": "Albert Einstein", "d": "Stephen Hawking" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 220,
+        "category": "english",
+        "question": "What is the chemical formula of water?",
+        "options": { "a": "H2O", "b": "CO2", "c": "O2", "d": "CH4" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 221,
+        "category": "english",
+        "question": "Which blood type is known as the universal donor?",
+        "options": { "a": "A", "b": "B", "c": "O", "d": "AB" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 222,
+        "category": "english",
+        "question": "Who was the first person to reach the South Pole?",
+        "options": { "a": "Robert Scott", "b": "Roald Amundsen", "c": "Ernest Shackleton", "d": "Edmund Hillary" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 223,
+        "category": "english",
+        "question": "What is the longest bone in the human body?",
+        "options": { "a": "Humerus", "b": "Femur", "c": "Tibia", "d": "Radius" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 224,
+        "category": "english",
+        "question": "Which country built the Great Wall?",
+        "options": { "a": "Japan", "b": "India", "c": "China", "d": "Mongolia" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 225,
+        "category": "english",
+        "question": "What is the process by which plants make their own food?",
+        "options": { "a": "Respiration", "b": "Fermentation", "c": "Photosynthesis", "d": "Osmosis" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 226,
+        "category": "general",
+        "question": "বাংলাদেশের জাতীয় মসজিদের নাম কী?",
+        "options": { "a": "শাহজালাল মসজিদ", "b": "বায়তুল মোকাররম", "c": "চট্টগ্রাম কেন্দ্রীয় মসজিদ", "d": "সুন্দরবন মসজিদ" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 227,
+        "category": "general",
+        "question": "পৃথিবীর সবচেয়ে দীর্ঘ নদীর নাম কী?",
+        "options": { "a": "আমাজন", "b": "নীলনদ", "c": "গঙ্গা", "d": "মিসিসিপি" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 228,
+        "category": "general",
+        "question": "বিশ্বের সবচেয়ে জনবহুল দেশ কোনটি?",
+        "options": { "a": "চীন", "b": "ভারত", "c": "যুক্তরাষ্ট্র", "d": "ইন্দোনেশিয়া" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 229,
+        "category": "general",
+        "question": "বাংলাদেশের মাটির নিচে প্রাপ্ত খনিজ সম্পদের মধ্যে কোনটি সবচেয়ে বেশি পাওয়া যায়?",
+        "options": { "a": "গ্যাস", "b": "কয়লা", "c": "তেল", "d": "চুনাপাথর" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 230,
+        "category": "general",
+        "question": "কোন দেশকে সূর্যোদয়ের দেশ বলা হয়?",
+        "options": { "a": "চীন", "b": "জাপান", "c": "কোরিয়া", "d": "থাইল্যান্ড" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 231,
+        "category": "general",
+        "question": "বাংলাদেশের জাতীয় সংসদ ভবনের স্থপতি কে?",
+        "options": { "a": "লুই কান", "b": "মাযহারুল ইসলাম", "c": "ফজলুর রহমান", "d": "এফ আর খান" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 232,
+        "category": "general",
+        "question": "পৃথিবীর সবচেয়ে উঁচু জলপ্রপাত কোনটি?",
+        "options": { "a": "নায়াগ্রা জলপ্রপাত", "b": "ভিক্টোরিয়া জলপ্রপাত", "c": "এঞ্জেল জলপ্রপাত", "d": "ইগুয়াসু জলপ্রপাত" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 233,
+        "category": "general",
+        "question": "বাংলাদেশের জাতীয় ফুল কোনটি?",
+        "options": { "a": "গোলাপ", "b": "শাপলা", "c": "টগর", "d": "বেলি" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 234,
+        "category": "general",
+        "question": "কোন মহাসাগর পৃথিবীর সবচেয়ে বড়?",
+        "options": { "a": "আটলান্টিক মহাসাগর", "b": "প্রশান্ত মহাসাগর", "c": "ভারত মহাসাগর", "d": "আর্কটিক মহাসাগর" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 235,
+        "category": "general",
+        "question": "বিশ্বের সবচেয়ে ছোট দেশ কোনটি?",
+        "options": { "a": "ভ্যাটিকান সিটি", "b": "মোনাকো", "c": "সান মারিনো", "d": "লিখটেনস্টাইন" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 236,
+        "category": "general",
+        "question": "বিশ্বের দীর্ঘতম দেয়াল কোনটি?",
+        "options": { "a": "বার্লিন ওয়াল", "b": "গ্রেট ওয়াল অফ চায়না", "c": "হাদ্রিয়ানের ওয়াল", "d": "ওয়াল অফ ট্রয়" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 237,
+        "category": "general",
+        "question": "বিশ্বের সবচেয়ে বেশি ভাষা ব্যবহৃত দেশ কোনটি?",
+        "options": { "a": "চীন", "b": "ভারত", "c": "নাইজেরিয়া", "d": "পাপুয়া নিউ গিনি" },
+        "correctAnswer": "d"
+    },
+    {
+        "id": 238,
+        "category": "general",
+        "question": "বিশ্বের সবচেয়ে জনপ্রিয় খেলা কোনটি?",
+        "options": { "a": "ক্রিকেট", "b": "বাস্কেটবল", "c": "ফুটবল", "d": "টেনিস" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 239,
+        "category": "general",
+        "question": "মানবদেহে মোট কতটি হাড় থাকে?",
+        "options": { "a": "২০৬", "b": "২২০", "c": "১৯৫", "d": "২৫০" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 240,
+        "category": "general",
+        "question": "বাংলাদেশের প্রথম রাষ্ট্রপতি কে ছিলেন?",
+        "options": { "a": "শেখ মুজিবুর রহমান", "b": "জিয়াউর রহমান", "c": "মোহাম্মদ আলী", "d": "তাজউদ্দীন আহমদ" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 241,
+        "category": "general",
+        "question": "বিশ্বের বৃহত্তম দ্বীপ কোনটি?",
+        "options": { "a": "মাদাগাস্কার", "b": "গ্রিনল্যান্ড", "c": "নিউজিল্যান্ড", "d": "সুমাত্রা" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 242,
+        "category": "general",
+        "question": "জাতিসংঘ কবে প্রতিষ্ঠিত হয়?",
+        "options": { "a": "১৯৪৫", "b": "১৯৫০", "c": "১৯৪৮", "d": "১৯৬০" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 243,
+        "category": "general",
+        "question": "পৃথিবীর সবচেয়ে উঁচু পর্বতশৃঙ্গ কোনটি?",
+        "options": { "a": "কাঞ্চনজঙ্ঘা", "b": "কিলিমানজারো", "c": "এভারেস্ট", "d": "মাউন্ট ম্যাককিনলি" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 244,
+        "category": "general",
+        "question": "কোন দেশকে ‘হাজার হ্রদের দেশ’ বলা হয়?",
+        "options": { "a": "নরওয়ে", "b": "ফিনল্যান্ড", "c": "কানাডা", "d": "সুইডেন" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 245,
+        "category": "general",
+        "question": "নোবেল পুরস্কার প্রথম কবে প্রদান করা হয়?",
+        "options": { "a": "১৯০১", "b": "১৯১০", "c": "১৮৯৫", "d": "১৯২০" },
+        "correctAnswer": "a"
     }
 ]
