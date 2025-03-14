@@ -429,6 +429,36 @@ app.get("/cbg", async (req, res) => {
 
 
 
+const loadQuizData = () => {
+    const data = fs.readFileSync("quiz.json");
+    return JSON.parse(data);
+};
+
+
+app.get("/quiz", (req, res) => {
+    const category = req.query.category || "bangla";
+    const quizzes = loadQuizData();
+    const filteredQuizzes = quizzes.filter(q => q.category === category);
+    if (filteredQuizzes.length === 0) return res.status(404).json({ error: "No quiz found." });
+
+    const quiz = filteredQuizzes[Math.floor(Math.random() * filteredQuizzes.length)];
+    res.json(quiz);
+});
+
+
+app.post("/quiz/check", (req, res) => {
+    const { id, answer } = req.body;
+    const quizzes = loadQuizData();
+    const quiz = quizzes.find(q => q.id === id);
+    if (!quiz) return res.status(404).json({ error: "Quiz not found." });
+
+    const isCorrect = quiz.correctAnswer.toLowerCase() === answer.toLowerCase();
+    res.json({ id, isCorrect, correctAnswer: quiz.correctAnswer });
+});
+
+
+
+
 app.listen(PORT, () => {
   console.log(`🔥 Hasan's API is running on port ${PORT}`);
 });
