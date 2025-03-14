@@ -1364,4 +1364,145 @@
         "question": "কোন বিজ্ঞানী প্রথম রেডিও সক্রিয়তা (Radioactivity) আবিষ্কার করেন?",
         "options": { "a": "আলফ্রেড নোবেল", "b": "মারী কুরি", "c": "আলবার্ট আইনস্টাইন", "d": "হেনরি বেকেরেল" },
         "correctAnswer": "d"
+    },
+    {
+        "id": 196,
+        "category": "english",
+        "question": "Who is known as the father of modern physics?",
+        "options": { "a": "Isaac Newton", "b": "Galileo Galilei", "c": "Albert Einstein", "d": "Niels Bohr" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 197,
+        "category": "english",
+        "question": "What is the chemical symbol for potassium?",
+        "options": { "a": "P", "b": "K", "c": "Po", "d": "Pt" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 198,
+        "category": "english",
+        "question": "Which part of the human brain controls balance and coordination?",
+        "options": { "a": "Cerebrum", "b": "Cerebellum", "c": "Medulla", "d": "Thalamus" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 199,
+        "category": "english",
+        "question": "Who was the first emperor of China?",
+        "options": { "a": "Qin Shi Huang", "b": "Kublai Khan", "c": "Sun Yat-sen", "d": "Mao Zedong" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 200,
+        "category": "english",
+        "question": "What is the SI unit of electric current?",
+        "options": { "a": "Volt", "b": "Ampere", "c": "Ohm", "d": "Watt" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 201,
+        "category": "english",
+        "question": "Which vitamin is primarily produced in the human body when exposed to sunlight?",
+        "options": { "a": "Vitamin A", "b": "Vitamin B12", "c": "Vitamin C", "d": "Vitamin D" },
+        "correctAnswer": "d"
+    },
+    {
+        "id": 202,
+        "category": "english",
+        "question": "What was the first artificial satellite launched into space?",
+        "options": { "a": "Sputnik 1", "b": "Apollo 11", "c": "Voyager 1", "d": "Hubble" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 203,
+        "category": "english",
+        "question": "Which gas is commonly used in balloons to make them float?",
+        "options": { "a": "Oxygen", "b": "Hydrogen", "c": "Helium", "d": "Nitrogen" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 204,
+        "category": "english",
+        "question": "Who discovered penicillin?",
+        "options": { "a": "Alexander Fleming", "b": "Louis Pasteur", "c": "Robert Koch", "d": "Joseph Lister" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 205,
+        "category": "english",
+        "question": "Which is the longest river in the world?",
+        "options": { "a": "Amazon River", "b": "Yangtze River", "c": "Nile River", "d": "Mississippi River" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 206,
+        "category": "english",
+        "question": "Who invented the telephone?",
+        "options": { "a": "Alexander Graham Bell", "b": "Thomas Edison", "c": "Nikola Tesla", "d": "Guglielmo Marconi" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 207,
+        "category": "english",
+        "question": "Which gas do humans exhale in respiration?",
+        "options": { "a": "Oxygen", "b": "Carbon Dioxide", "c": "Nitrogen", "d": "Hydrogen" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 208,
+        "category": "english",
+        "question": "Who was the first woman to win a Nobel Prize?",
+        "options": { "a": "Rosalind Franklin", "b": "Marie Curie", "c": "Ada Lovelace", "d": "Dorothy Crowfoot Hodgkin" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 209,
+        "category": "english",
+        "question": "What is the speed of light in vacuum?",
+        "options": { "a": "300,000 km/s", "b": "150,000 km/s", "c": "1,000,000 km/s", "d": "30,000 km/s" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 210,
+        "category": "english",
+        "question": "Which is the smallest planet in our solar system?",
+        "options": { "a": "Mercury", "b": "Mars", "c": "Pluto", "d": "Venus" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 211,
+        "category": "english",
+        "question": "Who wrote the 'Origin of Species'?",
+        "options": { "a": "Charles Darwin", "b": "Gregor Mendel", "c": "Carl Linnaeus", "d": "Louis Pasteur" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 212,
+        "category": "english",
+        "question": "What is the most abundant element in the Earth's crust?",
+        "options": { "a": "Oxygen", "b": "Silicon", "c": "Iron", "d": "Aluminum" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 213,
+        "category": "english",
+        "question": "What is the freezing point of water in Fahrenheit?",
+        "options": { "a": "0°F", "b": "32°F", "c": "100°F", "d": "212°F" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 214,
+        "category": "english",
+        "question": "Which scientist developed the three laws of motion?",
+        "options": { "a": "Galileo Galilei", "b": "Isaac Newton", "c": "Johannes Kepler", "d": "Albert Einstein" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 215,
+        "category": "english",
+        "question": "What is the powerhouse of the cell?",
+        "options": { "a": "Nucleus", "b": "Mitochondria", "c": "Ribosome", "d": "Golgi apparatus" },
+        "correctAnswer": "b"
     }
+]
