@@ -1,0 +1,1452 @@
+[
+    {
+        "id": 1,
+        "category": "bangla",
+        "question": "বাংলাদেশের স্বাধীনতা যুদ্ধ কত দিন স্থায়ী ছিল?",
+        "options": { "a": "৯ মাস", "b": "৬ মাস", "c": "১ বছর", "d": "৩ মাস" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 2,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় কবি কে?",
+        "options": { "a": "কাজী নজরুল ইসলাম", "b": "রবীন্দ্রনাথ ঠাকুর", "c": "সুকান্ত ভট্টাচার্য", "d": "জসীম উদ্দীন" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 3,
+        "category": "bangla",
+        "question": "বাংলাদেশের প্রথম বিশ্ববিদ্যালয় কোনটি?",
+        "options": { "a": "ঢাকা বিশ্ববিদ্যালয়", "b": "রাজশাহী বিশ্ববিদ্যালয়", "c": "চট্টগ্রাম বিশ্ববিদ্যালয়", "d": "জাহাঙ্গীরনগর বিশ্ববিদ্যালয়" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 4,
+        "category": "bangla",
+        "question": "বায়ুমণ্ডলের সবচেয়ে বেশি গ্যাস কোনটি?",
+        "options": { "a": "অক্সিজেন", "b": "নাইট্রোজেন", "c": "কার্বন ডাই অক্সাইড", "d": "হাইড্রোজেন" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 5,
+        "category": "bangla",
+        "question": "শরীরে রক্ত পরিশোধন করে কোন অঙ্গ?",
+        "options": { "a": "হৃদপিণ্ড", "b": "যকৃত", "c": "কিডনি", "d": "প্লীহা" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 6,
+        "category": "english",
+        "question": "Who was the first man to walk on the moon?",
+        "options": { "a": "Buzz Aldrin", "b": "Neil Armstrong", "c": "Yuri Gagarin", "d": "Michael Collins" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 7,
+        "category": "english",
+        "question": "What is the chemical symbol for Gold?",
+        "options": { "a": "Au", "b": "Ag", "c": "Pb", "d": "Fe" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 8,
+        "category": "english",
+        "question": "What is the capital of Japan?",
+        "options": { "a": "Seoul", "b": "Tokyo", "c": "Beijing", "d": "Bangkok" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 9,
+        "category": "english",
+        "question": "Which planet is known as the Red Planet?",
+        "options": { "a": "Venus", "b": "Mars", "c": "Jupiter", "d": "Saturn" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 10,
+        "category": "english",
+        "question": "What is the hardest natural substance on Earth?",
+        "options": { "a": "Gold", "b": "Iron", "c": "Diamond", "d": "Platinum" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 11,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় মাছ কোনটি?",
+        "options": { "a": "ইলিশ", "b": "পাঙ্গাস", "c": "রুই", "d": "শিং" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 12,
+        "category": "bangla",
+        "question": "বাংলাদেশের সবচেয়ে বড় জেলা কোনটি?",
+        "options": { "a": "ঢাকা", "b": "চট্টগ্রাম", "c": "রংপুর", "d": "সিলেট" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 13,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় ফুল কোনটি?",
+        "options": { "a": "গোলাপ", "b": "শাপলা", "c": "গাঁদা", "d": "কদম" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 14,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় পশু কোনটি?",
+        "options": { "a": "বাঘ", "b": "হরিণ", "c": "গরু", "d": "হাতি" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 15,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় ফল কোনটি?",
+        "options": { "a": "আম", "b": "কাঁঠাল", "c": "লিচু", "d": "পেঁপে" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 16,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় পাখি কোনটি?",
+        "options": { "a": "ময়না", "b": "দোয়েল", "c": "কাক", "d": "পায়রা" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 17,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় গাছ কোনটি?",
+        "options": { "a": "আম", "b": "বট", "c": "কদম", "d": "নিম" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 18,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় খেলা কোনটি?",
+        "options": { "a": "ক্রিকেট", "b": "ফুটবল", "c": "হকি", "d": "কাবাডি" },
+        "correctAnswer": "d"
+    },
+    {
+        "id": 19,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় বন কোনটি?",
+        "options": { "a": "সুন্দরবন", "b": "লাউয়াছড়া", "c": "মধুপুর", "d": "ভাওয়াল" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 20,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় নদী কোনটি?",
+        "options": { "a": "পদ্মা", "b": "মেঘনা", "c": "যমুনা", "d": "ব্রহ্মপুত্র" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 21,
+        "category": "english",
+        "question": "What is the largest planet in our solar system?",
+        "options": { "a": "Earth", "b": "Jupiter", "c": "Saturn", "d": "Mars" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 22,
+        "category": "english",
+        "question": "Who wrote 'Romeo and Juliet'?",
+        "options": { "a": "William Shakespeare", "b": "Charles Dickens", "c": "Mark Twain", "d": "Jane Austen" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 23,
+        "category": "english",
+        "question": "What is the chemical symbol for water?",
+        "options": { "a": "H2O", "b": "CO2", "c": "O2", "d": "NaCl" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 24,
+        "category": "english",
+        "question": "What is the capital of France?",
+        "options": { "a": "Berlin", "b": "Madrid", "c": "Paris", "d": "Rome" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 25,
+        "category": "english",
+        "question": "What is the smallest prime number?",
+        "options": { "a": "1", "b": "2", "c": "3", "d": "5" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 26,
+        "category": "english",
+        "question": "What is the largest ocean on Earth?",
+        "options": { "a": "Atlantic Ocean", "b": "Indian Ocean", "c": "Arctic Ocean", "d": "Pacific Ocean" },
+        "correctAnswer": "d"
+    },
+    {
+        "id": 27,
+        "category": "english",
+        "question": "Who painted the Mona Lisa?",
+        "options": { "a": "Vincent van Gogh", "b": "Leonardo da Vinci", "c": "Pablo Picasso", "d": "Claude Monet" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 28,
+        "category": "english",
+        "question": "What is the chemical symbol for oxygen?",
+        "options": { "a": "O", "b": "O2", "c": "CO2", "d": "H2O" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 29,
+        "category": "english",
+        "question": "What is the capital of Australia?",
+        "options": { "a": "Sydney", "b": "Melbourne", "c": "Canberra", "d": "Brisbane" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 30,
+        "category": "english",
+        "question": "What is the largest mammal in the world?",
+        "options": { "a": "Elephant", "b": "Blue Whale", "c": "Giraffe", "d": "Hippopotamus" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 31,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় কবি কে?",
+        "options": { "a": "কাজী নজরুল ইসলাম", "b": "রবীন্দ্রনাথ ঠাকুর", "c": "সুকান্ত ভট্টাচার্য", "d": "জসীম উদ্দীন" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 32,
+        "category": "bangla",
+        "question": "বাংলাদেশের প্রথম বিশ্ববিদ্যালয় কোনটি?",
+        "options": { "a": "ঢাকা বিশ্ববিদ্যালয়", "b": "রাজশাহী বিশ্ববিদ্যালয়", "c": "চট্টগ্রাম বিশ্ববিদ্যালয়", "d": "জাহাঙ্গীরনগর বিশ্ববিদ্যালয়" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 33,
+        "category": "bangla",
+        "question": "বায়ুমণ্ডলের সবচেয়ে বেশি গ্যাস কোনটি?",
+        "options": { "a": "অক্সিজেন", "b": "নাইট্রোজেন", "c": "কার্বন ডাই অক্সাইড", "d": "হাইড্রোজেন" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 34,
+        "category": "bangla",
+        "question": "শরীরে রক্ত পরিশোধন করে কোন অঙ্গ?",
+        "options": { "a": "হৃদপিণ্ড", "b": "যকৃত", "c": "কিডনি", "d": "প্লীহা" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 35,
+        "category": "english",
+        "question": "Who was the first man to walk on the moon?",
+        "options": { "a": "Buzz Aldrin", "b": "Neil Armstrong", "c": "Yuri Gagarin", "d": "Michael Collins" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 36,
+        "category": "english",
+        "question": "What is the chemical symbol for Gold?",
+        "options": { "a": "Au", "b": "Ag", "c": "Pb", "d": "Fe" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 37,
+        "category": "english",
+        "question": "What is the capital of Japan?",
+        "options": { "a": "Seoul", "b": "Tokyo", "c": "Beijing", "d": "Bangkok" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 38,
+        "category": "english",
+        "question": "Which planet is known as the Red Planet?",
+        "options": { "a": "Venus", "b": "Mars", "c": "Jupiter", "d": "Saturn" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 39,
+        "category": "english",
+        "question": "What is the hardest natural substance on Earth?",
+        "options": { "a": "Gold", "b": "Iron", "c": "Diamond", "d": "Platinum" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 40,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় মাছ কোনটি?",
+        "options": { "a": "ইলিশ", "b": "পাঙ্গাস", "c": "রুই", "d": "শিং" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 41,
+        "category": "bangla",
+        "question": "বাংলাদেশের সবচেয়ে বড় জেলা কোনটি?",
+        "options": { "a": "ঢাকা", "b": "চট্টগ্রাম", "c": "রংপুর", "d": "সিলেট" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 42,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় ফুল কোনটি?",
+        "options": { "a": "গোলাপ", "b": "শাপলা", "c": "গাঁদা", "d": "কদম" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 43,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় পশু কোনটি?",
+        "options": { "a": "বাঘ", "b": "হরিণ", "c": "গরু", "d": "হাতি" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 44,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় ফল কোনটি?",
+        "options": { "a": "আম", "b": "কাঁঠাল", "c": "লিচু", "d": "পেঁপে" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 45,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় পাখি কোনটি?",
+        "options": { "a": "ময়না", "b": "দোয়েল", "c": "কাক", "d": "পায়রা" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 46,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় গাছ কোনটি?",
+        "options": { "a": "আম", "b": "বট", "c": "কদম", "d": "নিম" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 47,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় খেলা কোনটি?",
+        "options": { "a": "ক্রিকেট", "b": "ফুটবল", "c": "হকি", "d": "কাবাডি" },
+        "correctAnswer": "d"
+    },
+    {
+        "id": 48,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় বন কোনটি?",
+        "options": { "a": "সুন্দরবন", "b": "লাউয়াছড়া", "c": "মধুপুর", "d": "ভাওয়াল" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 49,
+        "category": "bangla",
+        "question": "বাংলাদেশ জাতিসংঘের কত তম দেশ",
+        "options": { "a": "১০২", "b": "১৩৩", "c": "১৩৭", "d": "১৩৬"},
+        "correctAnswer": " c"
+    },
+    {
+        "id": 50,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় পতাকার রং কী?",
+        "options": { "a": "লাল ও সবুজ", "b": "নীল ও সাদা", "c": "কালো ও সাদা", "d": "হলুদ ও লাল" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 51,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় সঙ্গীতের রচয়িতা কে?",
+        "options": { "a": "রবীন্দ্রনাথ ঠাকুর", "b": "কাজী নজরুল ইসলাম", "c": "ড. মুহাম্মদ শহীদুল্লাহ", "d": "জসীম উদ্দীন" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 52,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় সংসদের আসন সংখ্যা কত?",
+        "options": { "a": "৩০০", "b": "৩৫০", "c": "৪০০", "d": "৪৫০" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 53,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় দিবস কোনটি?",
+        "options": { "a": "২৬শে মার্চ", "b": "১৬ই ডিসেম্বর", "c": "২১শে ফেব্রুয়ারি", "d": "১৫ই আগস্ট" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 54,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় পতাকা প্রথম উত্তোলন করা হয় কবে?",
+        "options": { "a": "১৯৭১ সালের ২রা মার্চ", "b": "১৯৭১ সালের ২৬শে মার্চ", "c": "১৯৭১ সালের ১৬ই ডিসেম্বর", "d": "১৯৭২ সালের ১০ই জানুয়ারি" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 55,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় পতাকার ডিজাইনার কে?",
+        "options": { "a": "কামরুল হাসান", "b": "শিবনারায়ণ দাস", "c": "আবুল কালাম", "d": "জয়নুল আবেদীন" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 56,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় পতাকার অনুপাত কত?",
+        "options": { "a": "১০:৬", "b": "৫:৩", "c": "৩:২", "d": "৪:৩" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 57,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় পতাকার সবুজ রং কী নির্দেশ করে?",
+        "options": { "a": "শান্তি", "b": "প্রগতি", "c": "প্রকৃতি", "d": "স্বাধীনতা" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 58,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় পতাকার লাল রং কী নির্দেশ করে?",
+        "options": { "a": "শহীদদের রক্ত", "b": "সূর্য", "c": "প্রগতি", "d": "স্বাধীনতা" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 59,
+        "category": "bangla",
+        "question": "বাংলাদেশের জাতীয় পতাকার কেন্দ্রে অবস্থিত লাল বৃত্তের ব্যাস কত?",
+        "options": { "a": "পতাকার প্রস্থের এক-পঞ্চমাংশ", "b": "পতাকার প্রস্থের এক-চতুর্থাংশ", "c": "পতাকার প্রস্থের এক-তৃতীয়াংশ", "d": "পতাকার প্রস্থের এক-দ্বিতীয়াংশ" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 60,
+        "category": "english",
+        "question": "What is the capital of Canada?",
+        "options": { "a": "Toronto", "b": "Vancouver", "c": "Ottawa", "d": "Montreal" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 61,
+        "category": "english",
+        "question": "What is the chemical symbol for Silver?",
+        "options": { "a": "Ag", "b": "Au", "c": "Si", "d": "Sr" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 62,
+        "category": "english",
+        "question": "Who is known as the 'Father of Computers'?",
+        "options": { "a": "Charles Babbage", "b": "Alan Turing", "c": "Bill Gates", "d": "Steve Jobs" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 63,
+        "category": "english",
+        "question": "What is the largest desert in the world?",
+        "options": { "a": "Sahara", "b": "Arabian", "c": "Gobi", "d": "Antarctic" },
+        "correctAnswer": "d"
+    },
+    {
+        "id": 64,
+        "category": "english",
+        "question": "What is the chemical symbol for Carbon?",
+        "options": { "a": "C", "b": "Ca", "c": "Co", "d": "Cr" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 65,
+        "category": "english",
+        "question": "What is the capital of Brazil?",
+        "options": { "a": "Rio de Janeiro", "b": "São Paulo", "c": "Brasília", "d": "Salvador" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 66,
+        "category": "english",
+        "question": "What is the chemical symbol for Sodium?",
+        "options": { "a": "So", "b": "Na", "c": "No", "d": "Sa" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 67,
+        "category": "english",
+        "question": "What is the capital of Germany?",
+        "options": { "a": "Berlin", "b": "Munich", "c": "Frankfurt", "d": "Hamburg" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 68,
+        "category": "english",
+        "question": "What is the chemical symbol for Potassium?",
+        "options": { "a": "P", "b": "Po", "c": "K", "d": "Ko" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 69,
+        "category": "english",
+        "question": "What is the capital of Italy?",
+        "options": { "a": "Rome", "b": "Milan", "c": "Venice", "d": "Florence" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 70,
+        "category": "english",
+        "question": "What is the chemical symbol for Iron?",
+        "options": { "a": "Ir", "b": "Fe", "c": "In", "d": "Io" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 71,
+        "category": "english",
+        "question": "What is the capital of Spain?",
+        "options": { "a": "Barcelona", "b": "Madrid", "c": "Seville", "d": "Valencia" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 72,
+        "category": "english",
+        "question": "What is the chemical symbol for Hydrogen?",
+        "options": { "a": "Hy", "b": "H", "c": "Hg", "d": "Ho" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 73,
+        "category": "english",
+        "question": "What is the capital of Russia?",
+        "options": { "a": "St. Petersburg", "b": "Moscow", "c": "Kazan", "d": "Novosibirsk" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 74,
+        "category": "english",
+        "question": "What is the chemical symbol for Nitrogen?",
+        "options": { "a": "Ni", "b": "N", "c": "No", "d": "Na" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 75,
+        "category": "english",
+        "question": "What is the capital of China?",
+        "options": { "a": "Shanghai", "b": "Beijing", "c": "Guangzhou", "d": "Shenzhen" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 76,
+        "category": "english",
+        "question": "What is the chemical symbol for Helium?",
+        "options": { "a": "He", "b": "H", "c": "Ho", "d": "Ha" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 77,
+        "category": "english",
+        "question": "What is the capital of India?",
+        "options": { "a": "Mumbai", "b": "Delhi", "c": "Kolkata", "d": "Chennai" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 78,
+        "category": "english",
+        "question": "What is the chemical symbol for Calcium?",
+        "options": { "a": "Ca", "b": "C", "c": "Co", "d": "Cl" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 79,
+        "category": "english",
+        "question": "What is the capital of South Korea?",
+        "options": { "a": "Seoul", "b": "Busan", "c": "Incheon", "d": "Daegu" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 80,
+        "category": "english",
+        "question": "What is the chemical symbol for Magnesium?",
+        "options": { "a": "Ma", "b": "Mg", "c": "Mn", "d": "Mo" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 81,
+        "category": "english",
+        "question": "What is the capital of Argentina?",
+        "options": { "a": "Buenos Aires", "b": "Córdoba", "c": "Rosario", "d": "Mendoza" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 82,
+        "category": "english",
+        "question": "What is the chemical symbol for Chlorine?",
+        "options": { "a": "Ch", "b": "Cl", "c": "Co", "d": "Cr" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 83,
+        "category": "english",
+        "question": "What is the capital of Egypt?",
+        "options": { "a": "Cairo", "b": "Alexandria", "c": "Giza", "d": "Luxor" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 84,
+        "category": "english",
+        "question": "What is the chemical symbol for Sulfur?",
+        "options": { "a": "Su", "b": "S", "c": "Sl", "d": "Sr" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 85,
+        "category": "english",
+        "question": "What is the capital of Thailand?",
+        "options": { "a": "Bangkok", "b": "Chiang Mai", "c": "Phuket", "d": "Pattaya" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 86,
+        "category": "english",
+        "question": "What is the chemical symbol for Phosphorus?",
+        "options": { "a": "Ph", "b": "P", "c": "Po", "d": "Ps" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 87,
+        "category": "english",
+        "question": "What is the capital of Turkey?",
+        "options": { "a": "Istanbul", "b": "Ankara", "c": "Izmir", "d": "Antalya" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 88,
+        "category": "english",
+        "question": "What is the chemical symbol for Silicon?",
+        "options": { "a": "Si", "b": "S", "c": "Sl", "d": "Sn" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 89,
+        "category": "english",
+        "question": "What is the capital of Vietnam?",
+        "options": { "a": "Ho Chi Minh City", "b": "Hanoi", "c": "Da Nang", "d": "Hai Phong" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 90,
+        "category": "english",
+        "question": "What is the chemical symbol for Zinc?",
+        "options": { "a": "Zi", "b": "Zn", "c": "Z", "d": "Zo" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 91,
+        "category": "english",
+        "question": "What is the capital of Indonesia?",
+        "options": { "a": "Jakarta", "b": "Surabaya", "c": "Bandung", "d": "Medan" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 92,
+        "category": "english",
+        "question": "What is the chemical symbol for Copper?",
+        "options": { "a": "Co", "b": "Cu", "c": "Cp", "d": "Cr" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 93,
+        "category": "english",
+        "question": "What is the capital of Malaysia?",
+        "options": { "a": "Kuala Lumpur", "b": "Penang", "c": "Johor Bahru", "d": "Malacca" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 94,
+        "category": "english",
+        "question": "What is the chemical symbol for Lead?",
+        "options": { "a": "Le", "b": "Ld", "c": "Pb", "d": "Pl" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 95,
+        "category": "english",
+        "question": "What is the capital of Philippines?",
+        "options": { "a": "Manila", "b": "Cebu", "c": "Davao", "d": "Quezon City" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 96,
+        "category": "english",
+        "question": "What is the chemical symbol for Mercury?",
+        "options": { "a": "Me", "b": "Mr", "c": "Hg", "d": "My" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 97,
+        "category": "english",
+        "question": "What is the capital of Pakistan?",
+        "options": { "a": "Karachi", "b": "Lahore", "c": "Islamabad", "d": "Rawalpindi" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 98,
+        "category": "english",
+        "question": "What is the chemical symbol for Tin?",
+        "options": { "a": "Ti", "b": "Tn", "c": "Sn", "d": "T" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 99,
+        "category": "english",
+        "question": "What is the capital of Bangladesh?",
+        "options": { "a": "Dhaka", "b": "Chittagong", "c": "Khulna", "d": "Rajshahi" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 100,
+        "category": "english",
+        "question": "What is the chemical symbol for Aluminum?",
+        "options": { "a": "Al", "b": "Am", "c": "An", "d": "Au" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 101,
+        "category": "bangla",
+        "question": "পানির রাসায়নিক সংকেত কী?",
+        "options": { "a": "H2O", "b": "CO2", "c": "O2", "d": "NaCl" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 102,
+        "category": "bangla",
+        "question": "মানবদেহের সবচেয়ে বড় অঙ্গ কোনটি?",
+        "options": { "a": "হৃদপিণ্ড", "b": "যকৃত", "c": "ত্বক", "d": "ফুসফুস" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 103,
+        "category": "bangla",
+        "question": "প্রথম বিশ্বযুদ্ধ কত সালে শুরু হয়?",
+        "options": { "a": "১৯১৪", "b": "১৯১৮", "c": "১৯৩৯", "d": "১৯৪৫" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 104,
+        "category": "bangla",
+        "question": "আলোর গতি কত?",
+        "options": { "a": "৩০০,০০০ কিমি/সেকেন্ড", "b": "১৫০,০০০ কিমি/সেকেন্ড", "c": "৪৫০,০০০ কিমি/সেকেন্ড", "d": "৬০০,০০০ কিমি/সেকেন্ড" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 105,
+        "category": "bangla",
+        "question": "অক্সিজেনের রাসায়নিক সংকেত কী?",
+        "options": { "a": "O", "b": "O2", "c": "CO2", "d": "H2O" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 106,
+        "category": "bangla",
+        "question": "মানবদেহে কতটি ক্রোমোজোম থাকে?",
+        "options": { "a": "২৩ জোড়া", "b": "২৪ জোড়া", "c": "২২ জোড়া", "d": "২৫ জোড়া" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 107,
+        "category": "bangla",
+        "question": "দ্বিতীয় বিশ্বযুদ্ধ কত সালে শেষ হয়?",
+        "options": { "a": "১৯৪৫", "b": "১৯৩৯", "c": "১৯১৮", "d": "১৯৫০" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 108,
+        "category": "bangla",
+        "question": "নিউটনের গতির সূত্র কয়টি?",
+        "options": { "a": "১টি", "b": "২টি", "c": "৩টি", "d": "৪টি" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 109,
+        "category": "bangla",
+        "question": "কার্বন ডাই অক্সাইডের রাসায়নিক সংকেত কী?",
+        "options": { "a": "CO2", "b": "CO", "c": "C2O", "d": "C2O2" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 110,
+        "category": "bangla",
+        "question": "মানবদেহের সবচেয়ে ছোট হাড় কোনটি?",
+        "options": { "a": "ফিমার", "b": "স্টেপিস", "c": "টিবিয়া", "d": "ফিবুলা" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 111,
+        "category": "bangla",
+        "question": "জাতিসংঘ কত সালে প্রতিষ্ঠিত হয়?",
+        "options": { "a": "১৯৪৫", "b": "১৯৫০", "c": "১৯৩৯", "d": "১৯১৮" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 112,
+        "category": "bangla",
+        "question": "পৃথিবীর মহাকর্ষ বলের মান কত?",
+        "options": { "a": "৯.৮ m/s²", "b": "১০ m/s²", "c": "৮.৫ m/s²", "d": "৭.৬ m/s²" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 113,
+        "category": "bangla",
+        "question": "হাইড্রোজেনের রাসায়নিক সংকেত কী?",
+        "options": { "a": "H", "b": "H2", "c": "HO", "d": "H2O" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 114,
+        "category": "bangla",
+        "question": "মানবদেহের সবচেয়ে বড় হাড় কোনটি?",
+        "options": { "a": "ফিমার", "b": "স্টেপিস", "c": "টিবিয়া", "d": "ফিবুলা" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 115,
+        "category": "bangla",
+        "question": "শীতল যুদ্ধ কত সালে শেষ হয়?",
+        "options": { "a": "১৯৯১", "b": "১৯৮৯", "c": "১৯৭৫", "d": "২০০০" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 116,
+        "category": "bangla",
+        "question": "বিদ্যুৎ প্রবাহের একক কী?",
+        "options": { "a": "অ্যাম্পিয়ার", "b": "ভোল্ট", "c": "ওহম", "d": "ওয়াট" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 117,
+        "category": "bangla",
+        "question": "নাইট্রোজেনের রাসায়নিক সংকেত কী?",
+        "options": { "a": "N", "b": "N2", "c": "NO", "d": "NO2" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 118,
+        "category": "bangla",
+        "question": "মানবদেহের সবচেয়ে বড় গ্রন্থি কোনটি?",
+        "options": { "a": "যকৃত", "b": "অগ্ন্যাশয়", "c": "থাইরয়েড", "d": "পিটুইটারি" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 119,
+        "category": "bangla",
+        "question": "ভিয়েতনাম যুদ্ধ কত সালে শেষ হয়?",
+        "options": { "a": "১৯৭৫", "b": "১৯৬৫", "c": "১৯৮০", "d": "১৯৯০" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 120,
+        "category": "bangla",
+        "question": "শব্দের গতি বাতাসে কত?",
+        "options": { "a": "৩৪৩ m/s", "b": "৪৫০ m/s", "c": "৫০০ m/s", "d": "২৫০ m/s" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 121,
+        "category": "bangla",
+        "question": "সম্প্রতি বাংলাদেশের কোন অঞ্চলে বন্যায় সবচেয়ে বেশি ক্ষয়ক্ষতি হয়েছে?",
+        "options": { "a": "সুনামগঞ্জ", "b": "সিলেট", "c": "কুড়িগ্রাম", "d": "রংপুর" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 122,
+        "category": "bangla",
+        "question": "সম্প্রতি বাংলাদেশের কোন নদীতে জাহাজ ডুবে অনেক মানুষ নিহত হয়েছে?",
+        "options": { "a": "পদ্মা", "b": "মেঘনা", "c": "যমুনা", "d": "ব্রহ্মপুত্র" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 123,
+        "category": "bangla",
+        "question": "সম্প্রতি বাংলাদেশের কোন ক্রিকেটার আন্তর্জাতিক ক্রিকেট থেকে অবসর নিয়েছেন?",
+        "options": { "a": "মুশফিকুর রহিম", "b": "তামিম ইকবাল", "c": "মাহমুদুল্লাহ রিয়াদ", "d": "সাকিব আল হাসান" },
+        "correctAnswer": "c"
+    },
+    {
+        "id": 124,
+        "category": "bangla",
+        "question": "সম্প্রতি বাংলাদেশের কোন শহরে 'বাংলাদেশ মোবাইল ফিল্ম ফেস্টিভ্যাল' অনুষ্ঠিত হয়েছে?",
+        "options": { "a": "ঢাকা", "b": "চট্টগ্রাম", "c": "রাজশাহী", "d": "খুলনা" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 125,
+        "category": "bangla",
+        "question": "সম্প্রতি বাংলাদেশের কোন বিশ্ববিদ্যালয় QS বিশ্ব র্যাঙ্কিংয়ে শীর্ষ ৫০০-এ স্থান পেয়েছে?",
+        "options": { "a": "ঢাকা বিশ্ববিদ্যালয়", "b": "বাংলাদেশ প্রকৌশল বিশ্ববিদ্যালয় (BUET)", "c": "রাজশাহী বিশ্ববিদ্যালয়", "d": "জাহাঙ্গীরনগর বিশ্ববিদ্যালয়" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 126,
+        "category": "bangla",
+        "question": "সম্প্রতি বাংলাদেশের কোন ব্যাংক 'সেরা ব্যাংক' পুরস্কার পেয়েছে?",
+        "options": { "a": "সোনালী ব্যাংক", "b": "ডাচ-বাংলা ব্যাংক", "c": "ব্র্যাক ব্যাংক", "d": "ইসলামী ব্যাংক বাংলাদেশ" },
+        "correctAnswer": "d"
+    },
+    {
+        "id": 127,
+        "category": "bangla",
+        "question": "সম্প্রতি বাংলাদেশের কোন ফুটবল দল 'বাংলাদেশ প্রিমিয়ার লিগ' জিতেছে?",
+        "options": { "a": "বাশুন্ধরা কিংস", "b": "ঢাকা আবাহনী", "c": "সাইফ স্পোর্টিং ক্লাব", "d": "মহামেডান স্পোর্টিং ক্লাব" },
+        "correctAnswer": "a"
+    },
+    {
+        "id": 128,
+        "category": "bangla",
+        "question": "সম্প্রতি বাংলাদেশের কোন শিল্পী 'জাতীয় চলচ্চিত্র পুরস্কার' পেয়েছেন?",
+        "options": { "a": "শাকিব খান", "b": "মাহফুজ আহমেদ", "c": "ফেরদৌস আহমেদ", "d": "জয়া আহসান" },
+        "correctAnswer": "d"
+    },
+    {
+        "id": 129,
+        "category": "bangla",
+        "question": "সম্প্রতি বাংলাদেশের প্রধানমন্ত্রী শেখ হাসিনা কোন দেশের সরকারি সফরে গিয়েছিলেন?",
+        "options": { "a": "ভারত", "b": "চীন", "c": "জাপান", "d": "যুক্তরাষ্ট্র" },
+        "correctAnswer": "b"
+    },
+    {
+        "id": 130,
+        "category": "bangla",
+        "question": "সম্প্রতি বাংলাদেশের কোন অঞ্চলে বন্যায় সবচেয়ে বেশি মানুষ বাস্তুচ্যুত হয়েছে?",
+        "options": { "a": "সুনামগঞ্জ", "b": "সিলেট", "c": "কুড়িগ্রাম", "d": "রংপুর" },
+        "correctAnswer": "a"
+    },
+  {
+    "id": 131,
+    "category": "bangla",
+    "question": "২০২৪ সালের জুলাই মাসে বাংলাদেশের ছাত্র আন্দোলনের প্রধান উদ্দেশ্য কী ছিল?",
+    "options": {
+      "a": "সরকারি চাকরিতে কোটা সংস্কার",
+      "b": "শিক্ষা ব্যবস্থার উন্নতি",
+      "c": "জ্বালানি মূল্যের বৃদ্ধি",
+      "d": "পরিবেশ সংরক্ষণ"
+    },
+    "correctAnswer": "a"
+  },
+  {
+    "id": 132,
+    "category": "bangla",
+    "question": "কোন আদালতের রায়ের পর ২০২৪ সালের কোটা সংস্কার আন্দোলন তীব্রতর হয়?",
+    "options": {
+      "a": "হাইকোর্ট",
+      "b": "সুপ্রিম কোর্ট",
+      "c": "মহানগর দায়রা জজ আদালত",
+      "d": "জেলা আদালত"
+    },
+    "correctAnswer": "a"
+  },
+  {
+    "id": 133,
+    "category": "bangla",
+    "question": "কোন সংগঠন ২০২৪ সালের কোটা সংস্কার আন্দোলনের সময় 'বাংলা অবরোধ' ঘোষণা করে?",
+    "options": {
+      "a": "বিকল্পধারা বাংলাদেশ",
+      "b": "ছাত্র অধিকার সংরক্ষণ পরিষদ",
+      "c": "জাতীয় ছাত্র সমাজ",
+      "d": "বাংলাদেশ ছাত্র ইউনিয়ন"
+    },
+    "correctAnswer": "b"
+  },
+  {
+    "id": 134,
+    "category": "bangla",
+    "question": "২০২৪ সালের কোটা সংস্কার আন্দোলনের সময় কোন বিশ্ববিদ্যালয়ের প্রধান ফটককে 'শহীদ রুদ্র তোরণ' নামকরণ করা হয়?",
+    "options": {
+      "a": "ঢাকা বিশ্ববিদ্যালয়",
+      "b": "শাহজালাল বিজ্ঞান ও প্রযুক্তি বিশ্ববিদ্যালয়",
+      "c": "রাজশাহী বিশ্ববিদ্যালয়",
+      "d": "চট্টগ্রাম বিশ্ববিদ্যালয়"
+    },
+    "correctAnswer": "b"
+  },
+  {
+    "id": 135,
+    "category": "bangla",
+    "question": "কোন তারিখে বাংলাদেশ সরকার দেশব্যাপী কারফিউ এবং সেনা মোতায়েন করে?",
+    "options": {
+      "a": "১৫ জুলাই ২০২৪",
+      "b": "১৭ জুলাই ২০২৪",
+      "c": "১৯ জুলাই ২০২৪",
+      "d": "২১ জুলাই ২০২৪"
+    },
+    "correctAnswer": "c"
+  },
+  {
+    "id": 136,
+    "category": "bangla",
+    "question": "২০২৪ সালের আন্দোলনের সময় কোন সরকারি প্রতিষ্ঠানের ওয়েবসাইট হ্যাক হয়েছিল?",
+    "options": {
+      "a": "বাংলাদেশ ব্যাংক",
+      "b": "বাংলাদেশ পুলিশ",
+      "c": "প্রধানমন্ত্রীর কার্যালয়",
+      "d": "উপরের সবগুলো"
+    },
+    "correctAnswer": "d"
+  },
+  {
+    "id": 137,
+    "category": "bangla",
+    "question": "কোন বিশ্ববিদ্যালয়ের শিক্ষার্থীরা আন্দোলনের সময় ছাত্রলীগ নেতাদের কক্ষ ভাঙচুর করে?",
+    "options": {
+      "a": "ঢাকা বিশ্ববিদ্যালয়",
+      "b": "রাজশাহী বিশ্ববিদ্যালয়",
+      "c": "জাহাঙ্গীরনগর বিশ্ববিদ্যালয়",
+      "d": "চট্টগ্রাম বিশ্ববিদ্যালয়"
+    },
+    "correctAnswer": "b"
+  },
+  {
+    "id": 138,
+    "category": "bangla",
+    "question": "আন্দোলনের সময় কোন টেলিভিশন স্টেশন অগ্নিসংযোগের শিকার হয়?",
+    "options": {
+      "a": "চ্যানেল আই",
+      "b": "এনটিভি",
+      "c": "বাংলাদেশ টেলিভিশন (বিটিভি)",
+      "d": "একাত্তর টিভি"
+    },
+    "correctAnswer": "c"
+  },
+  {
+    "id": 139,
+    "category": "bangla",
+    "question": "কোন তারিখে ইন্টারনেট সেবা বন্ধ করা হয়েছিল?",
+    "options": {
+      "a": "১৫ জুলাই ২০২৪",
+      "b": "১৭ জুলাই ২০২৪",
+      "c": "১৮ জুলাই ২০২৪",
+      "d": "২০ জুলাই ২০২৪"
+    },
+    "correctAnswer": "c"
+  },
+  {
+    "id": 140,
+    "category": "bangla",
+    "question": "কোন শহরে মেট্রো রেল স্টেশন ভাঙচুরের শিকার হয়েছিল?",
+    "options": {
+      "a": "ঢাকা",
+      "b": "চট্টগ্রাম",
+      "c": "রাজশাহী",
+      "d": "সিলেট"
+    },
+    "correctAnswer": "a"
+  },
+  {
+    "id": 141,
+    "category": "bangla",
+    "question": "কোন সংগঠন আন্দোলনকারীদের উপর হামলা চালায় বলে অভিযোগ রয়েছে?",
+    "options": {
+      "a": "বাংলাদেশ ছাত্রলীগ",
+      "b": "জাতীয়তাবাদী ছাত্রদল",
+      "c": "ছাত্র অধিকার সংরক্ষণ পরিষদ",
+      "d": "বাংলাদেশ ছাত্র ইউনিয়ন"
+    },
+    "correctAnswer": "a"
+  },
+  {
+    "id": 142,
+    "category": "bangla",
+    "question": "কোন তারিখে আন্দোলন প্রথমবারের মতো সহিংস রূপ নেয়?",
+    "options": {
+      "a": "১০ জুলাই ২০২৪",
+      "b": "১১ জুলাই ২০২৪",
+      "c": "১২ জুলাই ২০২৪",
+      "d": "১৩ জুলাই ২০২৪"
+    },
+    "correctAnswer": "b"
+  },
+  {
+    "id": 143,
+    "category": "bangla",
+    "question": "আন্দোলনের সময় কোন শহরে কারাগার ভেঙে কয়েদিদের মুক্ত করা হয়েছিল?",
+    "options": {
+      "a": "ঢাকা",
+      "b": "নারায়ণগঞ্জ",
+      "c": "নরসিংদী",
+      "d": "কুমিল্লা"
+    },
+    "correctAnswer": "c"
+  },
+  {
+    "id": 145,
+    "category": "bangla",
+    "question": "২০২৪ সালের ছাত্র আন্দোলনের সময় কোন মন্ত্রীর পদত্যাগের দাবি উঠেছিল?",
+    "options": {
+      "a": "শিক্ষামন্ত্রী",
+      "b": "স্বরাষ্ট্রমন্ত্রী",
+      "c": "আইনমন্ত্রী",
+      "d": "পররাষ্ট্রমন্ত্রী"
+    },
+    "correctAnswer": "a"
+  },
+  {
+    "id": 146,
+    "category": "bangla",
+    "question": "কোটা সংস্কার আন্দোলনের মুখপাত্র কে ছিলেন?",
+    "options": {
+      "a": "নুরুল হক নুর",
+      "b": "রাশেদ খান",
+      "c": "ফারুক হাসান",
+      "d": "সোহরাব হোসেন"
+    },
+    "correctAnswer": "c"
+  },
+  {
+    "id": 147,
+    "category": "bangla",
+    "question": "আন্দোলনের সময় কোন শহরে পুলিশের সাথে সংঘর্ষে সবচেয়ে বেশি আহত হয়?",
+    "options": {
+      "a": "ঢাকা",
+      "b": "রাজশাহী",
+      "c": "চট্টগ্রাম",
+      "d": "বরিশাল"
+    },
+    "correctAnswer": "a"
+  },
+  {
+    "id": 148,
+    "category": "bangla",
+    "question": "আন্দোলনের সময় প্রধানমন্ত্রীর কার্যালয় কতদিন ঘেরাও করে রাখা হয়?",
+    "options": {
+      "a": "১ দিন",
+      "b": "২ দিন",
+      "c": "৩ দিন",
+      "d": "৪ দিন"
+    },
+    "correctAnswer": "b"
+  },
+  {
+    "id": 149,
+    "category": "bangla",
+    "question": "বাংলাদেশ সরকার আন্দোলন নিয়ন্ত্রণে কোন বিশেষ আইন প্রয়োগ করে?",
+    "options": {
+      "a": "সাইবার নিরাপত্তা আইন",
+      "b": "বিশেষ ক্ষমতা আইন",
+      "c": "দণ্ডবিধি ১৪৪ ধারা",
+      "d": "সন্ত্রাসবিরোধী আইন"
+    },
+    "correctAnswer": "c"
+  },
+  {
+    "id": 150,
+    "category": "bangla",
+    "question": "আন্দোলনের সময় কোন আন্তর্জাতিক সংস্থা বাংলাদেশ সরকারকে সংযত হতে বলেছিল?",
+    "options": {
+      "a": "জাতিসংঘ",
+      "b": "ইউরোপীয় ইউনিয়ন",
+      "c": "আমনেস্টি ইন্টারন্যাশনাল",
+      "d": "হিউম্যান রাইটস ওয়াচ"
+    },
+    "correctAnswer": "a"
+  },
+  {
+    "id": 151,
+    "category": "bangla",
+    "question": "২০২৪ সালের ছাত্র আন্দোলনে প্রথম নিহত শিক্ষার্থীর নাম কী?",
+    "options": {
+      "a": "আশিকুল ইসলাম",
+      "b": "রফিকুল হোসেন",
+      "c": "সুমন আহমেদ",
+      "d": "আব্দুল কাদের"
+    },
+    "correctAnswer": "a"
+  },
+  {
+    "id": 152,
+    "category": "bangla",
+    "question": "ছাত্র আন্দোলন চলাকালে সরকার প্রথম দফায় কী ঘোষণা দেয়?",
+    "options": {
+      "a": "কোটা বাতিল",
+      "b": "কোটা পুনর্বহাল",
+      "c": "আন্দোলনকারীদের গ্রেফতার",
+      "d": "বিশ্ববিদ্যালয় বন্ধ ঘোষণা"
+    },
+    "correctAnswer": "d"
+  },
+  {
+    "id": 153,
+    "category": "bangla",
+    "question": "আন্দোলনের সময় কোন সামাজিক যোগাযোগ মাধ্যম সবচেয়ে বেশি ব্যবহার করা হয়?",
+    "options": {
+      "a": "ফেসবুক",
+      "b": "টুইটার",
+      "c": "ইনস্টাগ্রাম",
+      "d": "টিকটক"
+    },
+    "correctAnswer": "a"
+  },
+  {
+    "id": 154,
+    "category": "bangla",
+    "question": "ছাত্র আন্দোলনের ফলে কোন বিশ্ববিদ্যালয়ের শিক্ষার্থী সবচেয়ে বেশি গ্রেফতার হয়?",
+    "options": {
+      "a": "ঢাকা বিশ্ববিদ্যালয়",
+      "b": "চট্টগ্রাম বিশ্ববিদ্যালয়",
+      "c": "জাহাঙ্গীরনগর বিশ্ববিদ্যালয়",
+      "d": "রাজশাহী বিশ্ববিদ্যালয়"
+    },
+    "correctAnswer": "d"
+  },
+  {
+    "id": 155,
+    "category": "bangla",
+    "question": "আন্দোলনের সময় কতজন শিক্ষার্থী নিখোঁজ হয় বলে অভিযোগ ওঠে?",
+    "options": {
+      "a": "১০",
+      "b": "১৫",
+      "c": "২০",
+      "d": "২৫"
+    },
+    "correctAnswer": "c"
+  },
+  {
+    "id": 156,
+    "category": "bangla",
+    "question": "২০২৪ সালের ছাত্র আন্দোলনের অন্যতম প্রধান দাবি কী ছিল?",
+    "options": {
+      "a": "বিশ্ববিদ্যালয়ে বেতন কমানো",
+      "b": "কোটা সংস্কার",
+      "c": "পাঠ্যবই পরিবর্তন",
+      "d": "শিক্ষক নিয়োগ প্রক্রিয়া সংস্কার"
+    },
+    "correctAnswer": "b"
+  },
+  {
+    "id": 157,
+    "category": "english",
+    "question": "Which city in Bangladesh faced the largest student protest in July 2024?",
+    "options": {
+      "a": "Dhaka",
+      "b": "Chattogram",
+      "c": "Rajshahi",
+      "d": "Khulna"
+    },
+    "correctAnswer": "a"
+  },
+  {
+    "id": 158,
+    "category": "english",
+    "question": "What was the main reason behind the student protests in July 2024?",
+    "options": {
+      "a": "Tuition fee increase",
+      "b": "Quota reform",
+      "c": "New education policy",
+      "d": "Exam cancellation"
+    },
+    "correctAnswer": "b"
+  },
+  {
+    "id": 159,
+    "category": "english",
+    "question": "Which Bangladeshi university saw the highest number of student arrests during the July 2024 protests?",
+    "options": {
+      "a": "Dhaka University",
+      "b": "Jahangirnagar University",
+      "c": "Rajshahi University",
+      "d": "Chittagong University"
+    },
+    "correctAnswer": "c"
+  },
+  {
+    "id": 160,
+    "category": "english",
+    "question": "Which international organization issued a statement on Bangladesh’s student protests in July 2024?",
+    "options": {
+      "a": "United Nations",
+      "b": "Amnesty International",
+      "c": "European Union",
+      "d": "World Bank"
+    },
+    "correctAnswer": "b"
+  },
+  {
+    "id": 161,
+    "category": "english",
+    "question": "What action did the Bangladesh government take in response to the student protests in July 2024?",
+    "options": {
+      "a": "Shut down universities",
+      "b": "Arrest student leaders",
+      "c": "Restricted internet access",
+      "d": "All of the above"
+    },
+    "correctAnswer": "d"
+  },
+  {
+    "id": 162,
+    "category": "english",
+    "question": "Which social media platform played a major role in organizing the student protests in July 2024?",
+    "options": {
+      "a": "Facebook",
+      "b": "X (Twitter)",
+      "c": "TikTok",
+      "d": "Instagram"
+    },
+    "correctAnswer": "a"
+  },
+  {
+    "id": 163,
+    "category": "english",
+    "question": "What slogan was most commonly used by students during the July 2024 protests?",
+    "options": {
+      "a": "\"Justice for Students\"",
+      "b": "\"Reform Quota Now\"",
+      "c": "\"Down with Corruption\"",
+      "d": "\"No More Tuition Fees\""
+    },
+    "correctAnswer": "b"
+  },
+  {
+    "id": 164,
+    "category": "english",
+    "question": "Which government agency was heavily criticized for handling the protests?",
+    "options": {
+      "a": "Ministry of Education",
+      "b": "Police Department",
+      "c": "Election Commission",
+      "d": "High Court Division"
+    },
+    "correctAnswer": "b"
+  },
+  {
+    "id": 165,
+    "category": "english",
+    "question": "Which university vice-chancellor resigned following the July 2024 student protests?",
+    "options": {
+      "a": "Dhaka University",
+      "b": "Rajshahi University",
+      "c": "Chittagong University",
+      "d": "No vice-chancellor resigned"
+    },
+    "correctAnswer": "d"
+  },
+  {
+    "id": 166,
+    "category": "english",
+    "question": "Which media outlet was banned from covering the student protests in July 2024?",
+    "options": {
+      "a": "Prothom Alo",
+      "b": "BBC Bangla",
+      "c": "Al Jazeera",
+      "d": "Channel 24"
+    },
+    "correctAnswer": "a"
+  },
+  {
+    "id": 167,
+    "category": "english",
+    "question": "Which new law was proposed by the Bangladesh government in July 2024?",
+    "options": {
+      "a": "Digital Security Act Amendment",
+      "b": "Cyber Crime Prevention Act",
+      "c": "Student Protection Bill",
+      "d": "Quota Reform Bill"
+    },
+    "correctAnswer": "d"
+  },
+  {
+    "id": 168,
+    "category": "english",
+    "question": "Which Bangladeshi city experienced the longest internet blackout during the student protests?",
+    "options": {
+      "a": "Dhaka",
+      "b": "Chattogram",
+      "c": "Sylhet",
+      "d": "Rajshahi"
+    },
+    "correctAnswer": "a"
+  },
+  {
+    "id": 169,
+    "category": "english",
+    "question": "How many students were reportedly injured in the July 2024 protests?",
+    "options": {
+      "a": "Over 100",
+      "b": "Over 500",
+      "c": "Over 1000",
+      "d": "Over 2000"
+    },
+    "correctAnswer": "b"
+  },
+  {
+    "id": 170,
+    "category": "english",
+    "question": "Which student organization played a key role in the protests?",
+    "options": {
+      "a": "Bangladesh Chhatra League",
+      "b": "Quota Reform Movement",
+      "c": "Jatiyatabadi Chhatra Dal",
+      "d": "Islami Chhatra Shibir"
+    },
+    "correctAnswer": "b"
+  },
+  {
+    "id": 171,
+    "category": "english",
+    "question": "Which minister made a controversial statement about the student protests?",
+    "options": {
+      "a": "Education Minister",
+      "b": "Home Minister",
+      "c": "Information Minister",
+      "d": "Foreign Minister"
+    },
+    "correctAnswer": "b"
+  },
+  {
+    "id": 172,
+    "category": "english",
+    "question": "Which international news agency first reported on the July 2024 protests in Bangladesh?",
+    "options": {
+      "a": "BBC",
+      "b": "CNN",
+      "c": "Al Jazeera",
+      "d": "Reuters"
+    },
+    "correctAnswer": "c"
+  },
+  {
+    "id": 173,
+    "category": "english",
+    "question": "What demand did students raise apart from quota reform?",
+    "options": {
+      "a": "Lower university fees",
+      "b": "Better hostel facilities",
+      "c": "Fair recruitment process",
+      "d": "All of the above"
+    },
+    "correctAnswer": "d"
+  },
+  {
+    "id": 174,
+    "category": "english",
+    "question": "Which university postponed exams due to the protests?",
+    "options": {
+      "a": "Dhaka University",
+      "b": "Jagannath University",
+      "c": "Bangladesh University of Engineering and Technology",
+      "d": "All of the above"
+    },
+    "correctAnswer": "d"
+  },
+  {
+    "id": 175,
+    "category": "english",
+    "question": "What type of restrictions were imposed on media coverage of the protests?",
+    "options": {
+      "a": "Live reporting banned",
+      "b": "Journalists arrested",
+      "c": "Newspaper articles censored",
+      "d": "All of the above"
+    },
+    "correctAnswer": "d"
+  },
+  {
+    "id": 176,
+    "category": "english",
+    "question": "Which international human rights organization condemned the Bangladesh government’s handling of the protests?",
+    "options": {
+      "a": "Human Rights Watch",
+      "b": "UNICEF",
+      "c": "Red Cross",
+      "d": "Greenpeace"
+    },
+    "correctAnswer": "a"
+  }
+]
