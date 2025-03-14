@@ -445,29 +445,30 @@ app.get("/quiz", (req, res) => {
     res.json(quiz);
 });
 
-app.post("/quiz/check", (req, res) => {
-    const { id, answer } = req.body;
+app.get("/quiz/check", (req, res) => {
+    const id = req.query.id;
+    const answer = req.query.answer;
 
     if (!id || !answer) {
-        return res.status(400).json({ error: "Please provide both 'id' and 'answer'." });
+        return res.status(400).json({ error: "Please provide both 'id' and 'answer' as query parameters." });
     }
 
     const quizzes = loadQuizData();
-    const quiz = quizzes.find(q => q.id === id);
+    const quiz = quizzes.find(q => q.id == id);
 
     if (!quiz) {
         return res.status(404).json({ error: "Quiz not found." });
     }
 
     const isCorrect = quiz.correctAnswer.toLowerCase().trim() === answer.toLowerCase().trim();
-
-    res.json({ 
-        id, 
-        isCorrect, 
-        correctAnswer: quiz.correctAnswer, 
+    res.json({
+        id: quiz.id,
+        isCorrect,
+        correctAnswer: quiz.correctAnswer,
         message: isCorrect ? "✅ Correct Answer!" : "❌ Wrong Answer. Try Again!"
     });
 });
+
 
 
 
