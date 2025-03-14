@@ -1,35 +1,35 @@
 [
     {
         "id": 1,
-        "category": "bangla",
+        "category": "history",
         "question": "বাংলাদেশের স্বাধীনতা যুদ্ধ কত দিন স্থায়ী ছিল?",
         "options": { "a": "৯ মাস", "b": "৬ মাস", "c": "১ বছর", "d": "৩ মাস" },
         "correctAnswer": "a"
     },
     {
         "id": 2,
-        "category": "bangla",
+        "category": "general",
         "question": "বাংলাদেশের জাতীয় কবি কে?",
         "options": { "a": "কাজী নজরুল ইসলাম", "b": "রবীন্দ্রনাথ ঠাকুর", "c": "সুকান্ত ভট্টাচার্য", "d": "জসীম উদ্দীন" },
         "correctAnswer": "a"
     },
     {
         "id": 3,
-        "category": "bangla",
+        "category": "history",
         "question": "বাংলাদেশের প্রথম বিশ্ববিদ্যালয় কোনটি?",
         "options": { "a": "ঢাকা বিশ্ববিদ্যালয়", "b": "রাজশাহী বিশ্ববিদ্যালয়", "c": "চট্টগ্রাম বিশ্ববিদ্যালয়", "d": "জাহাঙ্গীরনগর বিশ্ববিদ্যালয়" },
         "correctAnswer": "a"
     },
     {
         "id": 4,
-        "category": "bangla",
+        "category": "science",
         "question": "বায়ুমণ্ডলের সবচেয়ে বেশি গ্যাস কোনটি?",
         "options": { "a": "অক্সিজেন", "b": "নাইট্রোজেন", "c": "কার্বন ডাই অক্সাইড", "d": "হাইড্রোজেন" },
         "correctAnswer": "b"
     },
     {
         "id": 5,
-        "category": "bangla",
+        "category": "science",
         "question": "শরীরে রক্ত পরিশোধন করে কোন অঙ্গ?",
         "options": { "a": "হৃদপিণ্ড", "b": "যকৃত", "c": "কিডনি", "d": "প্লীহা" },
         "correctAnswer": "c"
@@ -71,70 +71,70 @@
     },
     {
         "id": 11,
-        "category": "bangla",
+        "category": "general",
         "question": "বাংলাদেশের জাতীয় মাছ কোনটি?",
         "options": { "a": "ইলিশ", "b": "পাঙ্গাস", "c": "রুই", "d": "শিং" },
         "correctAnswer": "a"
     },
     {
         "id": 12,
-        "category": "bangla",
+        "category": "general",
         "question": "বাংলাদেশের সবচেয়ে বড় জেলা কোনটি?",
         "options": { "a": "ঢাকা", "b": "চট্টগ্রাম", "c": "রংপুর", "d": "সিলেট" },
         "correctAnswer": "b"
     },
     {
         "id": 13,
-        "category": "bangla",
+        "category": "general",
         "question": "বাংলাদেশের জাতীয় ফুল কোনটি?",
         "options": { "a": "গোলাপ", "b": "শাপলা", "c": "গাঁদা", "d": "কদম" },
         "correctAnswer": "b"
     },
     {
         "id": 14,
-        "category": "bangla",
+        "category": "general",
         "question": "বাংলাদেশের জাতীয় পশু কোনটি?",
         "options": { "a": "বাঘ", "b": "হরিণ", "c": "গরু", "d": "হাতি" },
         "correctAnswer": "a"
     },
     {
         "id": 15,
-        "category": "bangla",
+        "category": "general",
         "question": "বাংলাদেশের জাতীয় ফল কোনটি?",
         "options": { "a": "আম", "b": "কাঁঠাল", "c": "লিচু", "d": "পেঁপে" },
         "correctAnswer": "b"
     },
     {
         "id": 16,
-        "category": "bangla",
+        "category": "general",
         "question": "বাংলাদেশের জাতীয় পাখি কোনটি?",
         "options": { "a": "ময়না", "b": "দোয়েল", "c": "কাক", "d": "পায়রা" },
         "correctAnswer": "b"
     },
     {
         "id": 17,
-        "category": "bangla",
+        "category": "general",
         "question": "বাংলাদেশের জাতীয় গাছ কোনটি?",
         "options": { "a": "আম", "b": "বট", "c": "কদম", "d": "নিম" },
         "correctAnswer": "c"
     },
     {
         "id": 18,
-        "category": "bangla",
+        "category": "general",
         "question": "বাংলাদেশের জাতীয় খেলা কোনটি?",
         "options": { "a": "ক্রিকেট", "b": "ফুটবল", "c": "হকি", "d": "কাবাডি" },
         "correctAnswer": "d"
     },
     {
         "id": 19,
-        "category": "bangla",
+        "category": "general",
         "question": "বাংলাদেশের জাতীয় বন কোনটি?",
         "options": { "a": "সুন্দরবন", "b": "লাউয়াছড়া", "c": "মধুপুর", "d": "ভাওয়াল" },
         "correctAnswer": "a"
     },
     {
         "id": 20,
-        "category": "bangla",
+        "category": "general",
         "question": "বাংলাদেশের জাতীয় নদী কোনটি?",
         "options": { "a": "পদ্মা", "b": "মেঘনা", "c": "যমুনা", "d": "ব্রহ্মপুত্র" },
         "correctAnswer": "a"
@@ -212,8 +212,8 @@
     {
         "id": 31,
         "category": "bangla",
-        "question": "বাংলাদেশের জাতীয় কবি কে?",
-        "options": { "a": "কাজী নজরুল ইসলাম", "b": "রবীন্দ্রনাথ ঠাকুর", "c": "সুকান্ত ভট্টাচার্য", "d": "জসীম উদ্দীন" },
+        "question": "নিউটনের দ্বিতীয় সূত্র কোন টা",
+        "options": { "a": "F=ma", "b": "S=vt", "c": "A=v-u/t", "d": "F=1/t" },
         "correctAnswer": "a"
     },
     {
