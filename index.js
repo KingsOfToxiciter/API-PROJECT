@@ -436,7 +436,7 @@ const loadQuizData = () => {
 
 
 app.get("/quiz", (req, res) => {
-    const category = req.query.category;
+    const category = req.query.category || "general";
     const quizzes = loadQuizData();
     const filteredQuizzes = quizzes.filter(q => q.category === category);
     if (filteredQuizzes.length === 0) return res.status(404).json({ error: "No quiz found." });
