@@ -471,6 +471,7 @@ app.get("/quiz/check", (req, res) => {
 
 app.get("/expend", async (req, res) => {
     const { imageUrl } = req.query;
+    const { ratio } = req.query;
 
     if (!imageUrl) {
         return res.status(400).send("Please provide an image URL!");
@@ -478,7 +479,7 @@ app.get("/expend", async (req, res) => {
 
     try {
         
-        const response = await axios.get(`http://www.arch2devs.ct.ws/api/diffuser/expand?url=${encodeURIComponent(imageUrl)}`, {
+        const response = await axios.get(`http://www.arch2devs.ct.ws/api/diffuser/expand?url=${encodeURIComponent(imageUrl)}&ratio=${ratio}`, {
             responseType: "stream",
         });
 
@@ -515,6 +516,33 @@ app.get("/zombie", async (req, res) => {
         res.status(500).send("Error expanding the image");
     }
 });
+
+
+
+app.get("/effect", async (req, res) => {
+    const { imageUrl } = req.query;
+    const { effect } = req.query;
+
+    if (!imageUrl) {
+        return res.status(400).send("Please provide an image URL!");
+    }
+
+    try {
+        
+        const response = await axios.get(`http://www.arch2devs.ct.ws/api/imageFx?effectIndex=${effect}&imageUrl=${encodeURIComponent(imageUrl)}`, {
+            responseType: "stream",
+        });
+
+        
+        res.setHeader("Content-Type", "image/jpeg");
+        response.data.pipe(res);
+
+    } catch (error) {
+        console.error("expand error:", error.response ? error.response.data : error.message);
+        res.status(500).send("Error expanding the image");
+    }
+});
+
 
 
 
