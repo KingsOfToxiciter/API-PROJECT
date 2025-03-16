@@ -546,6 +546,80 @@ app.get("/effect", async (req, res) => {
 
 
 
+const API_KEYS = [
+  "sk-cHihos8KV0KCJSvLlcaml5azkN3SdXuq4TA6DBmOylANHlUo",
+"sk-7tZTTPRMUk7x7Jo0SfSRQOvAITYWswXw7MRrGKv9zJX7qLhA",
+"sk-2TtHsl6lyu2qb9UiKYwTTavEo7iHV7vR4l8Op9mMRjz5X0hR",
+"sk-t65wMeQw90K1IGUIIeyMs9B4HpG1UvqLP8gPeZ6irNldIvvS",
+"sk-y4sDPSyI7NNQ8mq47KiakbWzfNVtmeUOr8fgU5MG35jEGoHz",
+"sk-GlRBuow1xk8eWkLps4ViTeIypGXzLbnBmCPl8jQuzuE36aZU",
+"sk-sMauynUU1EjMcEby72W80QHYMZvMloeRWW8Ki3vAvQb4daG5"
+];
+
+let currentKeyIndex = 0; 
+const getNextApiKey = () => {
+  currentKeyIndex = (currentKeyIndex + 1) % API_KEYS.length;
+  return API_KEYS[currentKeyIndex];
+};
+
+app.get("/ultra", async (req, res) => {
+  const prompt = req.query.prompt;
+  const output_format = req.query.format || "webp";
+
+  if (!prompt) return res.status(400).json({ error: "Prompt is required" });
+
+  res.setHeader("Content-Type", `image/${output_format}`);
+
+  let attempt = 0;
+  let success = false;
+
+  while (attempt < API_KEYS.length && !success) {
+    const apiKey = API_KEYS[currentKeyIndex];
+
+    try {
+      console.log(`🔄 Trying API Key ${currentKeyIndex + 1}: ${apiKey}`);
+
+      const form = new FormData();
+      form.append("prompt", prompt);
+      form.append("output_format", output_format);
+
+      const response = await axios.post(
+        "https://api.stability.ai/v2beta/stable-image/generate/ultra",
+        form,
+        {
+          headers: {
+            ...form.getHeaders(),
+            Authorization: `Bearer ${apiKey}`,
+            Accept: "image/*",
+          },
+          responseType: "stream",
+        }
+      );
+
+      success = true;
+      response.data.pipe(res); 
+    } catch (error) {
+      console.error(`❌ API Key ${currentKeyIndex + 1} Failed:`, error.message);
+
+      if (error.response && error.response.status === 429) {
+        
+        currentKeyIndex = (currentKeyIndex + 1) % API_KEYS.length;
+        attempt++;
+      } else {
+        return res.status(500).json({ error: "Image generation failed", details: error.message });
+      }
+    }
+  }
+
+  if (!success) {
+    return res.status(500).json({ error: "All API keys exhausted. Try again later." });
+  }
+});
+
+
+
+
+
 app.listen(PORT, () => {
   console.log(`🔥 Hasan's API is running on port ${PORT}`);
 });
