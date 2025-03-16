@@ -556,11 +556,7 @@ const API_KEYS = [
 "sk-sMauynUU1EjMcEby72W80QHYMZvMloeRWW8Ki3vAvQb4daG5"
 ];
 
-let currentKeyIndex = 0; 
-const getNextApiKey = () => {
-  currentKeyIndex = (currentKeyIndex + 1) % API_KEYS.length;
-  return API_KEYS[currentKeyIndex];
-};
+      let apiKey = API_KEYS[Math.floor(Math.random() * API_KEYS.length)];
 
 app.get("/ultra", async (req, res) => {
   const prompt = req.query.prompt;
@@ -570,50 +566,29 @@ app.get("/ultra", async (req, res) => {
 
   res.setHeader("Content-Type", `image/${output_format}`);
 
-  let attempt = 0;
-  let success = false;
+  try {
+    const form = new FormData();
+    form.append("prompt", prompt);
+    form.append("output_format", output_format);
 
-  while (attempt < API_KEYS.length && !success) {
-    const apiKey = API_KEYS[currentKeyIndex];
-
-    try {
-      console.log(`🔄 Trying API Key ${currentKeyIndex + 1}: ${apiKey}`);
-
-      const form = new FormData();
-      form.append("prompt", prompt);
-      form.append("output_format", output_format);
-
-      const response = await axios.post(
-        "https://api.stability.ai/v2beta/stable-image/generate/ultra",
-        form,
-        {
-          headers: {
-            ...form.getHeaders(),
-            Authorization: `Bearer ${apiKey}`,
-            Accept: "image/*",
-          },
-          responseType: "stream",
-        }
-      );
-
-      success = true;
-      response.data.pipe(res); 
-    } catch (error) {
-      console.error(`❌ API Key ${currentKeyIndex + 1} Failed:`, error.message);
-
-      if (error.response && error.response.status === 429) {
-        
-        currentKeyIndex = (currentKeyIndex + 1) % API_KEYS.length;
-        attempt++;
-      } else {
-        return res.status(500).json({ error: "Image generation failed", details: error.message });
+    const response = await axios.post(
+      "https://api.stability.ai/v2beta/stable-image/generate/ultra",
+      form,
+      {
+        headers: {
+          ...form.getHeaders(),
+          Authorization: `Bearer ${apiKey}`, 
+          Accept: "image/*",
+        },
+        responseType: "stream",
       }
-    }
-  }
+    );
 
-  if (!success) {
-    return res.status(500).json({ error: "All API keys exhausted. Try again later." });
-  }
+    response.data.pipe(res); // ইমেজ ডাটা সরাসরি রেসপন্সে পাঠানো হবে
+  } catch (error) {
+    console.error("❌ Error:", error.message);
+    res.status(500).json({ error: "Image generation failed", details: error.message       });
+   }
 });
 
 
