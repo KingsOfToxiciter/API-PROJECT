@@ -596,7 +596,7 @@ app.get("/ultra", async (req, res) => {
 
 app.use(express.json());
 
-app.post('/bing', async (req, res) => {
+app.get('/bing', async (req, res) => {
     const { prompt } = req.body;
     if (!prompt) return res.status(400).json({ error: "Prompt is required" });
 
