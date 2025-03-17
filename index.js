@@ -612,7 +612,7 @@ app.post('/bing', async (req, res) => {
             path: "/"
         });
 
-        await page.goto('https://www.bing.com/create');
+        await page.goto('https://www.bing.com/images/create');
         await page.waitForSelector("input[placeholder=\"Describe the image you want created or select 'Surprise Me' to get inspired!\"]");
 
         
