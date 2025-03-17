@@ -597,7 +597,7 @@ app.get("/ultra", async (req, res) => {
 app.use(express.json());
 
 app.get('/bing', async (req, res) => {
-    const { prompt } = req.body;
+    const { prompt } = req.query;
     if (!prompt) return res.status(400).json({ error: "Prompt is required" });
 
     const browser = await puppeteer.launch({ headless: true });
