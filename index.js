@@ -4,6 +4,9 @@ const FormData = require("form-data");
 const fs = require("fs");
 const path = require("path");
 const util = require("util");
+const puppeteer = require("puppeteer");
+const { BING_COOKIE } = require('./config');
+
 
 const app = express();
 const PORT = 3000;
@@ -591,6 +594,47 @@ app.get("/ultra", async (req, res) => {
    }
 });
 
+app.use(express.json());
+
+app.post('/bing', async (req, res) => {
+    const { prompt } = req.body;
+    if (!prompt) return res.status(400).json({ error: "Prompt is required" });
+
+    const browser = await puppeteer.launch({ headless: true });
+    const page = await browser.newPage();
+
+    try {
+        
+        await page.setCookie({
+            name: "_U",
+            value: BING_COOKIE,
+            domain: ".bing.com",
+            path: "/"
+        });
+
+        await page.goto('https://www.bing.com/create');
+        await page.waitForSelector("input[placeholder=\"Describe the image you want created or select 'Surprise Me' to get inspired!\"]");
+
+        
+        await page.type("input[placeholder=\"Describe the image you want created or select 'Surprise Me' to get inspired!\"]", prompt);
+        await page.click('button[type="Creat"]');
+
+        
+        await page.waitForSelector('img.generated-image', { timeout: 60000 });
+
+        
+        const images = await page.evaluate(() => {
+            return Array.from(document.querySelectorAll('img.generated-image')).map(img => img.src);
+        });
+
+        await browser.close();
+        res.json({ prompt, images });
+
+    } catch (error) {
+        await browser.close();
+        res.status(500).json({ error: "Failed to generate image", details: error.message });
+    }
+});
 
 
 
