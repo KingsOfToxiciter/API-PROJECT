@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
 const FormData = require("form-data");
@@ -29,7 +30,7 @@ app.get("/infinity", async (req, res) => {
     const response = await axios.post("https://api.vyro.ai/v2/image/generations", form, {
       headers: {
         ...form.getHeaders(),
-        Authorization: `Bearer vk-lepIIQ262uBDmPa6olnD0LG2uto1VwWEmJY0tkgNwB33RF` // .env থেকে টোকেন নিন
+        Authorization: `Bearer ${process.env.VYRO_API}`
       },
       responseType: "stream",
     });
@@ -45,7 +46,7 @@ app.get("/var", async (req, res) => {
   const prompt = req.query.prompt;
   if (!prompt) return res.status(400).json({ error: "Prompt is required" });
 
-  res.setHeader("Content-Type", "image/png"); // স্ট্রিমিং আউটপুট টেক্সট হিসেবে পাঠানো
+  res.setHeader("Content-Type", "image/png"); 
 
   try {
     const form = new FormData();
@@ -60,14 +61,14 @@ app.get("/var", async (req, res) => {
       {
         headers: {
           ...form.getHeaders(),
-          Authorization: `Bearer vk-3tsIrXR52EVUtV3qFrVyRpBB0DKdd5K4QTgBkBucQVNa8u`,
+          Authorization: `Bearer ${process.env.VYRO_API}`,
         },
-        responseType: "stream", // স্ট্রিমিং মোড অন করুন
+        responseType: "stream", 
       }
     );
 
     response.data.on("data", (chunk) => {
-      res.write(chunk); // প্রতিটি অংশ আলাদাভাবে পাঠানো হবে
+      res.write(chunk); 
     });
 
     response.data.on("end", () => {
@@ -142,7 +143,7 @@ app.get("/enhance", async (req, res) => {
                     {
                         headers: {
                             ...form.getHeaders(),
-                            Authorization: "Bearer vk-lepIIQ262uBDmPa6olnD0LG2uto1VwWEmJY0tkgNwB33RF", 
+                            Authorization: "Bearer ${process.env.VYRO_API}", 
                         },
                         responseType: "stream",
                     }
@@ -221,13 +222,13 @@ app.get("/rbg", async (req, res) => {
                     {
                         headers: {
                             ...form.getHeaders(),
-                            Authorization: "Bearer vk-lepIIQ262uBDmPa6olnD0LG2uto1VwWEmJY0tkgNwB33RF", // এখানে তোমার আসল API টোকেন বসাও
+                            Authorization: "Bearer ${process.env.VYRO_API}",
                         },
                         responseType: "stream",
                     }
                 );
 
-                // প্রসেস করা ইমেজ ব্রাউজারে পাঠানো
+                
                 res.setHeader("Content-Type", "image/jpeg");
                 enhanceResponse.data.pipe(res);
             } catch (error) {
@@ -306,7 +307,7 @@ app.get("/imagine", async (req, res) => {
   const prompt = req.query.prompt;
   if (!prompt) return res.status(400).json({ error: "Prompt is required" });
 
-  res.setHeader("Content-Type", "image/png"); // স্ট্রিমিং আউটপুট টেক্সট হিসেবে পাঠানো
+  res.setHeader("Content-Type", "image/png"); 
 
   try {
     const form = new FormData();
@@ -321,14 +322,14 @@ app.get("/imagine", async (req, res) => {
       {
         headers: {
           ...form.getHeaders(),
-          Authorization: `Bearer vk-3tsIrXR52EVUtV3qFrVyRpBB0DKdd5K4QTgBkBucQVNa8u`,
+          Authorization: `Bearer ${process.env.VYRO_API}`,
         },
-        responseType: "stream", // স্ট্রিমিং মোড অন করুন
+        responseType: "stream", 
       }
     );
 
     response.data.on("data", (chunk) => {
-      res.write(chunk); // প্রতিটি অংশ আলাদাভাবে পাঠানো হবে
+      res.write(chunk); 
     });
 
     response.data.on("end", () => {
@@ -346,7 +347,7 @@ app.get("/imagine", async (req, res) => {
 
 const cors = require("cors");
 
-const YT_API_KEY = "AIzaSyAr5vEmnvwtmZmGODjCIZqmCGa9KXKEEdk"; // YouTube API Key from .env
+const YT_API_KEY = "AIzaSyAr5vEmnvwtmZmGODjCIZqmCGa9KXKEEdk";
 
 app.use(cors());
 
@@ -415,7 +416,7 @@ app.get("/cbg", async (req, res) => {
             {
                 headers: {
                     ...form.getHeaders(),
-                    Authorization: `Bearer vk-lepIIQ262uBDmPa6olnD0LG2uto1VwWEmJY0tkgNwB33RF`,
+                    Authorization: `Bearer ${process.env.VYRO_API}`,
                 },
                 responseType: "arraybuffer",
             }
