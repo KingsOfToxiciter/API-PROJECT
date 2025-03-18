@@ -596,7 +596,6 @@ app.get("/ultra", async (req, res) => {
 });
 
 
-const { BING_COOKIE } = require('./config');
 app.use(express.json());
 
 app.get('/bing', async (req, res) => {
