@@ -11,7 +11,8 @@
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "form-data": "^4.0.2",
-    "puppeteer": "^24.4.0"
+    "puppeteer": "^24.4.0",
+    "dotenv": "^16.4.7"
   },
   "author": "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎",
   "license": "ISC"
