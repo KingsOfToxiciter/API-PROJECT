@@ -51,7 +51,7 @@ app.get("/var", async (req, res) => {
 
     try {
         
-        const response = await axios.get(`http://www.arch2devs.ct.ws/api/weigen?prompt=${encodeURIComponent(prompt)}`, {
+        const response = await axios.get(`http://www.arch2devs.ct.ws/api/fluxaws?query=${encodeURIComponent(prompt)}`, {
             responseType: "stream",
         });
 
