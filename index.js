@@ -51,7 +51,7 @@ app.get("/var", async (req, res) => {
 
     try {
         
-        const response = await axios.get(`http://www.arch2devs.ct.ws/api/imgen?prompt=${encodeURIComponent(prompt)}`, {
+        const response = await axios.get(`http://www.arch2devs.ct.ws/api/sdxl?prompt=${encodeURIComponent(prompt)}`, {
             responseType: "stream",
         });
 
