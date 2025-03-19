@@ -624,6 +624,29 @@ app.get('/bing', async (req, res) => {
 
 
 
+app.get('/gen', async (req, res) => {
+    const { prompt } = req.query;
+    try {
+        const response = await axios.post(
+            'http://www.arch2devs.ct.ws/api/flux',
+            {
+                prompt: prompt,
+                steps: 2
+            },
+            {
+                headers: { 'Content-Type': 'application/json' },
+                responseType: 'stream'
+            }
+        );
+
+        res.setHeader('Content-Type', 'image/jpeg');
+        response.data.pipe(res);
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 
 app.listen(PORT, () => {
   console.log(`🔥 Hasan's API is running on port ${PORT}`);
