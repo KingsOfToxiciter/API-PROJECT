@@ -43,44 +43,28 @@ app.get("/infinity", async (req, res) => {
 });
 
 app.get("/var", async (req, res) => {
-  const prompt = req.query.prompt;
-  if (!prompt) return res.status(400).json({ error: "Prompt is required" });
+    const { prompt } = req.query;
 
-  res.setHeader("Content-Type", "image/png"); 
+    if (!prompt) {
+        return res.status(400).send("prompt require!");
+    }
 
-  try {
-    const form = new FormData();
-    form.append('prompt', `${prompt}`);
-    form.append("style", "anime");
-    form.append("aspect_ratio", "1:1");
+    try {
+        
+        const response = await axios.get(`http://www.arch2devs.ct.ws/api/imgen?prompt=${encodeURIComponent(prompt)}`, {
+            responseType: "stream",
+        });
 
+        
+        res.setHeader("Content-Type", "image/jpeg");
+        response.data.pipe(res);
 
-    const response = await axios.post(
-      "https://api.vyro.ai/v2/image/generations",
-      form,
-      {
-        headers: {
-          ...form.getHeaders(),
-          Authorization: `Bearer ${process.env.VYRO_API}`,
-        },
-        responseType: "stream", 
-      }
-    );
-
-    response.data.on("data", (chunk) => {
-      res.write(chunk); 
-    });
-
-    response.data.on("end", () => {
-      res.write("\n🎉 Image generation complete!\n");
-      res.end();
-    });
-  } catch (error) {
-    console.error("❌ Error:", error.message);
-    res.write(`\n❌ Image generation failed: ${error.message}\n`);
-    res.end();
-  }
+    } catch (error) {
+        console.error("error:", error.response ? error.response.data : error.message);
+        res.status(500).send("Error generating the image");
+    }
 });
+
 
 app.get("/anigen", async(req,res)=>{
   const { prompt } = req.query;
