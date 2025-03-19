@@ -674,6 +674,40 @@ app.get("/vit", async (req, res) => {
 
 
 
+app.get("/ai", async (req, res) => {
+    const { text } = req.query;
+    const model = req.query.model || "gpt-4o-mini";
+    if (!text) {
+        return res.status(400).json({
+            error: "Missing text to ask the ai"
+        })
+    }
+ 
+    try {
+        const response = await axios.post(
+            "http://www.arch2devs.ct.ws/api/v1/chat/completions",
+            {
+    model: model,
+    messages: [
+         {
+        role: "user",
+        content: text,
+                    },
+                ],
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 
 app.listen(PORT, () => {
   console.log(`🔥 Hasan's API is running on port ${PORT}`);
