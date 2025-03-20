@@ -831,6 +831,19 @@ app.get("/art", async (req, res) => {
 });
 
 
+app.get('/hentai', async (req, res) => {
+    const type = req.query.type;
+    try {
+        const response = await axios.get(`http://www.arch2devs.ct.ws/api/hentai?action=${type}`);
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({ error: 'API request failed' });
+    }
+});
+
+
+
+
 
 app.listen(PORT, () => {
   console.log(`🔥 HASAN'S APIS IS RUNNING`);
