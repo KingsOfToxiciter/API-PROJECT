@@ -797,7 +797,7 @@ app.get('/chat', async (req, res) => {
     const text = req.query.text;
     const id = req.query.id;
     try {
-        const response = await axios.get(`http://www.arch2devs.ct.ws/api/chat?content=${text}& conversationId=${id}`);
+        const response = await axios.get(`http://www.arch2devs.ct.ws/api/chat?content=${text}&conversationId=${id}`);
         res.json(response.data);
     } catch (error) {
         res.status(500).json({ error: 'Something went wrong', details: error.message });
