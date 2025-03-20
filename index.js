@@ -162,12 +162,12 @@ app.get("/upscale", async (req, res) => {
     }
 
     try {
-        // Arch2Devs API-তে অনুরোধ পাঠানো
+        
         const response = await axios.get(`http://www.arch2devs.ct.ws/api/upscale?url=${encodeURIComponent(imageUrl)}`, {
             responseType: "stream",
         });
 
-        // আপস্কেল করা ইমেজ ব্রাউজারে পাঠানো
+        
         res.setHeader("Content-Type", "image/jpeg");
         response.data.pipe(res);
 
@@ -178,31 +178,9 @@ app.get("/upscale", async (req, res) => {
 });
 
 
+
+
 app.get("/rbg", async (req, res) => {
-    const { imageUrl } = req.query;
-
-    if (!imageUrl) {
-        return res.status(400).send("Please provide an image URL!");
-    }
-
-    try {
-        
-        const response = await axios.get(`http://www.arch2devs.ct.ws/api/removebg?url=${encodeURIComponent(imageUrl)}`, {
-            responseType: "stream",
-        });
-
-        
-        res.setHeader("Content-Type", "image/jpeg");
-        response.data.pipe(res);
-
-    } catch (error) {
-        console.error("rbg error:", error.response ? error.response.data : error.message);
-        res.status(500).send("Error remove background for the image");
-    }
-});
-
-
-app.get("/removebg", async (req, res) => {
     const { imageUrl } = req.query; 
     if (!imageUrl) {
         return res.status(400).send("Please provide an image URL!");
