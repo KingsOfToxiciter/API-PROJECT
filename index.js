@@ -805,6 +805,29 @@ app.get('/chat', async (req, res) => {
 });
 
 
+
+app.get("/tts", async (req, res) => {
+    const prompt = req.query.prompt;
+    const voice = req.query.voice || "7-7-1";
+    try {
+        const response = await axios({
+            method: "GET",
+            url: `http://www.arch2devs.ct.ws/api/oddcast?text=${prompt}&voice=${voice}`,
+            responseType: "stream", 
+        });
+
+        
+        res.setHeader("Content-Type", "audio/mpeg");
+        res.setHeader("Transfer-Encoding", "chunked");
+
+        response.data.pipe(res);
+    } catch (error) {
+        res.status(500).send("Error: " + error.message);
+    }
+});
+
+
+
 app.listen(PORT, () => {
   console.log(`🔥 HASAN'S APIS IS RUNNING`);
 });
