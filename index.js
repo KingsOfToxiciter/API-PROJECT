@@ -787,11 +787,11 @@ app.get('/chat', async (req, res) => {
 
 app.get("/tts", async (req, res) => {
     const prompt = req.query.prompt;
-    const voice = req.query.voice || "7-7-1";
+    const voice = req.query.voice || "Ivy";
     try {
         const response = await axios({
             method: "GET",
-            url: `http://www.arch2devs.ct.ws/api/oddcast?text=${prompt}&voice=${voice}`,
+            url: `http://www.arch2devs.ct.ws/api/polly?text=${prompt}&voice=${voice}`,
             responseType: "stream", 
         });
 
