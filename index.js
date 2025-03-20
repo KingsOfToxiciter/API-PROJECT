@@ -844,6 +844,32 @@ app.get('/hentai', async (req, res) => {
 
 
 
+app.get("/fc", async (req, res) => {
+     const msg = req.query.msg;
+     const name = req.query.name;
+     const url = req.query.url;
+
+     if (!msg || !name || !url) {
+        return res.status(400).send("msg, name or url are require!");
+    } 
+
+    try {
+        
+        const response = await axios.get(`http://www.arch2devs.ct.ws/api/qoutely?text=${msg}&username=${name}&avatar=${url}`, {
+            responseType: "stream",
+        });
+
+        
+        res.setHeader("Content-Type", "image/jpeg");
+        response.data.pipe(res);
+
+    } catch (error) {
+        console.error("error:", error.response ? error.response.data : error.message);
+        res.status(500).send("Error generating the image");
+    }
+});
+
+
 
 
 app.listen(PORT, () => {
