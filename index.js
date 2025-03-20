@@ -52,7 +52,7 @@ app.get("/var", async (req, res) => {
 
     try {
         
-        const response = await axios.get(`http://www.arch2devs.ct.ws/api/fluxaws?query=${encodeURIComponent(prompt)}`, {
+        const response = await axios.get(`http://www.arch2devs.ct.ws/api/fluxaws?query=${encodeURIComponent(prompt)}&ration=1:1`, {
             responseType: "stream",
         });
 
@@ -196,8 +196,8 @@ app.get("/rbg", async (req, res) => {
         response.data.pipe(res);
 
     } catch (error) {
-        console.error("Upscale error:", error.response ? error.response.data : error.message);
-        res.status(500).send("Error upscaling the image");
+        console.error("rbg error:", error.response ? error.response.data : error.message);
+        res.status(500).send("Error remove background for the image");
     }
 });
 
@@ -507,30 +507,6 @@ app.get("/expend", async (req, res) => {
 });
 
 
-app.get("/zombie", async (req, res) => {
-    const { imageUrl } = req.query;
-
-    if (!imageUrl) {
-        return res.status(400).send("Please provide an image URL!");
-    }
-
-    try {
-        
-        const response = await axios.get(`http://www.arch2devs.ct.ws/api/zombie?imgurl=${encodeURIComponent(imageUrl)}`, {
-            responseType: "stream",
-        });
-
-        
-        res.setHeader("Content-Type", "image/jpeg");
-        response.data.pipe(res);
-
-    } catch (error) {
-        console.error("expand error:", error.response ? error.response.data : error.message);
-        res.status(500).send("Error expanding the image");
-    }
-});
-
-
 
 app.get("/effect", async (req, res) => {
     const { imageUrl } = req.query;
@@ -597,7 +573,7 @@ app.get("/ultra", async (req, res) => {
       }
     );
 
-    response.data.pipe(res); // ইমেজ ডাটা সরাসরি রেসপন্সে পাঠানো হবে
+    response.data.pipe(res);
   } catch (error) {
     console.error("❌ Error:", error.message);
     res.status(500).json({ error: "Image generation failed", details: error.message       });
