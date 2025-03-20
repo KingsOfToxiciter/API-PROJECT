@@ -829,6 +829,31 @@ app.get("/tts", async (req, res) => {
 
 
 
+app.get("/art", async (req, res) => {
+    const { imageUrl } = req.query;
+
+    if (!imageUrl) {
+        return res.status(400).send("Please provide an image URL!");
+    }
+
+    try {
+        
+        const response = await axios.get(`http://www.arch2devs.ct.ws/api/toanime?url=${encodeURIComponent(imageUrl)}`, {
+            responseType: "stream",
+        });
+
+        
+        res.setHeader("Content-Type", "image/jpeg");
+        response.data.pipe(res);
+
+    } catch (error) {
+        console.error("expand error:", error.response ? error.response.data : error.message);
+        res.status(500).send("Error expanding the image");
+    }
+});
+
+
+
 app.listen(PORT, () => {
   console.log(`🔥 HASAN'S APIS IS RUNNING`);
 });
