@@ -709,6 +709,42 @@ app.get("/ai", async (req, res) => {
 });
 
 
+
+app.get("/llma", async (req, res) => {
+    const { text } = req.query;
+
+
+    if (!text) {
+        return res.status(400).json({
+            error: "Missing text to ask the AI"
+        });
+    }
+
+    try {
+        const response = await axios.post(
+            "http://www.arch2devs.ct.ws/api/llama-70b",
+            {
+                messages: [
+                    {
+                        role: "user",
+                        content: text,
+                    },
+                ],
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
 app.listen(PORT, () => {
   console.log(`🔥 Hasan's API is running on port ${PORT}`);
 });
