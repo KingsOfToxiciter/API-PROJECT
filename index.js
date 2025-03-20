@@ -602,28 +602,46 @@ app.get('/bing', async (req, res) => {
 });
 
 
+app.get('/flux-dev', async (req, res) => {
+    let { prompt, steps } = req.query;
 
-app.get('/gen', async (req, res) => {
-    const { prompt } = req.query;
-    const { step } = req.query;
+   
+    if (!prompt) {
+        return res.status(400).json({ error: 'Prompt is required' });
+    }
+
+    
+    steps = parseInt(steps) || 2;
+
     try {
+        
         const response = await axios.post(
             'http://www.arch2devs.ct.ws/api/flux',
             {
                 prompt: prompt,
-                steps: step
+                width: 1440,
+                height: 1440,
+                steps: steps
             },
             {
                 headers: { 'Content-Type': 'application/json' },
-                responseType: 'stream'
+                responseType: 'stream', 
+                timeout: 15000 
             }
         );
 
+        
         res.setHeader('Content-Type', 'image/jpeg');
         response.data.pipe(res);
 
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        if (error.code === 'ECONNABORTED') {
+            res.status(504).json({ error: 'Request timed out. Try again later.' });
+        } else if (error.response) {
+            res.status(error.response.status).json({ error: error.response.statusText });
+        } else {
+            res.status(500).json({ error: 'Internal server error' });
+        }
     }
 });
 
