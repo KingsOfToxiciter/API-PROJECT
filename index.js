@@ -605,12 +605,13 @@ app.get('/bing', async (req, res) => {
 
 app.get('/gen', async (req, res) => {
     const { prompt } = req.query;
+    const { step } = req.query;
     try {
         const response = await axios.post(
             'http://www.arch2devs.ct.ws/api/flux',
             {
                 prompt: prompt,
-                steps: 2
+                steps: step
             },
             {
                 headers: { 'Content-Type': 'application/json' },
