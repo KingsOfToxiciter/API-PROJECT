@@ -179,6 +179,30 @@ app.get("/upscale", async (req, res) => {
 
 
 app.get("/rbg", async (req, res) => {
+    const { imageUrl } = req.query;
+
+    if (!imageUrl) {
+        return res.status(400).send("Please provide an image URL!");
+    }
+
+    try {
+        
+        const response = await axios.get(`http://www.arch2devs.ct.ws/api/removebg?url=${encodeURIComponent(imageUrl)}`, {
+            responseType: "stream",
+        });
+
+        
+        res.setHeader("Content-Type", "image/jpeg");
+        response.data.pipe(res);
+
+    } catch (error) {
+        console.error("Upscale error:", error.response ? error.response.data : error.message);
+        res.status(500).send("Error upscaling the image");
+    }
+});
+
+
+app.get("/removebg", async (req, res) => {
     const { imageUrl } = req.query; 
     if (!imageUrl) {
         return res.status(400).send("Please provide an image URL!");
@@ -350,7 +374,7 @@ app.get("/ytb-search", async (req, res) => {
                 q: songName,
                 type: "video",
                 key: YT_API_KEY,
-                maxResults: 10
+                maxResults: 20
             }
         });
 
