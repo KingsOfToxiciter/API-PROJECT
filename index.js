@@ -806,5 +806,5 @@ app.get('/chat', async (req, res) => {
 
 
 app.listen(PORT, () => {
-  console.log(`🔥 Hasan's API is running on port ${PORT}`);
+  console.log(`🔥 HASAN'S APIS IS RUNNING`);
 });
