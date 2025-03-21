@@ -12,6 +12,7 @@ const { BING_COOKIE } = require('./config');
 const app = express();
 const PORT = 3000;
 
+app.use(express.json());
 
 app.get("/infinity", async (req, res) => {
   const prompt = req.query.prompt;
@@ -925,7 +926,6 @@ app.get("/imgur", async (req, res) => {
         res.status(500).json({ error: "Upload failed", details: error.message });
     }
 });
-
 
 
 
