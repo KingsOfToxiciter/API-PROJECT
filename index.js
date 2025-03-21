@@ -877,7 +877,7 @@ app.get("/imgur", async (req, res) => {
             { headers: { Authorization: `Client-ID ${clientID}` } }
         );
 
-        res.json({ link: response.data.data.link });
+        res.json(response.data);
     } catch (error) {
         res.status(500).json({ error: "Upload failed", details: error.message });
     }
