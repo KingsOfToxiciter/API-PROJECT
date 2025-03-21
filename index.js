@@ -866,15 +866,15 @@ app.get('/alldl', async (req, res) => {
   }
 });
 
-app.use(express.json());
+
 app.get("/imgur", async (req, res) => {
     try {
         const { imageUrl } = req.query; 
-        const clientID = "da9c35e7d727e2d";
+        
 
         const response = await axios.post("https://api.imgur.com/3/image", 
             { image: imageUrl }, 
-            { headers: { Authorization: `Client-ID ${clientID}` } }
+            { headers: { Authorization: `Client-ID "da9c35e7d727e2d"` } }
         );
 
         res.json(response.data);
