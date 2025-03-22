@@ -867,25 +867,32 @@ app.get('/alldl', async (req, res) => {
 });
 
 
+
 app.get("/imgur", async (req, res) => {
     try {
-        const { imageUrl } = req.query; 
+        const { imageUrl } = req.query;
+
+        if (!imageUrl) {
+            return res.status(400).json({ error: "Please provide an image URL" });
+        }
+
         
-      if (!imageUrl) {
-          return res.status(400).json({ error: "please provide an image url" });
-}
+        const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
+        const imageBase64 = Buffer.from(response.data).toString("base64");
 
-    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
-
+        
         const formData = new FormData();
-        formData.append('image', Buffer.from(response.data, 'binary'), { filename: 'image.png' });
+        formData.append("image", imageBase64);
 
-        const hasan = await axios.post("https://api.imgur.com/3/image", 
-            { image: formData }, 
-            { headers: { Authorization: `Client-ID "da9c35e7d727e2d"` } }
-        );
+        
+        const imgurResponse = await axios.post("https://api.imgur.com/3/image", formData, {
+            headers: {
+                Authorization: "Client-ID da9c35e7d727e2d",
+                ...formData.getHeaders()
+            }
+        });
 
-        res.json(hasan.data);
+        res.json({ url: imgurResponse.data.data.link });
     } catch (error) {
         res.status(500).json({ error: "Upload failed", details: error.message });
     }
