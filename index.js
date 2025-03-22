@@ -867,9 +867,9 @@ app.get('/alldl', async (req, res) => {
 });
 
 
-app.get("/imgur", async (req, res) => {
+app.post("/imgur", async (req, res) => {
     try {
-        const { imageUrl } = req.query; 
+        const { imageUrl } = req.body; 
         
 
         const response = await axios.post("https://api.imgur.com/3/image", 
