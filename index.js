@@ -932,6 +932,25 @@ app.get('/imgbb', async (req, res) => {
 });
 
 
+app.get("/flag", async (req, res) => {
+    try {
+        const response = await axios.get("https://restcountries.com/v3.1/all");
+        const countries = response.data;
+
+        if (!countries || countries.length === 0) {
+            return res.status(500).json({ error: "No countries found" });
+        }
+
+        const randomCountry = countries[Math.floor(Math.random() * countries.length)];
+        res.json({ country: randomCountry.name.common, flag: randomCountry.flags.png });
+
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch country data" });
+    }
+});
+
+
+
 
 app.listen(PORT, () => {
   console.log(`🔥 HASAN'S APIS IS RUNNING`);
