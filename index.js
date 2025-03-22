@@ -867,22 +867,62 @@ app.get('/alldl', async (req, res) => {
 });
 
 
-app.post("/imgur", async (req, res) => {
+app.get("/imgur", async (req, res) => {
     try {
-        const { imageUrl } = req.body; 
+        const { imageUrl } = req.query; 
         
+      if (!imageUrl) {
+          return res.status(400).json({ error: "please provide an image url" });
+}
 
-        const response = await axios.post("https://api.imgur.com/3/image", 
-            { image: imageUrl }, 
+    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+
+        const formData = new FormData();
+        formData.append('image', Buffer.from(response.data, 'binary'), { filename: 'image.png' });
+
+        const hasan = await axios.post("https://api.imgur.com/3/image", 
+            { image: formData }, 
             { headers: { Authorization: `Client-ID "da9c35e7d727e2d"` } }
         );
 
-        res.json(response.data);
+        res.json(hasan.data);
     } catch (error) {
         res.status(500).json({ error: "Upload failed", details: error.message });
     }
 });
 
+
+
+const imgbbApiKey = "1b4d99fa0c3195efe42ceb62670f2a25";
+
+app.use(express.json());
+
+
+app.get('/imgbb', async (req, res) => {
+    const { imageUrl } = req.query;
+
+    if (!imageUrl) {
+        return res.status(400).json({ error: "Please provide an image URL." });
+    }
+
+    try {
+        const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+
+        const formData = new FormData();
+        formData.append('image', Buffer.from(response.data, 'binary'), { filename: 'image.png' });
+
+        const imgbbResponse = await axios.post('https://api.imgbb.com/1/upload', formData, {
+            headers: formData.getHeaders(),
+            params: { key: imgbbApiKey }
+        });
+
+        return res.json({ imageUrl: imgbbResponse.data.data.url });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Failed to upload image to imgbb." });
+    }
+});
 
 
 
