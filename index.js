@@ -180,6 +180,7 @@ app.get("/upscale", async (req, res) => {
 
 app.get("/rbg", async (req, res) => {
     const { imageUrl } = req.query; 
+
     if (!imageUrl) {
         return res.status(400).send("Please provide an image URL!");
     }
@@ -187,7 +188,7 @@ app.get("/rbg", async (req, res) => {
     const imagePath = path.join(DOWNLOAD_FOLDER, "input.jpg");
 
     try {
-        
+      
         const response = await axios.get(imageUrl, { responseType: "stream" });
         const writer = fs.createWriteStream(imagePath);
 
@@ -198,27 +199,31 @@ app.get("/rbg", async (req, res) => {
 
             
             const form = new FormData();
-            form.append("image", fs.createReadStream(imagePath));
+            form.append("size", "auto");
+            form.append("image_file", fs.createReadStream(imagePath));
 
             try {
+                
                 const enhanceResponse = await axios.post(
-                    "https://api.vyro.ai/v2/image/background/remover",
+                    "https://api.remove.bg/v1.0/removebg",
                     form,
                     {
                         headers: {
                             ...form.getHeaders(),
-                            Authorization: "Bearer ${process.env.VYRO_API}",
+                            "X-Api-Key": "6Sbc6WfMGv5ENhmmVhVzG6RS",
                         },
                         responseType: "stream",
                     }
                 );
 
-                
-                res.setHeader("Content-Type", "image/jpeg");
+             
+                res.setHeader("Content-Type", "image/png");
+
+              
                 enhanceResponse.data.pipe(res);
             } catch (error) {
-                console.error("Enhance error:", error);
-                res.status(500).send("Error enhancing the image");
+                console.error("Remove.bg error:", error);
+                res.status(500).send("Error removing the background");
             }
         });
 
