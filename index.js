@@ -977,6 +977,32 @@ app.get("/flag", async (req, res) => {
 
 
 
+
+const FONTS_FILE = path.join(__dirname, 'font.json');
+
+function loadFonts() {
+  return JSON.parse(fs.readFileSync(FONTS_FILE, 'utf8'));
+}
+
+app.get('/font', (req, res) => {
+  const { text, fontId } = req.query;
+  const fonts = loadFonts();
+  const font = fonts.find(f => f.id === fontId);
+
+  if (!font) {
+    return res.status(404).json({ error: 'Font ID not found' });
+  }
+
+  const convertedText = text
+    .toLowerCase()
+    .split('')
+    .map(char => font.font[char] || char) 
+    .join('');
+
+  res.json({ text: convertedText });
+});
+
+
 app.listen(PORT, () => {
   console.log(`🔥 HASAN'S APIS IS RUNNING`);
 });
