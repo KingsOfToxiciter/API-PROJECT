@@ -994,6 +994,14 @@ app.get('/font/list', (req, res) => {
 });
 
 
+function getCapitalVariant(fontData) {
+  const capitalFont = {};
+  for (const [key, value] of Object.entries(fontData.font)) {
+    capitalFont[key.toUpperCase()] = value;
+  }
+  return capitalFont;
+}
+
 app.get('/font', (req, res) => {
   const { text, fontId } = req.query;
   const fonts = loadFonts();
@@ -1003,13 +1011,22 @@ app.get('/font', (req, res) => {
     return res.status(404).json({ error: 'Font ID not found' });
   }
 
+  
+  const fullFontMap = {
+    ...font.font,
+    ...getCapitalVariant(font)
+  };
+
   const convertedText = text
-    .toLowerCase()
     .split('')
-    .map(char => font.font[char] || char) 
+    .map(char => fullFontMap[char] || char)
     .join('');
 
-  res.json({ text: convertedText });
+  res.json({ 
+    originalText: text,
+    fontId: fontId,
+    convertedText: convertedText
+  });
 });
 
 
