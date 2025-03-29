@@ -984,6 +984,16 @@ function loadFonts() {
   return JSON.parse(fs.readFileSync(FONTS_FILE, 'utf8'));
 }
 
+app.get('/font/list', (req, res) => {
+  const fonts = loadFonts();
+  const fontList = fonts.map(font => ({
+    id: font.id,
+    example: font.example
+  }));
+  res.json(fontList);
+});
+
+
 app.get('/font', (req, res) => {
   const { text, fontId } = req.query;
   const fonts = loadFonts();
