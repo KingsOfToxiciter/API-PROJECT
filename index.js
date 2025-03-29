@@ -154,27 +154,16 @@ app.get("/enhance", async (req, res) => {
 
 app.get("/upscale", async (req, res) => {
     const { imageUrl } = req.query;
-
-    if (!imageUrl) {
-        return res.status(400).send("Please provide an image URL!");
-    }
+    if (!imageUrl) return res.status(400).json({ error: "Please provide an image URL!" });
 
     try {
+        const { data } = await axios.get(`https://rest-nyx-apis.onrender.com/api/4k?imageUrl=${encodeURIComponent(imageUrl)}`);
         
-        const response = await axios.get(`http://www.arch2devs.ct.ws/api/upscale?url=${encodeURIComponent(imageUrl)}`, {
-            responseType: "stream",
-        });
-
-        
-        res.setHeader("Content-Type", "image/jpeg");
-        response.data.pipe(res);
-
+        res.json({ image: data.output })
     } catch (error) {
-        console.error("Upscale error:", error.response ? error.response.data : error.message);
-        res.status(500).send("Error upscaling the image");
+        res.status(500).json({ error: "Error upscaling the image" });
     }
 });
-
 
 
 
