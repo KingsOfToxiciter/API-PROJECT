@@ -280,6 +280,31 @@ app.get("/flux", async(req,res)=>{
 });
 
 
+app.get("/fluxpro", async(req,res)=>{
+  const { prompt } = req.query;
+        try {
+            const response = await axios.post(
+                "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell",
+              
+                { "inputs": prompt },
+                {
+                    headers: {
+                        Authorization: "Bearer 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",
+                        "Content-Type": "application/json",
+                    },
+                    responseType: 'stream',
+                }
+            );
+
+        res.setHeader('Content-Type', 'image/png');
+        response.data.pipe(res)
+    } catch (error) {
+          console.log("imagine error",error)
+        res.status(500).send('Error processing the request');
+        }
+});
+
+
 
 
 app.get("/imagine", async (req, res) => {
