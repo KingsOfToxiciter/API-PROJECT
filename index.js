@@ -40,7 +40,7 @@ app.get("/infinity", async (req, res) => {
       responseType: "stream",
     });
 
-    response.data.pipe(res); // ইমেজ ডাটা সরাসরি পাঠান
+    response.data.pipe(res);
   } catch (error) {
     console.error("❌ Error:", error.message);
     res.status(500).json({ error: "Image generation failed", details: error.message });
@@ -76,12 +76,12 @@ app.get("/anigen", async(req,res)=>{
         try {
             const response = await axios.post(
                 "https://api-inference.huggingface.co/models/brushpenbob/flux-midjourney-anime",
-              //your api url
+              
                 { "inputs": prompt },
-              //payload body for request data
+              
                 {
                     headers: {
-                        Authorization: "Bearer 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",
+                        Authorization: "Bearer ${process.env.HG_API}",
                         "Content-Type": "application/json",
                     },
                     responseType: 'stream',
@@ -239,12 +239,12 @@ app.get("/midjourney", async(req,res)=>{
         try {
             const response = await axios.post(
                 "https://api-inference.huggingface.co/models/Keltezaa/midjourney-v6-1-meets-flux-sdxl",
-              //your api url
+             
                 { "inputs": prompt },
-              //payload body for request data
+             
                 {
                     headers: {
-                        Authorization: "Bearer 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",
+                        Authorization: "Bearer ${process.env.HG_API}",
                         "Content-Type": "application/json",
                     },
                     responseType: 'stream',
@@ -265,12 +265,12 @@ app.get("/flux", async(req,res)=>{
         try {
             const response = await axios.post(
                 "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev",
-              //your api url
+              
                 { "inputs": prompt },
-              //payload body for request data
+              
                 {
                     headers: {
-                        Authorization: "Bearer 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",
+                        Authorization: "Bearer ${process.env.HG_API}",
                         "Content-Type": "application/json",
                     },
                     responseType: 'stream',
@@ -295,7 +295,7 @@ app.get("/fluxpro", async(req,res)=>{
                 { "inputs": prompt },
                 {
                     headers: {
-                        Authorization: "Bearer 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",
+                        Authorization: "Bearer ${process.env.HG_API}",
                         "Content-Type": "application/json",
                     },
                     responseType: 'stream',
