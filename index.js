@@ -1011,24 +1011,27 @@ app.get('/font', (req, res) => {
     return res.status(404).json({ error: 'Font ID not found' });
   }
 
-  
   const fullFontMap = {
     ...font.font,
     ...getCapitalVariant(font)
   };
 
-  const convertedText = text
+  
+  let convertedText = text
     .split('')
     .map(char => fullFontMap[char] || char)
     .join('');
 
+ 
+  const prefix = font.font._prefix || '';
+  const suffix = font.font._suffix || '';
+  convertedText = `${prefix}${convertedText}${suffix}`;
+
   res.json({ 
-    originalText: text,
-    fontId: fontId,
-    convertedText: convertedText
+    text: text,
+    font: convertedText
   });
 });
-
 
 app.listen(PORT, () => {
   console.log(`🔥 HASAN'S APIS IS RUNNING`);
