@@ -6,6 +6,10 @@ const fs = require("fs");
 const path = require("path");
 const util = require("util");
 
+const apis = process.env.HG_API.split(',').map(key => key.trim());
+
+const apiKey = apis[Math.floor(Math.random() * apis.length)];
+
 
 const app = express();
 const PORT = 3000;
@@ -81,7 +85,7 @@ app.get("/anigen", async(req,res)=>{
               
                 {
                     headers: {
-                        Authorization: `Bearer ${process.env.HG_API}`,
+                        Authorization: `Bearer ${apiKey}`,
                         "Content-Type": "application/json",
                     },
                     responseType: 'stream',
@@ -244,7 +248,7 @@ app.get("/midjourney", async(req,res)=>{
              
                 {
                     headers: {
-                        Authorization: `Bearer ${process.env.HG_API}`,
+                        Authorization: `Bearer ${apiKey}`,
                         "Content-Type": "application/json",
                     },
                     responseType: 'stream',
@@ -270,7 +274,7 @@ app.get("/flux", async(req,res)=>{
               
                 {
                     headers: {
-                        Authorization: `Bearer ${process.env.HG_API}`,
+                        Authorization: `Bearer ${apiKey}`,
                         "Content-Type": "application/json",
                     },
                     responseType: 'stream',
@@ -295,7 +299,7 @@ app.get("/fluxpro", async(req,res)=>{
                 { "inputs": prompt },
                 {
                     headers: {
-                        Authorization: `Bearer ${process.env.HG_API}`,
+                        Authorization: `Bearer ${apiKey}`,
                         "Content-Type": "application/json",
                     },
                     responseType: 'stream',
@@ -536,7 +540,7 @@ app.get("/effect", async (req, res) => {
 
 
 
-const API_KEYS = [
+const ultraApi = [
   "sk-cHihos8KV0KCJSvLlcaml5azkN3SdXuq4TA6DBmOylANHlUo",
 "sk-7tZTTPRMUk7x7Jo0SfSRQOvAITYWswXw7MRrGKv9zJX7qLhA",
 "sk-2TtHsl6lyu2qb9UiKYwTTavEo7iHV7vR4l8Op9mMRjz5X0hR",
@@ -546,7 +550,7 @@ const API_KEYS = [
 "sk-sMauynUU1EjMcEby72W80QHYMZvMloeRWW8Ki3vAvQb4daG5"
 ];
 
-      let apiKey = API_KEYS[Math.floor(Math.random() * API_KEYS.length)];
+      let randomUltraApi = ultraApi[Math.floor(Math.random() * ultraApi.length)];
 
 app.get("/ultra", async (req, res) => {
   const prompt = req.query.prompt;
@@ -567,7 +571,7 @@ app.get("/ultra", async (req, res) => {
       {
         headers: {
           ...form.getHeaders(),
-          Authorization: `Bearer ${apiKey}`, 
+          Authorization: `Bearer ${randomUltraApi}`, 
           Accept: "image/*",
         },
         responseType: "stream",
