@@ -81,7 +81,7 @@ app.get("/anigen", async(req,res)=>{
               
                 {
                     headers: {
-                        Authorization: "Bearer ${process.env.HG_API}",
+                        Authorization: `Bearer ${process.env.HG_API}`,
                         "Content-Type": "application/json",
                     },
                     responseType: 'stream',
@@ -132,7 +132,7 @@ app.get("/enhance", async (req, res) => {
                     {
                         headers: {
                             ...form.getHeaders(),
-                            Authorization: "Bearer ${process.env.VYRO_API}", 
+                            Authorization: `Bearer ${process.env.VYRO_API}`, 
                         },
                         responseType: "stream",
                     }
@@ -244,7 +244,7 @@ app.get("/midjourney", async(req,res)=>{
              
                 {
                     headers: {
-                        Authorization: "Bearer ${process.env.HG_API}",
+                        Authorization: `Bearer ${process.env.HG_API}`,
                         "Content-Type": "application/json",
                     },
                     responseType: 'stream',
@@ -270,7 +270,7 @@ app.get("/flux", async(req,res)=>{
               
                 {
                     headers: {
-                        Authorization: "Bearer ${process.env.HG_API}",
+                        Authorization: `Bearer ${process.env.HG_API}`,
                         "Content-Type": "application/json",
                     },
                     responseType: 'stream',
@@ -295,7 +295,7 @@ app.get("/fluxpro", async(req,res)=>{
                 { "inputs": prompt },
                 {
                     headers: {
-                        Authorization: "Bearer ${process.env.HG_API}",
+                        Authorization: `Bearer ${process.env.HG_API}`,
                         "Content-Type": "application/json",
                     },
                     responseType: 'stream',
