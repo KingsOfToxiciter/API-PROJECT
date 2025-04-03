@@ -10,6 +10,9 @@ const apis = process.env.HG_API.split(',').map(key => key.trim());
 
 const apiKey = apis[Math.floor(Math.random() * apis.length)];
 
+const ultraApi = process.env.ST_API.split(',').map(key => key.trim());
+
+const randomUltraApi = ultraApi[Math.floor(Math.random() * ultraApi.length)];
 
 const app = express();
 const PORT = 3000;
@@ -537,20 +540,6 @@ app.get("/effect", async (req, res) => {
     }
 });
 
-
-
-
-const ultraApi = [
-  "sk-cHihos8KV0KCJSvLlcaml5azkN3SdXuq4TA6DBmOylANHlUo",
-"sk-7tZTTPRMUk7x7Jo0SfSRQOvAITYWswXw7MRrGKv9zJX7qLhA",
-"sk-2TtHsl6lyu2qb9UiKYwTTavEo7iHV7vR4l8Op9mMRjz5X0hR",
-"sk-t65wMeQw90K1IGUIIeyMs9B4HpG1UvqLP8gPeZ6irNldIvvS",
-"sk-y4sDPSyI7NNQ8mq47KiakbWzfNVtmeUOr8fgU5MG35jEGoHz",
-"sk-GlRBuow1xk8eWkLps4ViTeIypGXzLbnBmCPl8jQuzuE36aZU",
-"sk-sMauynUU1EjMcEby72W80QHYMZvMloeRWW8Ki3vAvQb4daG5"
-];
-
-      let randomUltraApi = ultraApi[Math.floor(Math.random() * ultraApi.length)];
 
 app.get("/ultra", async (req, res) => {
   const prompt = req.query.prompt;
