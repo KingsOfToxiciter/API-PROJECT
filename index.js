@@ -1085,6 +1085,98 @@ app.get("/xnxx-search", async (req, res) => {
 });
 
 
+app.get("/x-title", async (req, res) => {
+  const query = req.query;
+  if (!query) {                                                           return res.status(400).json({ error: "Missing search query" });
+  }
+
+  try {
+    const url = `https://www.xnxx.tv/search/${encodeURIComponent(query)}`;
+    const { data } = await axios.get(url, { headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+    } });
+    const $ = cheerio.load(data);
+
+    let titles = [];
+
+    $('div.thumb-under p a').each((i, element) => {
+    const title = $(element).attr('title');
+    if (title) {
+      titles.push(title);
+    }
+  });
+
+    res.json(titles);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch results", details: error.message });
+  }
+});
+
+
+app.get("/x-url", async (req, res) => {
+  const query = req.query;
+  if (!query) {
+    return res.status(400).json({ error: "Missing search query" });
+  }
+
+  try {
+    const url = `https://www.xnxx.tv/search/${encodeURIComponent(query)}`;
+    const { data } = await axios.get(url, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+      },
+    });
+
+    const $ = cheerio.load(data);
+    let links = [];
+
+    $(".mozaique .thumb").each((i, el) => {
+      const href = $(el).find("a").attr("href");
+
+      if (href) {
+        const videoUrl = "https://www.xnxx.tv" + href;
+        links.push(videoUrl);
+      }
+    });
+
+    res.json(links);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to fetch results", details: error.message });
+  }
+});
+
+app.get("/x-search", async (req, res) => {
+  const query = req.query;
+  if (!query) {                                                           return res.status(400).json({ error: "Missing search query" });
+  }
+  
+  let results = [];
+
+  try {
+    const url = `https://hasan-all-apis.onrender.com/x-url?query=${encodeURIComponent(query)}`;
+    const url2 = `https://hasan-all-apis.onrender.com/x-title?query=${encodeURIComponent(query)}`;
+    const { data } = await axios.get(url, { headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+    } });
+    const hasan = await axios.get(url2);
+    const toxic = hasan.data;
+    
+    if (data && toxic) {
+      results.push({ x_url: data, title: toxic});
+    }
+    
+
+    res.json(results);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch results", details: error.message });
+  }
+});
+
+
+
 app.listen(PORT, () => {
   console.log(`🔥 HASAN'S APIS IS RUNNING`);
 });
