@@ -1077,8 +1077,8 @@ app.get("/xnxx-search", async (req, res) => {
         links.push(videoUrl);
       }
     });
-
-    res.json({ xnxx: links });
+     const hasan = links.map(x => ({ x_url: x }));
+    res.json(hasan);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch results", details: error.message });
   }
