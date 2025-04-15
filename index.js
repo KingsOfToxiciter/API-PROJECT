@@ -5,6 +5,7 @@ const FormData = require("form-data");
 const fs = require("fs");
 const path = require("path");
 const util = require("util");
+const cheerio = require("cheerio");
 
 const apis = process.env.HG_API.split(',').map(key => key.trim());
 
@@ -1055,6 +1056,33 @@ app.get("/ghibli", async(req,res)=>{
 });
 
 
+app.get("/xnxx-search", async (req, res) => {
+  const query = req.query;
+  if (!query) {
+    return res.status(400).json({ error: "Missing search query" });
+  }
+
+  try {
+    const url = `https://www.xnxx.tv/search/${encodeURIComponent(query)}`;
+    const { data } = await axios.get(url, { headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+    } });
+    const $ = cheerio.load(data);
+
+    let links = [];
+
+    $(".mozaique .thumb").each((i, el) => {
+      const videoUrl = "https://www.xnxx.tv" + $(el).find("a").attr("href");
+      if (videoUrl) {
+        links.push(videoUrl);
+      }
+    });
+
+    res.json({ xnxx: links });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch results", details: error.message });
+  }
+});
 
 
 app.listen(PORT, () => {
