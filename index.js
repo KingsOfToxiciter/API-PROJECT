@@ -1056,14 +1056,14 @@ app.get("/ghibli", async(req,res)=>{
 });
 
 
-app.get("/xnxx-search", async (req, res) => {
-  const query = req.query;
-  if (!query) {
+app.get("/x-search", async (req, res) => {
+  const q = req.query.q;
+  if (!q) {
     return res.status(400).json({ error: "Missing search query" });
   }
 
   try {
-    const url = `https://www.xnxx.tv/search/${encodeURIComponent(query)}`;
+    const url = `https://www.xnxx.tv/search/${encodeURIComponent(q)}`;
     const { data } = await axios.get(url, { headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
     } });
