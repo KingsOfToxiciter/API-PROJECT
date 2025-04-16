@@ -1071,11 +1071,12 @@ app.get("/x-search", async (req, res) => {
 
     let links = [];
 
-    $(".mozaique .thumb").each((i, el) => {
-      const hasan = $(el).find("a").attr("href");
-      const videoUrl = "https://www.xnxx.tv" + hasan;
-      if (videoUrl && hasan) {
-        links.push({ x_url: videoUrl, title: hasan });
+    $('div.thumb-under p a').each((i, element) => {
+      const title = $(element).attr('title');
+      const href = $(element).attr('href');
+      const videoUrl = "https://www.xnxx.tv" + href;
+      if (videoUrl && title) {
+        links.push({ x_url: videoUrl, title: title });
       }
     });
     
