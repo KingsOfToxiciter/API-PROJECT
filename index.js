@@ -8,13 +8,15 @@ const util = require("util");
 const cheerio = require("cheerio");
 const mongoose = require('mongoose');
 const Link = require('./models/Link');
+const DOWNLOAD_FOLDER = path.join(__dirname, "downloads");
+
+if (!fs.existsSync(DOWNLOAD_FOLDER)) {
+    fs.mkdirSync(DOWNLOAD_FOLDER);
+};
 
 const apis = process.env.HG_API.split(',').map(key => key.trim());
-
 const apiKey = apis[Math.floor(Math.random() * apis.length)];
-
 const ultraApi = process.env.ST_API.split(',').map(key => key.trim());
-
 const randomUltraApi = ultraApi[Math.floor(Math.random() * ultraApi.length)];
 
 const app = express();
@@ -106,11 +108,7 @@ app.get("/anigen", async(req,res)=>{
         }
 });
 
-const DOWNLOAD_FOLDER = path.join(__dirname, "downloads");
 
-if (!fs.existsSync(DOWNLOAD_FOLDER)) {
-    fs.mkdirSync(DOWNLOAD_FOLDER);
-}
 
 app.get("/enhance", async (req, res) => {
     const { imageUrl } = req.query;
@@ -169,11 +167,6 @@ app.get("/enhance", async (req, res) => {
 
 
 const CLIP_UPS_KEY = process.env.UPS_API; 
-
-
-if (!fs.existsSync(DOWNLOAD_FOLDER)) {
-    fs.mkdirSync(DOWNLOAD_FOLDER);
-}
 
 app.get("/upscale", async (req, res) => {
     const { imageUrl } = req.query;
@@ -1141,12 +1134,6 @@ app.get("/x-search", async (req, res) => {
 
 
 const CLIP_KEY = 'c51c545798086e4e0b92fb0b1720d41db16333aeaeaf15b1af12d5d82ec10ea6a20523d7b4c9622ef78a74e239150a34'; 
-
-
-if (!fs.existsSync(DOWNLOAD_FOLDER)) {
-    fs.mkdirSync(DOWNLOAD_FOLDER);
-}
-
 app.get("/expends", async (req, res) => {
     const { imageUrl } = req.query;
     const seed = req.query.seed || "2";
