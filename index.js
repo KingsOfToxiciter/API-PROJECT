@@ -1207,12 +1207,12 @@ app.get('/save-album', async (req, res) => {
   const newLink = new Link({ category, link });
   await newLink.save();
 
-  res.status(201).json({ message: 'Link saved successfully' });
+  res.status(201).json({ message: `✅ Successfully saved the video to ${category} category` });
 });
 
 
 app.get('/album', async (req, res) => {
-  const { category } = req.query;
+  const category = req.query.category || "funny";
 
   const links = await Link.find({ category });
 
