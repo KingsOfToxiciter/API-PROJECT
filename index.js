@@ -166,16 +166,65 @@ app.get("/enhance", async (req, res) => {
 });
 
 
+const CLIP_UPS_KEY = process.env.UPS_API; 
+
+
+if (!fs.existsSync(DOWNLOAD_FOLDER)) {
+    fs.mkdirSync(DOWNLOAD_FOLDER);
+}
+
 app.get("/upscale", async (req, res) => {
     const { imageUrl } = req.query;
-    if (!imageUrl) return res.status(400).json({ error: "Please provide an image URL!" });
+    const 
+
+    if (!imageUrl) {
+        return res.status(400).send("Please provide an image URL!");
+    }
+
+    const imagePath = path.join(DOWNLOAD_FOLDER, "input.jpg");
 
     try {
-        const { data } = await axios.get(`https://rest-nyx-apis.onrender.com/api/4k?imageUrl=${encodeURIComponent(imageUrl)}`);
-        
-        res.json({ image: data.output })
+        const response = await axios.get(imageUrl, { responseType: "stream" });
+        const writer = fs.createWriteStream(imagePath);
+
+        response.data.pipe(writer);
+
+        writer.on("finish", async () => {
+            console.log("Image downloaded successfully:", imagePath);
+
+            const form = new FormData();
+            form.append("image_file", fs.createReadStream(imagePath));
+            form.append("target_width", "1080");
+            form.append("target_height", "1080");
+
+            try {
+                const clipdropResponse = await axios.post(
+                    "https://clipdrop-api.co/image-upscaling/v1/upscale",
+                    form,
+                    {
+                        headers: {
+                            ...form.getHeaders(),
+                            "x-api-key": CLIP_UPS_KEY,
+                        },
+                        responseType: "stream",
+                    }
+                );
+
+                res.setHeader("Content-Type", "image/png");
+                clipdropResponse.data.pipe(res);
+            } catch (error) {
+                console.error("ClipDrop error:", error.response?.data || error.message);
+                res.status(500).send("Error processing the image with ClipDrop API");
+            }
+        });
+
+        writer.on("error", (err) => {
+            console.error("Download error:", err);
+            res.status(500).send("Error downloading the image");
+        });
     } catch (error) {
-        res.status(500).json({ error: "Error upscaling the image" });
+        console.error("Fetch error:", error.message);
+        res.status(500).send("Error fetching the image from the URL");
     }
 });
 
