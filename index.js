@@ -1089,6 +1089,73 @@ app.get("/x-search", async (req, res) => {
 
 
 
+const CLIP_KEY = 'c51c545798086e4e0b92fb0b1720d41db16333aeaeaf15b1af12d5d82ec10ea6a20523d7b4c9622ef78a74e239150a34'; 
+
+
+if (!fs.existsSync(DOWNLOAD_FOLDER)) {
+    fs.mkdirSync(DOWNLOAD_FOLDER);
+}
+
+app.get("/expends", async (req, res) => {
+    const { imageUrl } = req.query;
+    const seed = req.query.seed || "2";
+
+    if (!imageUrl) {
+        return res.status(400).send("Please provide an image URL!");
+    }
+
+    const imagePath = path.join(DOWNLOAD_FOLDER, "input.jpg");
+
+    try {
+        const response = await axios.get(imageUrl, { responseType: "stream" });
+        const writer = fs.createWriteStream(imagePath);
+
+        response.data.pipe(writer);
+
+        writer.on("finish", async () => {
+            console.log("Image downloaded successfully:", imagePath);
+
+            const form = new FormData();
+            form.append("image_file", fs.createReadStream(imagePath));
+form.append("extend_left", "130");
+form.append("extend_right", "130");
+form.append("extend_up", "130");
+form.append("extend_down", "130");
+form.append("seed", seed);
+
+            try {
+                const clipdropResponse = await axios.post(
+                    "https://clipdrop-api.co/uncrop/v1",
+                    form,
+                    {
+                        headers: {
+                            ...form.getHeaders(),
+                            "x-api-key": CLIP_KEY,
+                        },
+                        responseType: "stream",
+                    }
+                );
+
+                res.setHeader("Content-Type", "image/png");
+                clipdropResponse.data.pipe(res);
+            } catch (error) {
+                console.error("ClipDrop error:", error.response?.data || error.message);
+                res.status(500).send("Error processing the image with ClipDrop API");
+            }
+        });
+
+        writer.on("error", (err) => {
+            console.error("Download error:", err);
+            res.status(500).send("Error downloading the image");
+        });
+    } catch (error) {
+        console.error("Fetch error:", error.message);
+        res.status(500).send("Error fetching the image from the URL");
+    }
+});
+
+
+
 
 
 app.listen(PORT, () => {
