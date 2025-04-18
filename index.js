@@ -6,6 +6,8 @@ const fs = require("fs");
 const path = require("path");
 const util = require("util");
 const cheerio = require("cheerio");
+const mongoose = require('mongoose');
+const Link = require('./models/Link');
 
 const apis = process.env.HG_API.split(',').map(key => key.trim());
 
@@ -1204,7 +1206,40 @@ form.append("seed", seed);
 });
 
 
+mongoose.connect('mongodb+srv://toxiciter:Hasan5&7@toxiciter.9tkfu.mongodb.net/ALBUM?retryWrites=true&w=majority&appName=Toxiciter', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => console.log("MongoDB Connected"))
+  .catch((err) => console.error(err));
+                                                                      
+app.get('/save-album', async (req, res) => {
+  const { category, link } = req.query;
+  if (!category || !link) {
+    return res.status(400).json({ message: 'category and link are required' });
+  }
 
+  const newLink = new Link({ category, link });
+  await newLink.save();
+
+  res.status(201).json({ message: 'Link saved successfully' });
+});
+
+
+app.get('/album', async (req, res) => {
+  const { category } = req.query;
+
+  const links = await Link.find({ category });
+
+  if (links.length === 0) {
+    return res.status(404).json({ message: 'No links found in this category' });
+  }
+
+  const categories = await Link.distinct('category');
+
+  const randomLink = links[Math.floor(Math.random() * links.length)];
+
+  res.json({ link: randomLink.link, category: categories });
+});
 
 
 app.listen(PORT, () => {
