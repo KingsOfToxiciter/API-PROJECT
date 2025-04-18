@@ -170,7 +170,6 @@ const CLIP_UPS_KEY = process.env.UPS_API;
 
 app.get("/upscale", async (req, res) => {
     const { imageUrl } = req.query;
-    const 
 
     if (!imageUrl) {
         return res.status(400).send("Please provide an image URL!");
