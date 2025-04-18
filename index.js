@@ -1224,7 +1224,7 @@ app.get('/album', async (req, res) => {
 
   const randomLink = links[Math.floor(Math.random() * links.length)];
 
-  res.json({ link: randomLink.link, category: categories, url: links });
+  res.json({ all: links, category: categories, video: randomLink, link: randomLink.link  });
 });
 
 
