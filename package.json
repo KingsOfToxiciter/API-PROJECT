@@ -12,7 +12,8 @@
     "express": "^4.21.2",
     "form-data": "^4.0.2",
     "dotenv": "^16.4.7",
-    "cheerio": "^1.0.0"
+    "cheerio": "^1.0.0",
+    "mongoose": "^8.13.2"
   },
   "author": "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎",
   "license": "ISC"
