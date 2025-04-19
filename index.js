@@ -5,6 +5,7 @@ const FormData = require("form-data");
 const fs = require("fs");
 const path = require("path");
 const util = require("util");
+const imageOf = require("image-size");
 const cheerio = require("cheerio");
 const mongoose = require('mongoose');
 const Link = require('./models/Link');
@@ -186,10 +187,14 @@ app.get("/upscale", async (req, res) => {
         writer.on("finish", async () => {
             console.log("Image downloaded successfully:", imagePath);
 
+            const dimensions = imageOf(imagePath);
+            const width = dimensions.width.toString();
+            const height = dimensions.height.toString();
+            
             const form = new FormData();
             form.append("image_file", fs.createReadStream(imagePath));
-            form.append("target_width", "1080");
-            form.append("target_height", "1080");
+            form.append("target_width", width);
+            form.append("target_height", height);
 
             try {
                 const clipdropResponse = await axios.post(
