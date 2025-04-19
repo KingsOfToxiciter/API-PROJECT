@@ -1208,6 +1208,14 @@ app.get('/save-album', async (req, res) => {
   if (!category || !link) {
     return res.status(400).json({ message: 'category and link are required' });
   }
+    const categoryList = [
+  "funny", "romantic", "lofi", "sad", "horny", "football", "anime", "cricket",
+  "flowers", "islamic", "cartoon", "couple", "random", "sigma", "asthetic",
+  "girls", "friends", "free fire", "18+", "lyrics", "photos", "cat", "meme", "caption"
+];  
+       if (!categoryList.includes(category)) {
+           return res.status(501).json({ message: "❌ Invalid category!\n\nAvailable:\n" + categoryList.map((c, i) => `${i + 1}. ${c}`).join("\n") });
+       }
 
   const newLink = new Link({ category, link });
   await newLink.save();
@@ -1218,18 +1226,18 @@ app.get('/save-album', async (req, res) => {
 
 app.get('/album', async (req, res) => {
   const category = req.query.category || "funny";
-
+  
   const links = await Link.find({ category });
 
   if (links.length === 0) {
     return res.status(404).json({ message: 'No links found in this category' });
   }
-
+  const videoCount = links.length;
   const categories = await Link.distinct('category');
 
   const randomLink = links[Math.floor(Math.random() * links.length)];
 
-  res.json({ all: links, category: categories, video: randomLink, link: randomLink.link  });
+  res.json({ all: links, category: categories, video: randomLink, link: randomLink.link, videoCount: videoCount  });
 });
 
 
