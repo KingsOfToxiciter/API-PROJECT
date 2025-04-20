@@ -1225,7 +1225,7 @@ app.get('/album/upload', async (req, res) => {
 
 
 app.get('/album', async (req, res) => {
-  const category = req.query.category || "funny";
+  const category = req.query.category;
   
   const links = await Link.find({ category });
 
