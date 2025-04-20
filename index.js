@@ -1208,6 +1208,9 @@ app.get('/album/upload', async (req, res) => {
   if (!category || !link) {
     return res.status(400).json({ message: 'category and link are required' });
   }
+    const result = await Link.find({ category });
+    const specificCategoryVideoCount = result.length;
+    const count = await Link.countDocuments({});
     const categoryList = [
   "funny", "romantic", "lofi", "sad", "horny", "football", "anime", "cricket",
   "flowers", "islamic", "cartoon", "couple", "random", "sigma", "asthetic",
@@ -1220,7 +1223,7 @@ app.get('/album/upload', async (req, res) => {
   const newLink = new Link({ category, link });
   await newLink.save();
 
-  res.status(201).json({ message: `✅ Successfully saved the video to ${category} category` });
+  res.status(201).json({ message: `✅ Successfully saved the video to ${category} category.\n🔖 Total videos: ${count}\n🎓 Videos on this category: ${specificCategoryVideoCount}` });
 });
 
 
