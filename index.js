@@ -1203,7 +1203,7 @@ mongoose.connect('mongodb+srv://toxiciter:Hasan5&7@toxiciter.9tkfu.mongodb.net/A
 }).then(() => console.log("MongoDB Connected"))
   .catch((err) => console.error(err));
                                                                       
-app.get('/save-album', async (req, res) => {
+app.get('/album/upload', async (req, res) => {
   const { category, link } = req.query;
   if (!category || !link) {
     return res.status(400).json({ message: 'category and link are required' });
@@ -1233,14 +1233,24 @@ app.get('/album', async (req, res) => {
     return res.status(404).json({ message: 'No links found in this category' });
   }
   const videoCount = links.length;
-  const categories = await Link.distinct('category');
-
   const randomLink = links[Math.floor(Math.random() * links.length)];
 
-  res.json({ all: links, category: categories, video: randomLink, link: randomLink.link, videoCount: videoCount  });
+  res.json({ all: links, video: randomLink, videoCount: videoCount  });
 });
 
-
+app.get("/album", async (req, res) => {
+    const categoryList = req.query.categoryList;
+    const categories = [
+  "funny", "romantic", "lofi", "sad", "horny", "football", "anime", "cricket",
+  "flowers", "islamic", "cartoon", "couple", "random", "sigma", "asthetic",
+  "girls", "friends", "free fire", "18+", "lyrics", "photos", "cat", "meme", "caption"
+];
+    const available = await Link.distinct('category');
+    const count = await Link.countDocuments({});
+    if (categoryList === "hasan") {
+        return res.status(200).json({ category: categories, availableCategory: available, totalVideos: count });
+    }
+});
 
 app.listen(PORT, () => {
   console.log(`🔥 HASAN'S APIS IS RUNNING`);
