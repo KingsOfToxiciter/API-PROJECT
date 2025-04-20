@@ -193,8 +193,8 @@ app.get("/upscale", async (req, res) => {
             
             const form = new FormData();
             form.append("image_file", fs.createReadStream(imagePath));
-            form.append("target_width", width);
-            form.append("target_height", height);
+            form.append("target_width", "1080");
+            form.append("target_height", "1080");
 
             try {
                 const clipdropResponse = await axios.post(
@@ -1159,10 +1159,10 @@ app.get("/expends", async (req, res) => {
 
             const form = new FormData();
             form.append("image_file", fs.createReadStream(imagePath));
-form.append("extend_left", "130");
-form.append("extend_right", "130");
-form.append("extend_up", "130");
-form.append("extend_down", "130");
+form.append("extend_left", "200");
+form.append("extend_right", "200");
+form.append("extend_up", "200");
+form.append("extend_down", "200");
 form.append("seed", seed);
 
             try {
