@@ -1238,7 +1238,7 @@ app.get('/album', async (req, res) => {
   res.json({ all: links, video: randomLink, videoCount: videoCount  });
 });
 
-app.get("/album", async (req, res) => {
+app.get("/album/list", async (req, res) => {
     const categoryList = req.query.categoryList;
     const categories = [
   "funny", "romantic", "lofi", "sad", "horny", "football", "anime", "cricket",
