@@ -667,39 +667,21 @@ app.get('/alldl', async (req, res) => {
 });
 
 
-
 app.get("/imgur", async (req, res) => {
     try {
-        const { imageUrl } = req.query;
+        const { url } = req.query;
+        const clientID = "da9c35e7d727e2d";
 
-        if (!imageUrl) {
-            return res.status(400).json({ error: "Please provide an image URL" });
-        }
+        const response = await axios.post("https://api.imgur.com/3/image",
+            { image: url },
+            { headers: { Authorization: `Client-ID ${clientID}` } }
+        );
 
-        
-        const response = await axios.get(imageUrl, { responseType: "arraybuffer", headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-        } });
-        const imageBase64 = Buffer.from(response.data).toString("base64");
-
-        
-        const formData = new FormData();
-        formData.append("image", imageBase64);
-
-        
-        const imgurResponse = await axios.post("https://api.imgur.com/3/image", formData, {
-            headers: {
-                Authorization: "Client-ID da9c35e7d727e2d",
-                ...formData.getHeaders()
-            }
-        });
-
-        res.json({ url: imgurResponse.data.data.link });
+        res.json({ author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎", data: response.data });
     } catch (error) {
         res.status(500).json({ error: "Upload failed", details: error.message });
     }
 });
-
 
 
 const imgbbApiKey = "1b4d99fa0c3195efe42ceb62670f2a25";
