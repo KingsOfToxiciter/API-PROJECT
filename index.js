@@ -948,7 +948,7 @@ app.get('/album/upload', async (req, res) => {
     const categoryList = [
   "funny", "romantic", "lofi", "sad", "horny", "football", "anime", "cricket",
   "flowers", "islamic", "cartoon", "couple", "random", "sigma", "asthetic",
-  "girls", "friends", "free fire", "18+", "lyrics", "photos", "cat", "meme", "caption"
+  "girls", "friends", "free fire", "18+", "lyrics", "photos", "cat", "meme", "caption", "july 2024"
 ];  
        if (!categoryList.includes(category)) {
            return res.status(501).json({ message: "❌ Invalid category!\n\nAvailable:\n" + categoryList.map((c, i) => `${i + 1}. ${c}`).join("\n") });
@@ -980,7 +980,7 @@ app.get("/album/list", async (req, res) => {
     const categories = [
   "funny", "romantic", "lofi", "sad", "horny", "football", "anime", "cricket",
   "flowers", "islamic", "cartoon", "couple", "random", "sigma", "asthetic",
-  "girls", "friends", "free fire", "18+", "lyrics", "photos", "cat", "meme", "caption"
+  "girls", "friends", "free fire", "18+", "lyrics", "photos", "cat", "meme", "caption", "july 2024"
 ];
     const available = await Link.distinct('category');
     const count = await Link.countDocuments({});
