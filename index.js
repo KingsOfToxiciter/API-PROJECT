@@ -25,9 +25,8 @@ const PORT = 3000;
 
 
 app.get('/', (req, res) => {
-  res.send('𝑯𝒂𝒔𝒂𝒏 𝒂𝒍𝒍 𝒂𝒑𝒊𝒔 𝒂𝒓𝒆 𝒓𝒖𝒏𝒏𝒊𝒏𝒈 😙💥');
+  res.sendFile(path.join(__dirname, 'profile.html'));
 });
-
 
 
 app.get("/infinity", async (req, res) => {
