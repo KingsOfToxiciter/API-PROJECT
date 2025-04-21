@@ -988,6 +988,47 @@ app.get("/album/list", async (req, res) => {
     }
 });
 
+
+app.get('/bing-search', async (req, res) => {
+    const search = req.query.search;
+    const limit = req.query.limit || "10";
+    if (!search) {
+        return res.status(400).json({ error: "Please provide a search query using ?query=..." });
+    }
+
+    const url = `https://www.bing.com/images/search?q=${encodeURIComponent(search)}&form=QBIL`;
+
+    try {
+        const { data } = await axios.get(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0'
+            }
+        });
+
+        const $ = cheerio.load(data);
+        const imageUrls = [];
+
+        $('a.iusc').each((i, el) => {
+            const meta = $(el).attr('m');
+            if (meta) {
+                try {
+                    const json = JSON.parse(meta);
+                    if (json && json.murl) {
+                        imageUrls.push(json.murl);
+                    }
+                } catch (e) {}
+            }
+        });
+             const imgUrl = imageUrls.slice(0, limit);
+             const count = imgUrl.length;
+        res.json({ search, count: count, results: imgUrl });
+    } catch (err) {
+        res.status(500).json({ error: "Scraping failed", details: err.message });
+    }
+});
+
+
+
 app.listen(PORT, () => {
   console.log(`🔥 HASAN'S APIS IS RUNNING`);
 });
