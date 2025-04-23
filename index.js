@@ -446,11 +446,6 @@ app.get("/ytb-search", async (req, res) => {
 
 
 
-
-if (!fs.existsSync(DOWNLOAD_FOLDER)) {
-    fs.mkdirSync(DOWNLOAD_FOLDER);
-}
-
 app.get("/cbg", async (req, res) => {
     const { imageUrl, prompt } = req.query;
 
@@ -802,7 +797,7 @@ app.get("/ghibli", async(req,res)=>{
                 { "inputs": prompt },
                 {
                     headers: {
-                        Authorization: `Bearer ${apiKey}`,
+                        Authorization: `Bearer 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`,
                         "Content-Type": "application/json",
                     },
                     responseType: 'stream',
