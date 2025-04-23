@@ -5,7 +5,6 @@ const FormData = require("form-data");
 const fs = require("fs");
 const path = require("path");
 const util = require("util");
-const imageOf = require("image-size");
 const cheerio = require("cheerio");
 const mongoose = require('mongoose');
 const Link = require('./models/Link');
