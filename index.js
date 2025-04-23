@@ -797,7 +797,7 @@ app.get("/ghibli", async(req,res)=>{
                 { "inputs": prompt },
                 {
                     headers: {
-                        Authorization: `Bearer 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`,
+                        Authorization: `Bearer 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`,
                         "Content-Type": "application/json",
                     },
                     responseType: 'stream',
