@@ -797,7 +797,7 @@ app.get("/ghibli", async(req,res)=>{
   const { prompt } = req.query;
         try {
             const response = await axios.post(
-                "https://api-inference.huggingface.co/models/strangerzonehf/Flux-Ghibli-Art-LoRA",
+                "https://api-inference.huggingface.co/models/openfree/flux-chatgpt-ghibli-lora",
 
                 { "inputs": prompt },
                 {
