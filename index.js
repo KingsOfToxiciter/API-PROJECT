@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
 });
 
 
-app.get("/infinity", async (req, res) => {
+app.get("/api/infinity", async (req, res) => {
   const prompt = req.query.prompt;
   const model = req.query.model || "realistic";
   const ratio = req.query.ratio || "1:1";
@@ -61,7 +61,7 @@ app.get("/infinity", async (req, res) => {
   }
 });
 
-app.get("/var", async (req, res) => {
+app.get("/api/var", async (req, res) => {
     const { prompt } = req.query;
 
     if (!prompt) {
@@ -86,7 +86,7 @@ app.get("/var", async (req, res) => {
 
 
 
-app.get("/enhance", async (req, res) => {
+app.get("/api/enhance", async (req, res) => {
     const { imageUrl } = req.query;
 
     if (!imageUrl) {
@@ -144,7 +144,7 @@ app.get("/enhance", async (req, res) => {
 
 const CLIP_UPS_KEY = process.env.UPS_API; 
 
-app.get("/upscale", async (req, res) => {
+app.get("/api/upscale", async (req, res) => {
     const { imageUrl } = req.query;
 
     if (!imageUrl) {
@@ -200,7 +200,7 @@ app.get("/upscale", async (req, res) => {
 
 
 
-app.get("/rbg", async (req, res) => {
+app.get("/api/rbg", async (req, res) => {
     const { imageUrl } = req.query; 
 
     if (!imageUrl) {
@@ -261,7 +261,7 @@ app.get("/rbg", async (req, res) => {
 
 
 
-app.get("/flux", async(req,res)=>{
+app.get("/api/flux", async(req,res)=>{
   const { prompt } = req.query;
         try {
             const response = await axios.post(
@@ -289,7 +289,7 @@ app.get("/flux", async(req,res)=>{
 
 
 
-app.get("/imagine", async (req, res) => {
+app.get("/api/imagine", async (req, res) => {
   const prompt = req.query.prompt;
   if (!prompt) return res.status(400).json({ error: "Prompt is required" });
 
@@ -332,7 +332,7 @@ app.get("/imagine", async (req, res) => {
 
 const YT_API_KEY = "AIzaSyAr5vEmnvwtmZmGODjCIZqmCGa9KXKEEdk";
 
-app.get("/ytb-search", async (req, res) => {
+app.get("/api/ytb-search", async (req, res) => {
     const songName = req.query.songName;
     
     if (!songName) {
@@ -367,7 +367,7 @@ app.get("/ytb-search", async (req, res) => {
 
 
 
-app.get("/cbg", async (req, res) => {
+app.get("/api/cbg", async (req, res) => {
     const { imageUrl, prompt } = req.query;
 
     if (!imageUrl || !prompt) {
@@ -414,7 +414,7 @@ const loadQuizData = () => {
     return JSON.parse(data);
 };
 
-app.get("/quiz", (req, res) => {
+app.get("/api/quiz", (req, res) => {
     const category = req.query.category || "general";
     const quizzes = loadQuizData();
     const filteredQuizzes = quizzes.filter(q => q.category === category);
@@ -424,7 +424,7 @@ app.get("/quiz", (req, res) => {
     res.json(quiz);
 });
 
-app.get("/quiz/check", (req, res) => {
+app.get("/api/quiz/check", (req, res) => {
     const id = req.query.id;
     const answer = req.query.answer;
 
@@ -448,7 +448,7 @@ app.get("/quiz/check", (req, res) => {
     });
 });
 
-app.get("/expend", async (req, res) => {
+app.get("/api/expend", async (req, res) => {
     const { imageUrl } = req.query;
     const { ratio } = req.query;
 
@@ -474,7 +474,7 @@ app.get("/expend", async (req, res) => {
 
 
 
-app.get("/effect", async (req, res) => {
+app.get("/api/effect", async (req, res) => {
     const { imageUrl } = req.query;
     const { effect } = req.query;
 
@@ -499,7 +499,7 @@ app.get("/effect", async (req, res) => {
 });
 
 
-app.get("/ultra", async (req, res) => {
+app.get("/api/ultra", async (req, res) => {
   const prompt = req.query.prompt;
   const output_format = req.query.format || "webp";
 
@@ -533,7 +533,7 @@ app.get("/ultra", async (req, res) => {
 });
 
 
-app.get("/fc", async (req, res) => {
+app.get("/api/fc", async (req, res) => {
      const msg = req.query.msg;
      const name = req.query.name;
      const url = req.query.url;
@@ -560,7 +560,7 @@ app.get("/fc", async (req, res) => {
 
 
 
-app.get('/alldl', async (req, res) => {
+app.get('/api/alldl', async (req, res) => {
   try {
     const { url } = req.query;
 
@@ -581,7 +581,7 @@ app.get('/alldl', async (req, res) => {
 });
 
 
-app.get("/imgur", async (req, res) => {
+app.get("/api/imgur", async (req, res) => {
     try {
         const { url } = req.query;
         const clientID = "da9c35e7d727e2d";
@@ -598,7 +598,7 @@ app.get("/imgur", async (req, res) => {
 });
 
 
-app.get('/imgbb', async (req, res) => {
+app.get('/api/imgbb', async (req, res) => {
     const { imageUrl } = req.query;
 
     if (!imageUrl) {
@@ -625,7 +625,7 @@ app.get('/imgbb', async (req, res) => {
 });
 
 
-app.get("/flag", async (req, res) => {
+app.get("/api/flag", async (req, res) => {
     try {
         const response = await axios.get("https://restcountries.com/v3.1/all");
         const countries = response.data;
@@ -652,7 +652,7 @@ function loadFonts() {
   return JSON.parse(fs.readFileSync(FONTS_FILE, 'utf8'));
 }
 
-app.get('/font/list', (req, res) => {
+app.get('/api/font/list', (req, res) => {
   const fonts = loadFonts();
   const fontList = fonts.map(font => ({
     id: font.id,
@@ -670,7 +670,7 @@ function getCapitalVariant(fontData) {
   return capitalFont;
 }
 
-app.get('/font', (req, res) => {
+app.get('/api/font', (req, res) => {
   const { text, fontId } = req.query;
   const fonts = loadFonts();
   const font = fonts.find(f => f.id === fontId);
@@ -702,7 +702,7 @@ app.get('/font', (req, res) => {
 });
 
 
-app.get("/x-search", async (req, res) => {
+app.get("/api/x-search", async (req, res) => {
   const q = req.query.q;
   if (!q) {
     return res.status(400).json({ error: "Missing search query" });
@@ -736,7 +736,7 @@ app.get("/x-search", async (req, res) => {
 
 
 const CLIP_KEY = 'c51c545798086e4e0b92fb0b1720d41db16333aeaeaf15b1af12d5d82ec10ea6a20523d7b4c9622ef78a74e239150a34'; 
-app.get("/expends", async (req, res) => {
+app.get("/api/expends", async (req, res) => {
     const { imageUrl } = req.query;
     const seed = req.query.seed || "2";
 
@@ -801,7 +801,7 @@ mongoose.connect('mongodb+srv://toxiciter:Hasan5&7@toxiciter.9tkfu.mongodb.net/A
 }).then(() => console.log("MongoDB Connected"))
   .catch((err) => console.error(err));
                                                                       
-app.get('/album/upload', async (req, res) => {
+app.get('/api/album/upload', async (req, res) => {
   const { category, link } = req.query;
   if (!category || !link) {
     return res.status(400).json({ message: 'category and link are required' });
@@ -825,7 +825,7 @@ app.get('/album/upload', async (req, res) => {
 });
 
 
-app.get('/album', async (req, res) => {
+app.get('/api/album', async (req, res) => {
   const category = req.query.category;
   
   const links = await Link.find({ category });
@@ -839,7 +839,7 @@ app.get('/album', async (req, res) => {
   res.json({ all: links, video: randomLink, videoCount: videoCount  });
 });
 
-app.get("/album/list", async (req, res) => {
+app.get("/api/album/list", async (req, res) => {
     const categoryList = req.query.categoryList;
     const categories = [
   "funny", "romantic", "lofi", "sad", "horny", "football", "anime", "cricket",
@@ -854,7 +854,7 @@ app.get("/album/list", async (req, res) => {
 });
 
 
-app.get('/bing-search', async (req, res) => {
+app.get('/api/bing-search', async (req, res) => {
     const search = req.query.search;
     const limit = req.query.limit || "10";
     if (!search) {
