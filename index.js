@@ -6,6 +6,7 @@ const fs = require("fs");
 const path = require("path");
 const util = require("util");
 const cheerio = require("cheerio");
+const cors = require("cors");
 const mongoose = require('mongoose');
 const Link = require('./models/Link');
 const DOWNLOAD_FOLDER = path.join(__dirname, "downloads");
@@ -21,6 +22,8 @@ const randomUltraApi = ultraApi[Math.floor(Math.random() * ultraApi.length)];
 
 const app = express();
 const PORT = 3000;
+app.use(cors());
+app.use(express.json());
 
 
 app.get('/', (req, res) => {
@@ -79,32 +82,6 @@ app.get("/var", async (req, res) => {
         console.error("error:", error.response ? error.response.data : error.message);
         res.status(500).send("Error generating the image");
     }
-});
-
-
-app.get("/anigen", async(req,res)=>{
-  const { prompt } = req.query;
-        try {
-            const response = await axios.post(
-                "https://api-inference.huggingface.co/models/brushpenbob/flux-midjourney-anime",
-              
-                { "inputs": prompt },
-              
-                {
-                    headers: {
-                        Authorization: `Bearer ${apiKey}`,
-                        "Content-Type": "application/json",
-                    },
-                    responseType: 'stream',
-                }
-            );
-
-        res.setHeader('Content-Type', 'image/png');
-        response.data.pipe(res)
-    } catch (error) {
-          console.log("imagine error",error)
-        res.status(500).send('Error processing the request');
-        }
 });
 
 
@@ -284,32 +261,6 @@ app.get("/rbg", async (req, res) => {
 
 
 
-app.get("/midjourney", async(req,res)=>{
-  const { prompt } = req.query;
-        try {
-            const response = await axios.post(
-                "https://api-inference.huggingface.co/models/Keltezaa/midjourney-v6-1-meets-flux-sdxl",
-             
-                { "inputs": prompt },
-             
-                {
-                    headers: {
-                        Authorization: `Bearer ${apiKey}`,
-                        "Content-Type": "application/json",
-                    },
-                    responseType: 'stream',
-                }
-            );
-
-        res.setHeader('Content-Type', 'image/png');
-        response.data.pipe(res)
-    } catch (error) {
-          console.log("imagine error",error)
-        res.status(500).send('Error processing the request');
-        }
-});
-
-
 app.get("/flux", async(req,res)=>{
   const { prompt } = req.query;
         try {
@@ -318,31 +269,6 @@ app.get("/flux", async(req,res)=>{
               
                 { "inputs": prompt },
               
-                {
-                    headers: {
-                        Authorization: `Bearer ${apiKey}`,
-                        "Content-Type": "application/json",
-                    },
-                    responseType: 'stream',
-                }
-            );
-
-        res.setHeader('Content-Type', 'image/png');
-        response.data.pipe(res)
-    } catch (error) {
-          console.log("imagine error",error)
-        res.status(500).send('Error processing the request');
-        }
-});
-
-
-app.get("/fluxpro", async(req,res)=>{
-  const { prompt } = req.query;
-        try {
-            const response = await axios.post(
-                "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell",
-              
-                { "inputs": prompt },
                 {
                     headers: {
                         Authorization: `Bearer ${apiKey}`,
@@ -404,12 +330,7 @@ app.get("/imagine", async (req, res) => {
 });
 
 
-
-const cors = require("cors");
-
 const YT_API_KEY = "AIzaSyAr5vEmnvwtmZmGODjCIZqmCGa9KXKEEdk";
-
-app.use(cors());
 
 app.get("/ytb-search", async (req, res) => {
     const songName = req.query.songName;
@@ -492,7 +413,6 @@ const loadQuizData = () => {
     const data = fs.readFileSync("quiz.json");
     return JSON.parse(data);
 };
-
 
 app.get("/quiz", (req, res) => {
     const category = req.query.category || "general";
@@ -678,11 +598,6 @@ app.get("/imgur", async (req, res) => {
 });
 
 
-const imgbbApiKey = "1b4d99fa0c3195efe42ceb62670f2a25";
-
-app.use(express.json());
-
-
 app.get('/imgbb', async (req, res) => {
     const { imageUrl } = req.query;
 
@@ -698,7 +613,7 @@ app.get('/imgbb', async (req, res) => {
 
         const imgbbResponse = await axios.post('https://api.imgbb.com/1/upload', formData, {
             headers: formData.getHeaders(),
-            params: { key: imgbbApiKey }
+            params: { key: "1b4d99fa0c3195efe42ceb62670f2a25" }
         });
 
         return res.json({ imageUrl: imgbbResponse.data.data.url });
@@ -784,32 +699,6 @@ app.get('/font', (req, res) => {
     text: text,
     font: convertedText
   });
-});
-
-
-
-app.get("/ghibli", async(req,res)=>{
-  const { prompt } = req.query;
-        try {
-            const response = await axios.post(
-                "https://api-inference.huggingface.co/models/openfree/flux-chatgpt-ghibli-lora",
-
-                { "inputs": prompt },
-                {
-                    headers: {
-                        Authorization: `Bearer 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`,
-                        "Content-Type": "application/json",
-                    },
-                    responseType: 'stream',
-                }
-            );
-
-        res.setHeader('Content-Type', 'image/png');
-        response.data.pipe(res)
-    } catch (error) {
-          console.log("imagine error",error)
-        res.status(500).send('Error processing the request');
-        }
 });
 
 
@@ -1006,5 +895,5 @@ app.get('/bing-search', async (req, res) => {
 
 
 app.listen(PORT, () => {
-  console.log(`🔥 HASAN'S APIS IS RUNNING`);
+  console.log(`🔥`);
 });
