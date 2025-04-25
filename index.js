@@ -893,6 +893,32 @@ app.get('/api/bing-search', async (req, res) => {
 });
 
 
+app.get("/docs", (req, res) => {
+  const routes = [];
+
+  app._router.stack.forEach((middleware) => {
+    if (middleware.route) {
+      // Normal route
+      const method = Object.keys(middleware.route.methods)[0].toUpperCase();
+      routes.push({ method, path: middleware.route.path });
+    } else if (middleware.name === 'router') {
+      // Nested routes (like with express.Router)
+      middleware.handle.stack.forEach((handler) => {
+        const route = handler.route;
+        if (route) {
+          const method = Object.keys(route.methods)[0].toUpperCase();
+          routes.push({ method, path: route.path });
+        }
+      });
+    }
+  });
+
+  res.json(routes);
+});
+
+
+
+
 
 app.listen(PORT, () => {
   console.log(`🔥`);
