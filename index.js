@@ -45,6 +45,12 @@ app.get('/', (req, res) => {
 });
 
 
+app.get("/apis", (req, res) => {
+    const { data } = await axios.get("https://raw.githubusercontent.com/KingsOfToxiciter/APIS/refs/heads/main/toxicitieslordhasan.json");
+    res.json(data);
+});
+
+
 app.get("/api/infinity", async (req, res) => {
   const prompt = req.query.prompt;
   const model = req.query.model || "realistic";
