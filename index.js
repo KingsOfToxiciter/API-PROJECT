@@ -45,7 +45,7 @@ app.get('/', (req, res) => {
 });
 
 
-app.get("/apis", (req, res) => {
+app.get("/apis", async (req, res) => {
     const { data } = await axios.get("https://raw.githubusercontent.com/KingsOfToxiciter/APIS/refs/heads/main/toxicitieslordhasan.json");
     res.json(data);
 });
