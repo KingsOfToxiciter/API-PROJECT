@@ -898,16 +898,25 @@ app.get("/docs", (req, res) => {
 
   app._router.stack.forEach((middleware) => {
     if (middleware.route) {
-      // Normal route
-      const method = Object.keys(middleware.route.methods)[0].toUpperCase();
-      routes.push({ method, path: middleware.route.path });
+      const route = middleware.route;
+      const method = Object.keys(route.methods).map(m => m.toUpperCase());
+      const queryParams = getQueryParams(route.stack);
+      routes.push({
+        endpoint: route.path,
+        method,
+        queryParams
+      });
     } else if (middleware.name === 'router') {
-      // Nested routes (like with express.Router)
       middleware.handle.stack.forEach((handler) => {
         const route = handler.route;
         if (route) {
-          const method = Object.keys(route.methods)[0].toUpperCase();
-          routes.push({ method, path: route.path });
+          const method = Object.keys(route.methods).map(m => m.toUpperCase());
+          const queryParams = getQueryParams(route.stack);
+          routes.push({
+            endpoint: route.path,
+            method,
+            queryParams
+          });
         }
       });
     }
@@ -915,6 +924,13 @@ app.get("/docs", (req, res) => {
 
   res.json(routes);
 });
+
+function getQueryParams(stack) {
+  const fnStr = stack?.[0]?.handle?.toString() || "";
+  const match = fnStr.match(/req\.query\.(\w+)/g);
+  if (!match) return [];
+  return [...new Set(match.map(q => q.split('.')[2]))];
+}
 
 
 
