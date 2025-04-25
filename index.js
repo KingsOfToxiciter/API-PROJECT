@@ -26,6 +26,20 @@ app.use(cors());
 app.use(express.json());
 
 
+async function downloadFromUrl(url, path) {
+  const response = await axios.get(url, { responseType: 'stream', headers: {
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+  } });
+  const writer = fs.createWriteStream(path);
+  response.data.pipe(writer);
+
+  return new Promise((resolve, reject) => {
+    writer.on('finish', resolve);
+    writer.on('error', reject);
+  });
+};
+
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'profile.html'));
 });
@@ -94,19 +108,10 @@ app.get("/api/enhance", async (req, res) => {
     }
 
     const imagePath = path.join(DOWNLOAD_FOLDER, "input.jpg");
+    await downloadFromUrl(imageUrl, imagePath);
 
     try {
-       
-        const response = await axios.get(imageUrl, { responseType: "stream" });
-        const writer = fs.createWriteStream(imagePath);
-
-        response.data.pipe(writer);
-
-        writer.on("finish", async () => {
-            console.log("Image downloaded successfully:", imagePath);
-
-            
-            const form = new FormData();
+        const form = new FormData();
             form.append("image", fs.createReadStream(imagePath));
 
             try {
@@ -129,12 +134,7 @@ app.get("/api/enhance", async (req, res) => {
                 console.error("Enhance error:", error);
                 res.status(500).send("Error enhancing the image");
             }
-        });
 
-        writer.on("error", (err) => {
-            console.error("Download error:", err);
-            res.status(500).send("Error downloading the image");
-        });
     } catch (error) {
         console.error("Download request error:", error);
         res.status(500).send("Error fetching the image from the URL");
@@ -152,17 +152,10 @@ app.get("/api/upscale", async (req, res) => {
     }
 
     const imagePath = path.join(DOWNLOAD_FOLDER, "input.jpg");
+    await downloadFromUrl(imageUrl, imagePath);
 
     try {
-        const response = await axios.get(imageUrl, { responseType: "stream" });
-        const writer = fs.createWriteStream(imagePath);
-
-        response.data.pipe(writer);
-
-        writer.on("finish", async () => {
-            console.log("Image downloaded successfully:", imagePath);
-            
-            const form = new FormData();
+        const form = new FormData();
             form.append("image_file", fs.createReadStream(imagePath));
             form.append("target_width", "1080");
             form.append("target_height", "1080");
@@ -186,12 +179,7 @@ app.get("/api/upscale", async (req, res) => {
                 console.error("ClipDrop error:", error.response?.data || error.message);
                 res.status(500).send("Error processing the image with ClipDrop API");
             }
-        });
 
-        writer.on("error", (err) => {
-            console.error("Download error:", err);
-            res.status(500).send("Error downloading the image");
-        });
     } catch (error) {
         console.error("Fetch error:", error.message);
         res.status(500).send("Error fetching the image from the URL");
@@ -208,19 +196,11 @@ app.get("/api/rbg", async (req, res) => {
     }
 
     const imagePath = path.join(DOWNLOAD_FOLDER, "input.jpg");
+    await downloadFromUrl(imageUrl, imagePath);
 
     try {
       
-        const response = await axios.get(imageUrl, { responseType: "stream" });
-        const writer = fs.createWriteStream(imagePath);
-
-        response.data.pipe(writer);
-
-        writer.on("finish", async () => {
-            console.log("Image downloaded successfully:", imagePath);
-
-            
-            const form = new FormData();
+         const form = new FormData();
             form.append("size", "auto");
             form.append("image_file", fs.createReadStream(imagePath));
 
@@ -247,12 +227,6 @@ app.get("/api/rbg", async (req, res) => {
                 console.error("Remove.bg error:", error);
                 res.status(500).send("Error removing the background");
             }
-        });
-
-        writer.on("error", (err) => {
-            console.error("Download error:", err);
-            res.status(500).send("Error downloading the image");
-        });
     } catch (error) {
         console.error("Download request error:", error);
         res.status(500).send("Error fetching the image from the URL");
@@ -375,13 +349,9 @@ app.get("/api/cbg", async (req, res) => {
     }
 
     const imagePath = path.join(DOWNLOAD_FOLDER, "input.jpg");
+    await downloadFromUrl(imageUrl, imagePath);
 
     try {
-        const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
-        await util.promisify(fs.writeFile)(imagePath, response.data);
-
-        console.log("Image downloaded successfully:", imagePath);
-
         const form = new FormData();
         form.append("image", fs.createReadStream(imagePath));
         form.append("prompt", prompt);
@@ -745,17 +715,10 @@ app.get("/api/expends", async (req, res) => {
     }
 
     const imagePath = path.join(DOWNLOAD_FOLDER, "input.jpg");
+    await downloadFromUrl(imageUrl, imagePath);
 
     try {
-        const response = await axios.get(imageUrl, { responseType: "stream" });
-        const writer = fs.createWriteStream(imagePath);
-
-        response.data.pipe(writer);
-
-        writer.on("finish", async () => {
-            console.log("Image downloaded successfully:", imagePath);
-
-            const form = new FormData();
+        const form = new FormData();
             form.append("image_file", fs.createReadStream(imagePath));
 form.append("extend_left", "200");
 form.append("extend_right", "200");
@@ -782,12 +745,7 @@ form.append("seed", seed);
                 console.error("ClipDrop error:", error.response?.data || error.message);
                 res.status(500).send("Error processing the image with ClipDrop API");
             }
-        });
-
-        writer.on("error", (err) => {
-            console.error("Download error:", err);
-            res.status(500).send("Error downloading the image");
-        });
+        
     } catch (error) {
         console.error("Fetch error:", error.message);
         res.status(500).send("Error fetching the image from the URL");
