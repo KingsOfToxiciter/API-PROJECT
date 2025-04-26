@@ -535,7 +535,6 @@ app.get("/api/fc", async (req, res) => {
 });
 
 
-
 app.get('/api/alldl', async (req, res) => {
   try {
     const { url } = req.query;
@@ -544,8 +543,13 @@ app.get('/api/alldl', async (req, res) => {
       return res.status(400).json({ error: 'URL parameter is required' });
     }
 
-  const response = await axios.get(`https://alldl-api-production.up.railway.app/alldl?url=${url}`);
+    const response = await axios.get(`https://alldl-api-production.up.railway.app/alldl?url=${url}`, {
+      responseType: 'stream'
+    });
+
+
     response.data.pipe(res);
+
   } catch (error) {
     console.error('alldl Error:', error);
     res.status(500).json({ error: 'Failed to fetch data' });
