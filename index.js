@@ -560,14 +560,13 @@ app.get('/api/alldl', async (req, res) => {
 app.get("/api/imgur", async (req, res) => {
     try {
         const { url } = req.query;
-        const clientID = "da9c35e7d727e2d";
+        if (!url) {
+            return res.status(404).json({ error: "url is required" });
+        }
 
-        const response = await axios.post("https://api.imgur.com/3/image",
-            { image: url },
-            { headers: { Authorization: `Client-ID ${clientID}` } }
-        );
+        const response = await axios.get(`https://hasan-imgur-api-production.up.railway.app/imgur?url=${url}`);
 
-        res.json({ author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎", data: response.data });
+        res.json(response.data);
     } catch (error) {
         res.status(500).json({ error: "Upload failed", details: error.message });
     }
