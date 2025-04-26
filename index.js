@@ -537,13 +537,14 @@ app.get("/api/fc", async (req, res) => {
 
 app.get('/api/alldl', async (req, res) => {
   try {
-    const { url } = req.query;
+    const url = req.query.url;
+    const format = req.query.format || "b";
 
     if (!url) {
       return res.status(400).json({ error: 'URL parameter is required' });
     }
 
-    const response = await axios.get(`https://alldl-api-production.up.railway.app/alldl?url=${url}`, {
+    const response = await axios.get(`https://alldl-api-production.up.railway.app/alldl?url=${url}&format=${format}`, {
       responseType: 'stream'
     });
 
