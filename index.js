@@ -564,9 +564,8 @@ app.get("/api/imgur", async (req, res) => {
         if (!url) {
             return res.status(404).json({ error: "url is required" });
         }
-        const { data } = await axios.get(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(url)}`);
 
-        const response = await axios.get(`https://hasan-imgur-api-production.up.railway.app/imgur?url=${data}`);
+        const response = await axios.get(`https://hasan-imgur-api-production.up.railway.app/imgur?url=${encodeURIComponent(url)}`);
 
         res.json(response.data);
     } catch (error) {
