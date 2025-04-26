@@ -884,14 +884,25 @@ app.get("/docs", (req, res) => {
   res.json(routes);
 });
 
+//function getQueryParams(stack) {
+// const fnStr = stack?.[0]?.handle?.toString() || "";
+//  const match = fnStr.match(/req\.query\.(\w+)/g);
+//  if (!match) return [];
+//  return [...new Set(match.map(q => q.split('.')[2]))];
+//}
+
 function getQueryParams(stack) {
   const fnStr = stack?.[0]?.handle?.toString() || "";
-  const match = fnStr.match(/req\.query\.(\w+)/g);
+  const match = fnStr.match(/req\.query(?:['"`]?(\w+)['"`]?|\.(\w+))/g);
   if (!match) return [];
-  return [...new Set(match.map(q => q.split('.')[2]))];
-}
-
-
+  
+  return [...new Set(
+    match.map(q => {
+      const m = q.match(/req\.query(?:['"`]?(\w+)['"`]?|\.(\w+))/);
+      return m[1] || m[2];
+    })
+  )];
+      }
 
 
 
