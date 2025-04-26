@@ -892,27 +892,30 @@ app.get("/docs", (req, res) => {
 
 
 function getQueryParams(stack) {
-  const fnStr = stack?.[0]?.handle?.toString() || "";
+  const params = new Set();
 
-  const directMatch = fnStr.match(/req\.query\.([a-zA-Z0-9_]+)/g) || [];
-  const destructureMatch = fnStr.match(/{\s*([^}]+)\s*}\s*=\s*req\.query/g) || [];
+  stack.forEach(layer => {
+    const fnStr = layer?.handle?.toString() || "";
 
-  let params = [];
+    const directMatch = fnStr.match(/req\.query\.([a-zA-Z0-9_]+)/g) || [];
+    directMatch.forEach(m => {
+      const param = m.split('.')[2];
+      if (param) params.add(param);
+    });
 
-  directMatch.forEach(m => {
-    const param = m.split('.')[2];
-    if (param) params.push(param);
+    const destructureMatch = fnStr.match(/{\s*([^}]+)\s*}\s*=\s*req\.query/g) || [];
+    destructureMatch.forEach(m => {
+      const inside = m.match(/{\s*([^}]+)\s*}/);
+      if (inside && inside[1]) {
+        inside[1].split(',').forEach(f => {
+          const field = f.trim().split('=')[0].trim();
+          if (field) params.add(field);
+        });
+      }
+    });
   });
 
-  destructureMatch.forEach(m => {
-    const inside = m.match(/{\s*([^}]+)\s*}/);
-    if (inside && inside[1]) {
-      const fields = inside[1].split(',').map(f => f.trim().split('=')[0].trim());
-      params.push(...fields);
-    }
-  });
-
-  return [...new Set(params)];
+  return Array.from(params);
 }
 
 
