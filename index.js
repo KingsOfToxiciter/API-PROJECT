@@ -560,12 +560,13 @@ app.get('/api/alldl', async (req, res) => {
 
 app.get("/api/imgur", async (req, res) => {
     try {
-        const { url } = req.query;
+        const url = req.query.url;
         if (!url) {
             return res.status(404).json({ error: "url is required" });
         }
+        const { data } = await axios.get(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(url)}`);
 
-        const response = await axios.get(`https://hasan-imgur-api-production.up.railway.app/imgur?url=${url}`);
+        const response = await axios.get(`https://hasan-imgur-api-production.up.railway.app/imgur?url=${data}`);
 
         res.json(response.data);
     } catch (error) {
@@ -766,10 +767,13 @@ mongoose.connect('mongodb+srv://toxiciter:Hasan5&7@toxiciter.9tkfu.mongodb.net/A
   .catch((err) => console.error(err));
                                                                       
 app.get('/api/album/upload', async (req, res) => {
-  const { category, link } = req.query;
-  if (!category || !link) {
+  const url = req.query.link;
+  const category = req.query.category;
+  if (!category || !url) {
     return res.status(400).json({ message: 'category and link are required' });
-  }
+  };
+    const { data } = await axios.get(`https://www.noobs-api-69.rf.gd/api/imgur?url=${url}`);
+    const link = data.link;
     const result = await Link.find({ category });
     const specificCategoryVideoCount = result.length;
     const count = await Link.countDocuments({});
