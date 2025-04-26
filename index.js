@@ -544,12 +544,8 @@ app.get('/api/alldl', async (req, res) => {
       return res.status(400).json({ error: 'URL parameter is required' });
     }
 
-  const response = await axios.get(`https://www.noobs-api.rf.gd/dipto/alldl?url=${url}`, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-      }
-    });
-    res.json({ data: response.data });
+  const response = await axios.get(`https://alldl-api-production.up.railway.app/alldl?url=${url}`);
+    response.data.pipe(res);
   } catch (error) {
     console.error('alldl Error:', error);
     res.status(500).json({ error: 'Failed to fetch data' });
