@@ -567,7 +567,7 @@ app.get("/api/imgur", async (req, res) => {
 
         const response = await axios.get(`https://hasan-imgur-api-production.up.railway.app/imgur?url=${encodeURIComponent(url)}`);
 
-        res.json(response.data);
+        res.json({ url: response.data.data.data.link });
     } catch (error) {
         res.status(500).json({ error: "Upload failed", details: error.message });
     }
@@ -772,7 +772,7 @@ app.get('/api/album/upload', async (req, res) => {
     return res.status(400).json({ message: 'category and link are required' });
   };
     const { data } = await axios.get(`https://www.noobs-api-69.rf.gd/api/imgur?url=${url}`);
-    const link = data.link;
+    const link = data.url;
     const result = await Link.find({ category });
     const specificCategoryVideoCount = result.length;
     const count = await Link.countDocuments({});
