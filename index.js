@@ -567,7 +567,7 @@ app.get("/api/imgur", async (req, res) => {
 
         const response = await axios.get(`https://hasan-imgur-api-production.up.railway.app/imgur?url=${encodeURIComponent(url)}`);
 
-        res.json({ url: response.data.data.data.link });
+        res.json({ status: response.data.status, url: response.data.data.data.link, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     } catch (error) {
         res.status(500).json({ error: "Upload failed", details: error.message });
     }
