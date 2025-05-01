@@ -773,9 +773,6 @@ app.get('/api/album/upload', async (req, res) => {
   };
     const { data } = await axios.get(`https://www.noobs-api-69.rf.gd/api/imgur?url=${url}`);
     const link = data.url;
-    const result = await Link.find({ category });
-    const specificCategoryVideoCount = result.length;
-    const count = await Link.countDocuments({});
     const categoryList = [
   "funny", "romantic", "lofi", "sad", "horny", "football", "anime", "cricket",
   "flowers", "islamic", "cartoon", "couple", "random", "sigma", "asthetic",
@@ -787,6 +784,9 @@ app.get('/api/album/upload', async (req, res) => {
 
   const newLink = new Link({ category, link });
   await newLink.save();
+  const result = await Link.find({ category });
+  const specificCategoryVideoCount = result.length;
+  const count = await Link.countDocuments({});
 
   res.status(201).json({ message: `✅ Successfully saved the video to ${category} category.\n🔖 Total videos: ${count}\n🎓 Videos on this category: ${specificCategoryVideoCount}` });
 });
