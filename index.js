@@ -768,29 +768,39 @@ mongoose.connect('mongodb+srv://toxiciter:Hasan5&7@toxiciter.9tkfu.mongodb.net/A
 app.get('/api/album/upload', async (req, res) => {
   const link = req.query.link;
   const category = req.query.category;
-  if (!category || !url) {
+
+  if (!category || !link) {
     return res.status(400).json({ message: 'category and link are required' });
-  };
+  }
+
+  const categoryList = [
+    "funny", "romantic", "lofi", "sad", "horny", "football", "anime", "cricket",
+    "flowers", "islamic", "cartoon", "couple", "random", "sigma", "asthetic",
+    "girls", "friends", "free fire", "18+", "lyrics", "photos", "cat", "meme", "caption", "july 2024"
+  ];
+
+  if (!categoryList.includes(category)) {
+    return res.json({ message: "❌ Invalid category!\n\nAvailable:\n" + categoryList.map((c, i) => `${i + 1}. ${c}`).join("\n") });
+  }
+
+  try {
     const { data } = await axios.get(`https://www.noobs-api-69.rf.gd/api/imgur?url=${link}`);
     const url = data.url;
-    const categoryList = [
-  "funny", "romantic", "lofi", "sad", "horny", "football", "anime", "cricket",
-  "flowers", "islamic", "cartoon", "couple", "random", "sigma", "asthetic",
-  "girls", "friends", "free fire", "18+", "lyrics", "photos", "cat", "meme", "caption", "july 2024"
-];  
-       if (!categoryList.includes(category)) {
-           return res.json({ message: "❌ Invalid category!\n\nAvailable:\n" + categoryList.map((c, i) => `${i + 1}. ${c}`).join("\n") });
-       }
 
-  const newLink = new Link({ category, url });
-  await newLink.save();
-  const result = await Link.find({ category });
-  const specificCategoryVideoCount = result.length;
-  const count = await Link.countDocuments({});
+    const newLink = new Link({ category, url });
+    await newLink.save();
 
-  res.status(201).json({ message: `✅ Successfully saved the video to ${category} category.\n🔖 Total videos: ${count}\n🎓 Videos on this category: ${specificCategoryVideoCount}` });
+    const result = await Link.find({ category });
+    const specificCategoryVideoCount = result.length;
+    const count = await Link.countDocuments({});
+
+    res.status(201).json({
+      message: `✅ Successfully saved the video to ${category} category.\n🔖 Total videos: ${count}\n🎓 Videos on this category: ${specificCategoryVideoCount}`
+    });
+  } catch (error) {
+    res.status(500).json({ message: '❌ Failed to upload or save the link.', error: error.message });
+  }
 });
-
 
 app.get('/api/album', async (req, res) => {
   const category = req.query.category;
