@@ -51,6 +51,84 @@ app.get("/apis", async (req, res) => {
 });
 
 
+const conversationHistories = {};
+
+app.get('/api/gpt', async (req, res) => {
+    const senderID = req.query.uid;
+    const query = req.query.prompt;
+
+    if (!query || !senderID) {
+        return res.status(400).json({ error: "prompt and senderID are required" });
+    }
+
+    
+    if (['clear', 'reset', 'forgot', 'forget'].includes(query.toLowerCase())) {
+        conversationHistories[senderID] = [];
+        return res.json({ message: "Conversation history successfully clear" });
+    }
+
+    const history = conversationHistories[senderID] || [];
+    history.push({ senderType: "USER", content: query });
+    conversationHistories[senderID] = history;
+
+    const baseUrl = "https://markbot-10923.chipp.ai";
+    const headers = {
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36',
+        'Content-Type': 'application/json',
+        'Origin': baseUrl,
+        'Referer': 'https://markbot-10923.chipp.ai/'
+    };
+
+    const time = new Date().toLocaleString("en-US", { timeZone: "Asia/Manila", hour12: true });
+
+    const getResponse = async () => {
+        return axios.post(`${baseUrl}/api/openai/chat`, {
+            messageList: [
+                { senderType: "BOT", content: `System: The Current Time in Philippines is ${time}` },
+                ...history
+            ],
+            fileIds: [],
+            threadId: `thread_${senderID}`
+        }, { headers });
+    };
+
+    const isImageUrl = async (url) => {
+        try {
+            const { headers } = await axios.head(url);
+            return headers['content-type'] && headers['content-type'].startsWith('image');
+        } catch {
+            return false;
+        }
+    };
+
+    let answer = "এই service এখন maintenance এ আছে।";
+    for (let attempts = 0; attempts < 3; attempts++) {
+        try {
+            const response = await getResponse();
+            answer = typeof response.data === 'string' ? response.data.trim() : JSON.stringify(response.data);
+            history.push({ senderType: "BOT", content: answer });
+            break;
+        } catch (error) {
+            if (attempts === 2) {
+                return res.status(500).json({ error: "Service unavailable" });
+            }
+            await new Promise(resolve => setTimeout(resolve, 1000 * (attempts + 1)));
+        }
+    }
+
+    const imageUrls = [...answer.matchAll(/!.*?(https?:\/\/[^\s)]+)/g)].map(([, url]) => url);
+
+    const validImageUrls = await Promise.all(
+        imageUrls.map(async (url) => (await isImageUrl(url)) ? url : null)
+    ).then(results => results.filter(Boolean));
+
+    res.json({
+        message: answer.replace(/\*\*(.*?)\*\*/g, (_, text) => `**${text}**`).replace(/TOOL_CALL:/g, ''),
+        img_urls: validImageUrls
+    });
+});
+
+
 app.get("/api/infinity", async (req, res) => {
   const prompt = req.query.prompt;
   const model = req.query.model || "realistic";
