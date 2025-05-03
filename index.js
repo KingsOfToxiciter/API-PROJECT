@@ -51,7 +51,7 @@ app.get("/apis", async (req, res) => {
 });
 
 
-app.get("api/grok", async (req, res) => {
+app.get("/api/grok", async (req, res) => {
     const prompt = req.query.prompt;
     const uid = req.query.uid;
     const imageUrl = req.query.imageUrl;
