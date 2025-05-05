@@ -658,7 +658,8 @@ function getCapitalVariant(fontData) {
 }
 
 app.get('/api/font', (req, res) => {
-  const { text, fontId } = req.query;
+  const text = req.query.text;
+  const fontId = req.query.fontId;
   const fonts = loadFonts();
   const font = fonts.find(f => f.id === fontId);
 
