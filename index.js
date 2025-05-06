@@ -51,6 +51,41 @@ app.get("/apis", async (req, res) => {
 });
 
 
+
+app.get('/api/gpt', async (req, res) => {
+  const query = req.query.query;
+  const model = req.query.model || "gpt-4o-mini";
+    if (!query) {
+        return res.status(400).json({ error: "query parameters are required" });
+    }
+
+  try {
+    const response = await axios.post(
+      "https://api.gpt4-all.xyz/v1/chat/completions",
+      {
+        model: model,
+        messages: [{ role: 'user', content: query }],
+        stream: false
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer g4a-E61kIvqoYyGT45IejS3GmSty6MOFhHcyBVv`
+        }
+      }
+    );
+
+    res.json(response.data);
+  } catch (error) {
+    console.error(error.response ? error.response.data : error.message);
+    res.status(500).json({ error: 'Something went wrong!' });
+  }
+});
+
+
+
+
+
 app.get("/api/grok", async (req, res) => {
     const prompt = req.query.prompt;
     const uid = req.query.uid;
