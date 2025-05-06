@@ -54,8 +54,9 @@ app.get("/apis", async (req, res) => {
 const userHistories = {};
 app.get('/api/gpt', async (req, res) => {
   const query = req.query.query;
-  const model = req.query.model || "gpt-4o-mini";
   const uid = req.query.uid;
+  const model = req.query.model || "gpt-4o-mini";
+  
     if (!query || !uid) {
         return res.status(400).json({ error: "query and uid parameters are required" });
     }
