@@ -51,20 +51,32 @@ app.get("/apis", async (req, res) => {
 });
 
 
-
+const userHistories = {};
 app.get('/api/gpt', async (req, res) => {
   const query = req.query.query;
   const model = req.query.model || "gpt-4o-mini";
-    if (!query) {
-        return res.status(400).json({ error: "query parameters are required" });
+  const uid = req.query.uid;
+    if (!query || !uid) {
+        return res.status(400).json({ error: "query and uid parameters are required" });
     }
+
+    if (message.toLowerCase() === 'clear') {
+    userHistories[uid] = [];
+    return res.json({ message: `Chat history cleared for UID: ${uid}` });
+    }
+
+    if (!userHistories[uid]) {
+    userHistories[uid] = [];
+  }
+
+  userHistories[uid].push({ role: 'user', content: message });
 
   try {
     const response = await axios.post(
       "https://api.gpt4-all.xyz/v1/chat/completions",
       {
         model: model,
-        messages: [{ role: 'user', content: query }],
+        messages: userHistories[uid],
         stream: false
       },
       {
@@ -75,7 +87,10 @@ app.get('/api/gpt', async (req, res) => {
       }
     );
 
-    res.json(response.data);
+    const reply = response.data.choices[0].message.content;
+    userHistories[uid].push({ role: 'assistant', content: reply });
+
+    res.json({ response: reply });
   } catch (error) {
     console.error(error.response ? error.response.data : error.message);
     res.status(500).json({ error: 'Something went wrong!' });
