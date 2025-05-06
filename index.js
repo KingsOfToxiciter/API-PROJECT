@@ -15,6 +15,8 @@ if (!fs.existsSync(DOWNLOAD_FOLDER)) {
     fs.mkdirSync(DOWNLOAD_FOLDER);
 };
 
+const AI_API = ["g4a-EqCpjfrfDSPailqXulj6pTbRmCzI3sx3Zux", "g4a-E61kIvqoYyGT45IejS3GmSty6MOFhHcyBVv"];
+const AI_API_KEY = AI_API[Math.floor(Math.random() * AI_API.length)];
 const apis = process.env.HG_API.split(',').map(key => key.trim());
 const apiKey = apis[Math.floor(Math.random() * apis.length)];
 const ultraApi = process.env.ST_API.split(',').map(key => key.trim());
@@ -68,7 +70,7 @@ app.get('/api/dalle-3', async (req, res) => {
       {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer g4a-E61kIvqoYyGT45IejS3GmSty6MOFhHcyBVv`
+          'Authorization': `Bearer ${AI_API_KEY}`
         }
       }
     );
@@ -112,7 +114,7 @@ app.get('/api/gpt', async (req, res) => {
       {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer g4a-E61kIvqoYyGT45IejS3GmSty6MOFhHcyBVv`
+          'Authorization': `Bearer ${AI_API_KEY}`
         }
       }
     );
