@@ -51,6 +51,35 @@ app.get("/apis", async (req, res) => {
 });
 
 
+app.get('/api/dalle-3', async (req, res) => {
+  const prompt = req.query.prompt;
+
+  if (!prompt) {
+    return res.status(400).json({ error: "Prompt is required!" });
+  }
+
+  try {
+    const response = await axios.post(
+      "https://api.gpt4-all.xyz/v1/images/generations",
+      {
+        model: "dall-e-3",
+        prompt: prompt
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer g4a-E61kIvqoYyGT45IejS3GmSty6MOFhHcyBVv`
+        }
+      }
+    );
+
+    res.json(response.data);
+  } catch (error) {
+    console.error(error.response ? error.response.data : error.message);
+    res.status(500).json({ error: 'Something went wrong!' });
+  }
+});
+
 const userHistories = {};
 app.get('/api/gpt', async (req, res) => {
   const query = req.query.query;
