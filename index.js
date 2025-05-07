@@ -15,17 +15,22 @@ if (!fs.existsSync(DOWNLOAD_FOLDER)) {
     fs.mkdirSync(DOWNLOAD_FOLDER);
 };
 
-const AI_API = ["g4a-EqCpjfrfDSPailqXulj6pTbRmCzI3sx3Zux", "g4a-E61kIvqoYyGT45IejS3GmSty6MOFhHcyBVv"];
-const AI_API_KEY = AI_API[Math.floor(Math.random() * AI_API.length)];
+const AI_API = process.env.AI_API.split(',').map(key => key.trim());
+const AI_API_KEY = await getRandomApi(AI_API);
 const apis = process.env.HG_API.split(',').map(key => key.trim());
-const apiKey = apis[Math.floor(Math.random() * apis.length)];
+const apiKey = await getRandomApi(apis);
 const ultraApi = process.env.ST_API.split(',').map(key => key.trim());
-const randomUltraApi = ultraApi[Math.floor(Math.random() * ultraApi.length)];
+const randomUltraApi = await getRandomApi(ultraApi);
 
 const app = express();
 const PORT = 3000;
 app.use(cors());
 app.use(express.json());
+
+
+async function getRandomApi(key) {
+  return key[Math.floor(Math.random() * key.length)];
+};
 
 
 async function downloadFromUrl(url, path) {
