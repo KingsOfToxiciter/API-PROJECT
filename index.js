@@ -136,9 +136,10 @@ app.get('/api/gpt', async (req, res) => {
 
 app.get('/api/gpt-pro', async (req, res) => {
   const uid = req.query.uid;
-  const userText = req.query.text || 'what is this';
-  const imageUrl = req.query.imageUrl || null;
+  const userText = req.query.text || 'explain this image';
+  const imageUrl = req.query.imageUrl;
   const model = req.query.model || "gpt-4o-mini";
+
   if (!uid) {
     return res.status(400).json({ error: 'uid is required' });
   }
@@ -152,15 +153,12 @@ app.get('/api/gpt-pro', async (req, res) => {
     userHistories[uid] = [];
   }
 
-  const userMessage = {
-    role: 'user',
-    content: [
-      { type: 'text', text: userText },
-      { type: 'image_url', image_url: { url: imageUrl } }
-    ]
-  };
+  const contentArray = [{ type: 'text', text: userText }];
+  if (imageUrl) {
+    contentArray.push({ type: 'image_url', image_url: { url: imageUrl } });
+  }
 
-  userHistories[uid].push(userMessage);
+  userHistories[uid].push({ role: 'user', content: contentArray });
 
   try {
     const response = await axios.post(
@@ -182,9 +180,7 @@ app.get('/api/gpt-pro', async (req, res) => {
 
     userHistories[uid].push({
       role: 'assistant',
-      content: [
-        { type: 'text', text: reply }
-      ]
+      content: [{ type: 'text', text: reply }]
     });
 
     res.json({ response: reply });
@@ -193,6 +189,7 @@ app.get('/api/gpt-pro', async (req, res) => {
     res.status(500).json({ error: 'Something went wrong bro!' });
   }
 });
+
 
 app.get("/api/grok", async (req, res) => {
     const prompt = req.query.prompt;
