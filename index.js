@@ -73,7 +73,7 @@ app.get('/api/dalle-3', async (req, res) => {
       {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${}`
+          'Authorization': `Bearer ${AI_API_KEY}`
         }
       }
     );
