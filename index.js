@@ -14,9 +14,7 @@ const DOWNLOAD_FOLDER = path.join(__dirname, "downloads");
 if (!fs.existsSync(DOWNLOAD_FOLDER)) {
     fs.mkdirSync(DOWNLOAD_FOLDER);
 };
-
-const AI_API = process.env.AI_API.split(',').map(key => key.trim());
-const AI_API_KEY = getRandomApi(AI_API);
+const AI_API_KEY = process.env.AI_API;
 const apis = process.env.HG_API.split(',').map(key => key.trim());
 const apiKey = getRandomApi(apis);
 const ultraApi = process.env.ST_API.split(',').map(key => key.trim());
@@ -75,7 +73,7 @@ app.get('/api/dalle-3', async (req, res) => {
       {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${AI_API_KEY}`
+          'Authorization': `Bearer ${}`
         }
       }
     );
