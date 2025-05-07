@@ -99,7 +99,7 @@ app.get('/api/gpt', async (req, res) => {
 
   if (query.toLowerCase() === 'clear') {
     userHistories[uid] = [];
-    return res.json({ message: `Chat history cleared for UID: ${uid}` });
+    return res.json({ response: `Chat history cleared for UID: ${uid}` });
   }
 
   if (!userHistories[uid]) {
@@ -145,7 +145,7 @@ app.get('/api/gpt-pro', async (req, res) => {
 
   if (userText.toLowerCase() === 'clear') {
     userHistories[uid] = [];
-    return res.json({ message: `Chat history cleared for UID: ${uid}` });
+    return res.json({ response: `Chat history cleared for UID: ${uid}` });
   }
 
   if (!userHistories[uid]) {
@@ -187,7 +187,7 @@ app.get('/api/gpt-pro', async (req, res) => {
       ]
     });
 
-    res.json({ result: reply });
+    res.json({ response: reply });
   } catch (error) {
     console.error(error.response?.data || error.message);
     res.status(500).json({ error: 'Something went wrong bro!' });
