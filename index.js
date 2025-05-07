@@ -73,7 +73,7 @@ app.get('/api/dalle-3', async (req, res) => {
       {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${AI_API_KEY}`
+          'Authorization': `Bearer g4a-CFyzgwYxOSbZetCnhdJWd5IE1FNoXF967zy`
         }
       }
     );
@@ -169,7 +169,7 @@ app.get('/api/gpt-pro', async (req, res) => {
       {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${AI_API_KEY}`
+          'Authorization': `Bearer g4a-QXDV2prT7NfdKdR8DbZIl1lfaAmIbe7Cndr`
         }
       }
     );
