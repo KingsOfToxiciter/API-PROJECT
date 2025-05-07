@@ -16,11 +16,11 @@ if (!fs.existsSync(DOWNLOAD_FOLDER)) {
 };
 
 const AI_API = process.env.AI_API.split(',').map(key => key.trim());
-const AI_API_KEY = await getRandomApi(AI_API);
+const AI_API_KEY = getRandomApi(AI_API);
 const apis = process.env.HG_API.split(',').map(key => key.trim());
-const apiKey = await getRandomApi(apis);
+const apiKey = getRandomApi(apis);
 const ultraApi = process.env.ST_API.split(',').map(key => key.trim());
-const randomUltraApi = await getRandomApi(ultraApi);
+const randomUltraApi = getRandomApi(ultraApi);
 
 const app = express();
 const PORT = 3000;
@@ -28,7 +28,7 @@ app.use(cors());
 app.use(express.json());
 
 
-async function getRandomApi(key) {
+function getRandomApi(key) {
   return key[Math.floor(Math.random() * key.length)];
 };
 
