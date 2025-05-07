@@ -129,7 +129,65 @@ app.get('/api/gpt', async (req, res) => {
   }
 });
 
+app.get('/api/gpt-pro', async (req, res) => {
+  const uid = req.query.uid;
+  const userText = req.query.text || 'what is this';
+  const imageUrl = req.query.imageUrl || null;
+  const model = req.query.model || "gpt-4o-mini";
+  if (!uid) {
+    return res.status(400).json({ error: 'uid is required' });
+  }
 
+  if (userText.toLowerCase() === 'clear') {
+    userHistories[uid] = [];
+    return res.json({ message: `Chat history cleared for UID: ${uid}` });
+  }
+
+  if (!userHistories[uid]) {
+    userHistories[uid] = [];
+  }
+
+  const userMessage = {
+    role: 'user',
+    content: [
+      { type: 'text', text: userText },
+      { type: 'image_url', image_url: { url: imageUrl } }
+    ]
+  };
+
+  userHistories[uid].push(userMessage);
+
+  try {
+    const response = await axios.post(
+      "https://api.gpt4-all.xyz/v1/chat/completions",
+      {
+        model: model,
+        messages: userHistories[uid],
+        max_tokens: 300
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${AI_API_KEY}`
+        }
+      }
+    );
+
+    const reply = response.data.choices[0].message.content;
+
+    userHistories[uid].push({
+      role: 'assistant',
+      content: [
+        { type: 'text', text: reply }
+      ]
+    });
+
+    res.json({ result: reply });
+  } catch (error) {
+    console.error(error.response?.data || error.message);
+    res.status(500).json({ error: 'Something went wrong bro!' });
+  }
+});
 
 app.get("/api/grok", async (req, res) => {
     const prompt = req.query.prompt;
