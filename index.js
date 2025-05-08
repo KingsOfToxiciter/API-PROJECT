@@ -89,7 +89,7 @@ const userHistories = {};
 app.get('/api/gpt', async (req, res) => {
   const query = req.query.query;
   const uid = req.query.uid;
-  const model = req.query.model || "gpt-4o-mini";
+  const model = req.query.model || "gpt-4.1-mini";
 
   if (!query || !uid) {
     return res.status(400).json({ error: "query and uid parameters are required" });
@@ -136,7 +136,7 @@ app.get('/api/gpt-pro', async (req, res) => {
   const uid = req.query.uid;
   const userText = req.query.text || 'explain this image';
   const imageUrl = req.query.imageUrl;
-  const model = req.query.model || "gpt-4o-mini";
+  const model = req.query.model || "gpt-4.1-mini";
 
   if (!uid) {
     return res.status(400).json({ error: 'uid is required' });
