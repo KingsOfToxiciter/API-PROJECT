@@ -61,7 +61,14 @@ app.get("/api/alldl", (req, res) => {
     const format = req.query.format || "b";
     if (!videoUrl) {
         return res.status(400).json({ error: "URL is required" });
-    }
+    };
+
+
+    const formatMap = {
+        mp4: 'b',
+        mp3: 'bestaudio'
+    };
+    format = formatMap[format] || format;
       let content = "video/mp4";
           if(format === "bestaudio" || format === "worstaudio" || format === "233" || format === "234" || format === "249" || format === "250") {
             content = "audio/mp3";
