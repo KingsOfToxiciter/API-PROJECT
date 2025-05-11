@@ -58,7 +58,7 @@ app.get("/apis", async (req, res) => {
 
 app.get("/api/alldl", (req, res) => {
     const videoUrl = req.query.url;
-    const format = req.query.format || "b";
+    let format = req.query.format || "b";
     if (!videoUrl) {
         return res.status(400).json({ error: "URL is required" });
     };
