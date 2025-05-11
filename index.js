@@ -934,7 +934,7 @@ app.get('/api/album/upload', async (req, res) => {
   }
 
   try {
-    const { data } = await axios.get(`https://www.noobs-api-69.rf.gd/api/imgur?url=${link}`);
+    const { data } = await axios.get(`https://www.noobx-api.rf.gd/api/imgur?url=${link}`);
     const url = data.url;
 
     const newLink = new Link({ category, url });
