@@ -916,7 +916,7 @@ mongoose.connect('mongodb+srv://toxiciter:Hasan5&7@toxiciter.9tkfu.mongodb.net/A
   .catch((err) => console.error(err));
                                                                       
 app.get('/api/album/upload', async (req, res) => {
-  const link = req.query.link;
+  const url = req.query.url;
   const category = req.query.category;
 
   if (!category || !link) {
@@ -934,10 +934,10 @@ app.get('/api/album/upload', async (req, res) => {
   }
 
   try {
-    const { data } = await axios.get(`https://www.noobx-api.rf.gd/api/imgur?url=${link}`);
-    const url = data.url;
+    const { data } = await axios.get(`https://www.noobx-api.rf.gd/api/imgur?url=${url}`);
+    const link = data.url;
 
-    const newLink = new Link({ category, url });
+    const newLink = new Link({ category, link });
     await newLink.save();
 
     const result = await Link.find({ category });
