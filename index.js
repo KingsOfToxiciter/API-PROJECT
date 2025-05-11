@@ -919,8 +919,8 @@ app.get('/api/album/upload', async (req, res) => {
   const url = req.query.url;
   const category = req.query.category;
 
-  if (!category || !link) {
-    return res.status(400).json({ message: 'category and link are required' });
+  if (!category || !url) {
+    return res.json({ message: 'category and link are required' });
   }
 
   const categoryList = [
