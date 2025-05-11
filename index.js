@@ -56,7 +56,7 @@ app.get("/apis", async (req, res) => {
     res.json(data);
 });
 
-app.get("/api/dl", (req, res) => {
+app.get("/api/alldl", (req, res) => {
     const videoUrl = req.query.url;
     const format = req.query.format || "b";
     if (!videoUrl) {
@@ -716,29 +716,6 @@ app.get("/api/fc", async (req, res) => {
         console.error("error:", error.response ? error.response.data : error.message);
         res.status(500).send("Error generating the image");
     }
-});
-
-
-app.get('/api/alldl', async (req, res) => {
-  try {
-    const url = req.query.url;
-    const format = req.query.format || "b";
-
-    if (!url) {
-      return res.status(400).json({ error: 'URL parameter is required' });
-    }
-
-    const response = await axios.get(`https://alldl-api-production.up.railway.app/alldl?url=${url}&format=${format}`, {
-      responseType: 'stream'
-    });
-
-
-    response.data.pipe(res);
-
-  } catch (error) {
-    console.error('alldl Error:', error);
-    res.status(500).json({ error: 'Failed to fetch data' });
-  }
 });
 
 
