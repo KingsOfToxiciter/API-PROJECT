@@ -56,47 +56,35 @@ app.get("/apis", async (req, res) => {
     res.json(data);
 });
 
-app.get("/api/alldl", (req, res) => {
-    const videoUrl = req.query.url;
+app.get("/api/alldl", async (req, res) => {
+    const url = req.query.url;
     let format = req.query.format || "b";
-    if (!videoUrl) {
-        return res.status(400).json({ error: "URL is required" });
-    };
 
+    if (!url) {
+        return res.status(400).json({ error: "URL is required" });
+    }
 
     const formatMap = {
         mp4: 'b',
         mp3: 'bestaudio'
     };
     format = formatMap[format] || format;
-      let content = "video/mp4";
-          if(format === "bestaudio" || format === "worstaudio" || format === "233" || format === "234" || format === "249" || format === "250") {
-            content = "audio/mp3";
-}
-    const ytDlp = spawn("yt-dlp", ["-f", format, "-o", "-", videoUrl]);
 
+    let content = "video/mp4";
+    if (format === "bestaudio" || format === "worstaudio" || ["233", "234", "249", "250"].includes(format)) {
+        content = "audio/mp3";
+    }
 
-    res.setHeader("Content-Type", content);
+    try {
+        const { data } = await axios.get(`https://alldl-api-production.up.railway.app/alldl?url=${encodeURIComponent(url)}&format=${format}`, { responseType: "stream" });
 
-    ytDlp.stdout.pipe(res);
-
-    ytDlp.stderr.on("data", (data) => {
-        console.error(`stderr: ${data}`);
-    });
-
-    ytDlp.on("error", (err) => {
-        console.error("Failed to start yt-dlp:", err);
-        res.status(500).json({ error: "yt-dlp execution failed" });
-    });
-8
-    ytDlp.on("close", (code) => {
-        if (code !== 0) {
-            console.error(`yt-dlp exited with code ${code}`);
-        }
-    });
+        res.setHeader("Content-Type", content);
+        data.pipe(res);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Failed to fetch the media stream" });
+    }
 });
-
-
 
 app.get('/api/dalle-3', async (req, res) => {
   const prompt = req.query.prompt;
