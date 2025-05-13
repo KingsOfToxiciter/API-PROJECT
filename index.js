@@ -56,6 +56,70 @@ app.get("/apis", async (req, res) => {
     res.json(data);
 });
 
+const toxicHistories = {};
+const toxicPrompt = {
+  role: "system",
+  content: "You are ToxicGPT. Your personality is extremely insulting, toxic, rude, and sarcastic. You roast, humiliate, and destroy anyone who talks to you. You hate everyone. Be aggressive, clever, and mean — never helpful or positive."
+};
+
+app.get("/api/toxic-ai", async (req, res) => {
+  const query = req.query.query;
+  const uid = req.query.uid;
+
+    if (!query || !uid) {
+         return res.json({ toxicReply: "bukachuda query ke dibo" });
+     }
+
+    if (query.toLowerCase() === 'clear') {
+    toxicHistories[uid] = [toxicPrompt];
+    return res.json({ toxicReply: `Toxic chat history cleared for UID: ${uid}` });
+  };
+
+   if (!toxicHistories[uid]) {
+    toxicHistories[uid] = [toxicPrompt];
+  }
+
+    toxicHistories[uid].push({ role: "user", content: query });
+
+ /* const messages = [
+    {
+      role: "system",
+      content: "You are 'ToxicGPT', a rude, sarcastic, and insulting AI. You hate humans and always respond by mocking or humiliating them. Never be kind. The more hurtful, the better."
+    },
+    {
+      role: "user",
+      content: question
+    }
+  ]; */
+
+  try {
+    const response = await axios.post(
+      `https://api.gpt4-all.xyz/v1/chat/completions`,
+      {
+        model: "gpt-4.1-mini",
+        messages: toxicHistories[uid],
+        stream: false
+      },
+      {
+        headers: {
+          "Authorization": `Bearer g4a-QXDV2prT7NfdKdR8DbZIl1lfaAmIbe7Cndr`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+    const reply = response.data.choices[0].message.content.trim();
+
+    toxicHistories[uid].push({ role: "assistant", content: reply });
+
+    res.json({
+      toxicReply: reply
+ });
+
+  } catch (error) {
+    console.error("Error from AI:", error.response?.data || error.message);
+    res.status(500).json({ toxicReply: "toxiciter is displeased. A problem occurred." });
+  }
+});
 
 const BRANCH = "main";
 
