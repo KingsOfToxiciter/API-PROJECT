@@ -56,6 +56,68 @@ app.get("/apis", async (req, res) => {
     res.json(data);
 });
 
+
+const BRANCH = "main";
+
+app.get('/api/github', async (req, res) => {
+    const GITHUB_TOKEN = req.query.token;
+    const REPO = req.query.repositoryName;
+    const action = req.query.type;
+    const fileName = req.query.fileName;
+    const content = req.query.content;
+    if (!action || !fileName || !content || !GITHUB_TOKEN || !REPO)
+        return res.status(400).json({ error: 'Missing token, repositoryName, type, fileName or content.', example: "[apiUrl]/api/github?token=your github access token&repositoryName=KingsOfToxiciter/GoatBot-v2&type=[edit/create]&fileName=help.js&content=help command er code\nthis api just for GoatBoT cmds edit or new cmds create on your github repository without manually edit"});
+
+    const filePath = `scripts/cmds/${fileName}`;
+    const url = `https://api.github.com/repos/${REPO}/contents/${filePath}`;
+
+    const headers = {
+        Authorization: `token ${GITHUB_TOKEN}`,
+        Accept: 'application/vnd.github.v3+json'
+    };
+
+    try {
+        if (action === "edit") {
+            const getFile = await axios.get(url, { headers, params: { ref: BRANCH } });
+            const sha = getFile.data.sha;
+
+            const response = await axios.put(url, {
+                message: `Edited ${fileName} via Hasan's API`,
+                content: Buffer.from(content).toString('base64'),
+                branch: BRANCH,
+                sha
+            }, { headers });
+
+            return res.json({
+                message: `Edited ${fileName} successfully!`,
+                url: response.data.commit.html_url
+            });
+        }
+
+        if (action === "create") {
+            const response = await axios.put(url, {
+                message: `Created ${fileName} via Hasan's API`,
+                content: Buffer.from(content).toString('base64'),
+                branch: BRANCH
+            }, { headers });
+
+            return res.json({
+                message: `Created ${fileName} successfully!`,
+                url: response.data.commit.html_url
+            });
+        }
+
+        return res.status(400).json({ error: 'Invalid action. Use "create" or "edit"' });
+
+    } catch (err) {
+        const msg = err.response?.data?.message || err.message;
+        return res.status(500).json({ error: `GitHub API error: ${msg}` });
+    }
+});
+
+
+
+
 app.get("/api/alldl", async (req, res) => {
     const url = req.query.url;
     let format = req.query.format || "b";
