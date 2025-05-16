@@ -196,19 +196,14 @@ app.get("/api/alldl", async (req, res) => {
     };
     format = formatMap[format] || format;
 
-    let content = "video/mp4";
-    if (format === "bestaudio" || format === "worstaudio" || ["233", "234", "249", "250"].includes(format)) {
-        content = "audio/mp3";
-    }
-
     try {
-        const { data } = await axios.get(`https://alldl-api-production.up.railway.app/alldl?url=${encodeURIComponent(url)}&format=${format}`, { responseType: "stream" });
+        const { data } = await axios.get(`https://kingsoftoxiciter-production.up.railway.app/download?url=${encodeURIComponent(url)}&format=${format}`);
+        res.json({ status: "success", url: data.url, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
 
-        res.setHeader("Content-Type", content);
-        data.pipe(res);
+        
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Failed to fetch the media stream" });
+        res.status(500).json({ status: "error", response: "Failed to fetch the media stream\nDetails: " + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
 });
 
