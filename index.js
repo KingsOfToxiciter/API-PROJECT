@@ -56,6 +56,49 @@ app.get("/apis", async (req, res) => {
     res.json(data);
 });
 
+
+app.get("/api/prompt", async (req, res) => {
+  const imageUrl = req.query.imageUrl;
+    
+    if(!imageUrl) {
+      return res.json({ status: "error", response: "imageUrl is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" })
+    }
+     
+  try {
+   const response = await axios.post(`https://api.gpt4-all.xyz/v1/chat/completions`, {
+      model: "gpt-4.1-mini",
+      messages: [
+        {
+          role: "user",
+          content: [
+            { type: "text", text: "Explain the image-only prompt style; just give me a gorgeous and fully details prompt without any text." },
+            {
+              type: "image_url",
+              image_url: {
+                url: imageUrl
+              }
+            }
+          ]
+        }
+      ],
+      max_tokens: 300
+    }, {
+      headers: {
+        'Authorization': `Bearer g4a-CFyzgwYxOSbZetCnhdJWd5IE1FNoXF967zy`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const content = response.data.choices[0].message.content;
+    res.json({ status: "success", response: content, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+
+  } catch (error) {
+    console.error('Error:', error.response ? error.response.data : error.message);
+    res.status(500).json({ status: "error", response: 'Failed to process image\nDetails: ' + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
+});
+
+
 const toxicHistories = {};
 const toxicPrompt = {
   role: "system",
