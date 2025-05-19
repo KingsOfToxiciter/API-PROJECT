@@ -170,17 +170,16 @@ app.get("/api/toxic-ai", async (req, res) => {
 
 app.get("/api/alldl", async (req, res) => {
     const url = req.query.url;
-    let format = req.query.format || "b";
+    let format = req.query.format || "mp4";
 
     if (!url) {
         return res.status(400).json({ status: "error", response: "URL is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    }
-
-    const formatMap = {
-        mp4: 'b',
-        mp3: 'bestaudio'
     };
-    format = formatMap[format] || format;
+
+    if (!format === "mp3" || !format === "mp4") {
+        return res.json({ status: "error", response: "invalid format. Available: mp3 or mp4", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    }
+    
 
     try {
         const { data } = await axios.get(`https://kingsoftoxiciter-production.up.railway.app/download?url=${encodeURIComponent(url)}&format=${format}`);
