@@ -7,18 +7,18 @@
 
     <!-- Meta Tags -->
     <meta name="description" content="Noobx API provides powerful, free public APIs for developers to use in their projects.">
-    <meta name="keywords" content="noobx api, dipto api, dipto, dip api, dip, api, node js, baby api, ai, public api, free api, json api, developer tools, open api">
-    <meta name="author" content="Hasan">
+    <meta name="keywords" content="noobx api, hasan api, hasan, api, public api, free api, json api, developer tools, open api">
+    <meta name="author" content="♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎">
     <meta name="robots" content="index, follow" />
     <meta property="og:title" content="Noobx API - Free Public API">
-    <meta property="og:description" content="Explore free developer APIs including waifu, flags, and chatbot services.">
+    <meta property="og:description" content="Explore free developer APIs including imagine, flag, alldl, album and chatbot services.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://noobx-api.rf.gd/">
-    <meta property="og:image" content="https://i.ibb.co/cS62vrLx/image.jpg">
+    <meta property="og:image" content="https://i.ibb.co/jkTsVgRZ/image.jpg">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Noobs API">
     <meta name="twitter:description" content="Free public API for developers.">
-    <meta name="twitter:image" content="https://i.ibb.co/cS62vrLx/image.jpg">
+    <meta name="twitter:image" content="https://i.ibb.co/jkTsVgRZ/image.jpg">
 
     <!-- Favicon and Styles -->
     <link rel="icon" type="image/png" href="/favicon.png">
@@ -157,6 +157,23 @@
     </script>
   </head>
   <body class="gradient-bg text-white font-sans">
+
+    <!-- Docs Button -->
+    <div class="fixed top-4 left-4 z-50">
+      <button id="docs-btn" class="bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 transition-all">
+        Docs
+      </button>
+    </div>
+
+    <!-- Docs Modal -->
+    <div id="docs-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden z-50">
+      <div class="bg-white w-11/12 md:w-3/4 h-5/6 rounded-lg overflow-hidden relative">
+        <button id="close-docs" class="absolute top-2 right-2 text-black text-2xl font-bold hover:text-red-600">&times;</button>
+        <iframe id="docs-iframe" src="" class="w-full h-full border-none"></iframe>
+      </div>
+    </div>
+
+    <!-- Mode Toggle -->
     <div class="mode-toggle">
       <i class="fas fa-moon"></i>
     </div>
@@ -164,9 +181,9 @@
     <!-- Header -->
     <header class="text-center py-12 fade-in">
       <div class="flex justify-center">
-        <img src="IMG20230413174510-01.jpeg" alt="Hasan's Profile Picture" class="profile-image w-32 h-32 rounded-full smooth-transition hover:scale-110" />
+        <img src="https://i.ibb.co/cS62vrLx/image.jpg" alt="Hasan's Profile Picture" class="profile-image w-32 h-32 rounded-full smooth-transition hover:scale-110" />
       </div>
-      <h1 class="text-4xl font-bold mt-4">Hasan's Portfolio</h1>
+      <h1 class="text-4xl font-bold mt-4">♡︎ 𝐻𝐴𝑆𝐴𝑁's Portfolio ♡︎</h1>
       <p class="text-lg mt-2">Aspiring Software Engineer | SSC '25</p>
       <p class="text-sm mt-1">Contact: 01843152929 | Email: s.k.hasan32425@gmail.com</p>
     </header>
@@ -181,18 +198,19 @@
       </div>
     </section>
 
-    <!-- Skills Section -->
-    <!-- Similar format used for Skills, Projects, Contact, Footer -->
-
     <!-- Footer -->
     <footer class="text-center py-6 bg-gray-800 fade-in">
-      <p>&copy; 2023 Hasan. All rights reserved.</p>
+      <p>&copy; 2025 ♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎. All rights reserved.</p>
     </footer>
 
-    <!-- Light/Dark Toggle Script -->
+    <!-- Scripts -->
     <script>
       const modeToggle = document.querySelector(".mode-toggle");
       const body = document.body;
+      const docsBtn = document.getElementById("docs-btn");
+      const docsModal = document.getElementById("docs-modal");
+      const closeDocs = document.getElementById("close-docs");
+      const docsIframe = document.getElementById("docs-iframe");
 
       modeToggle.addEventListener("click", () => {
         body.classList.toggle("light-mode");
@@ -205,6 +223,16 @@
           icon.classList.add("fa-moon");
         }
       });
+
+      docsBtn.addEventListener("click", () => {
+        docsIframe.src = "https://www.noobx-api.rf.gd/docs";
+        docsModal.classList.remove("hidden");
+      });
+
+      closeDocs.addEventListener("click", () => {
+        docsModal.classList.add("hidden");
+        docsIframe.src = "";
+      });
     </script>
   </body>
-  </html>
+</html>
