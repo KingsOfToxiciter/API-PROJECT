@@ -50,6 +50,9 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'profile.html'));
 });
 
+app.get('/test-ground', (req, res) => {
+  res.sendFile(path.join(__dirname, 'test.html'));
+});
 
 app.get("/apis", async (req, res) => {
     const { data } = await axios.get("https://raw.githubusercontent.com/KingsOfToxiciter/APIS/refs/heads/main/toxicitieslordhasan.json");
