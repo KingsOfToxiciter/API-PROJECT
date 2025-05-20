@@ -26,7 +26,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
 
-    <!-- Custom CSS -->
     <style>
       body {
         margin: 0;
@@ -158,11 +157,17 @@
   </head>
   <body class="gradient-bg text-white font-sans">
 
-    <!-- Docs Button -->
+    <!-- Hamburger Menu -->
     <div class="fixed top-4 left-4 z-50">
-      <button id="docs-btn" class="bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 transition-all">
-        Docs
+      <button id="menu-toggle" class="text-white text-3xl focus:outline-none">
+        <i class="fas fa-bars"></i>
       </button>
+      <div id="menu-dropdown" class="mt-2 bg-gray-800 text-white rounded shadow-lg hidden">
+        <ul class="flex flex-col">
+          <li><button id="docs-btn" class="px-4 py-2 text-left hover:bg-gray-700 w-full">Docs</button></li>
+          <li><a href="https://www.noobx-api.rf.gd/test-ground" target="_blank" class="px-4 py-2 block hover:bg-gray-700">Test Ground</a></li>
+        </ul>
+      </div>
     </div>
 
     <!-- Docs Modal -->
@@ -211,6 +216,8 @@
       const docsModal = document.getElementById("docs-modal");
       const closeDocs = document.getElementById("close-docs");
       const docsIframe = document.getElementById("docs-iframe");
+      const menuToggle = document.getElementById("menu-toggle");
+      const menuDropdown = document.getElementById("menu-dropdown");
 
       modeToggle.addEventListener("click", () => {
         body.classList.toggle("light-mode");
@@ -224,9 +231,14 @@
         }
       });
 
+      menuToggle.addEventListener("click", () => {
+        menuDropdown.classList.toggle("hidden");
+      });
+
       docsBtn.addEventListener("click", () => {
         docsIframe.src = "https://www.noobx-api.rf.gd/docs";
         docsModal.classList.remove("hidden");
+        menuDropdown.classList.add("hidden");
       });
 
       closeDocs.addEventListener("click", () => {
