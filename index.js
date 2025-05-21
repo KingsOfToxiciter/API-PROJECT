@@ -59,7 +59,7 @@ await new Promise((resolve, reject) => {
       }
     });
   }, 5 * 60 * 1000);
-};
+}
 
 async function downloadFromUrl(url, path) {
   const response = await axios.get(url, { responseType: 'stream', headers: {
@@ -72,7 +72,7 @@ async function downloadFromUrl(url, path) {
     writer.on('finish', resolve);
     writer.on('error', reject);
   });
-};
+}
 
 
 app.get('/', (req, res) => {
@@ -405,10 +405,11 @@ app.get("/api/var", async (req, res) => {
             responseType: "stream",
         });
 
-        
-        res.setHeader("Content-Type", "image/jpeg");
-        response.data.pipe(res);
+        const filename = fileName(".jpg");
+        await upload(response.data, filename);
 
+        res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        
     } catch (error) {
         console.error("error:", error.response ? error.response.data : error.message);
         res.status(500).json({ status: "error", response: "Error generating the image\nDetails: " + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -444,9 +445,10 @@ app.get("/api/enhance", async (req, res) => {
                     }
                 );
 
-               
-                res.setHeader("Content-Type", "image/jpeg");
-                enhanceResponse.data.pipe(res);
+               const filename = fileName(".jpg");
+               await upload(enhanceResponse.data, filename);
+
+                res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
             } catch (error) {
                 console.error("Enhance error:", error);
                 res.status(500).json({ status: "error", response: "Error enhancing the image\nDetails: " + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -490,8 +492,10 @@ app.get("/api/upscale", async (req, res) => {
                     }
                 );
 
-                res.setHeader("Content-Type", "image/png");
-                clipdropResponse.data.pipe(res);
+                 const filename = fileName(".jpg");
+                 await upload(clipdropResponse.data, filename);
+
+                res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
             } catch (error) {
                 console.error("ClipDrop error:", error.response?.data || error.message);
                 res.status(500).json({ status: "error", response: "Error processing the image", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -523,7 +527,7 @@ app.get("/api/rbg", async (req, res) => {
 
             try {
                 
-                const enhanceResponse = await axios.post(
+                const response = await axios.post(
                     "https://api.remove.bg/v1.0/removebg",
                     form,
                     {
@@ -535,11 +539,11 @@ app.get("/api/rbg", async (req, res) => {
                     }
                 );
 
-             
-                res.setHeader("Content-Type", "image/png");
+                 const filename = fileName(".jpg");
+                await upload(response.data, filename);
 
-              
-                enhanceResponse.data.pipe(res);
+                res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+                
             } catch (error) {
                 console.error("Remove.bg error:", error);
                 res.status(500).json({ status: "error", response: "Error removing the background", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -572,8 +576,10 @@ app.get("/api/flux", async(req,res)=>{
                 }
             );
 
-        res.setHeader('Content-Type', 'image/png');
-        response.data.pipe(res)
+          const filename = fileName(".jpg");
+            await upload(response.data, filename);
+
+            res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     } catch (error) {
           console.log("imagine error",error)
         res.status(500).json({ status: "error", response: 'Error processing the request', author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -609,14 +615,9 @@ app.get("/api/imagine", async (req, res) => {
       }
     );
 
-    response.data.on("data", (chunk) => {
-      res.write(chunk); 
-    });
-
-    response.data.on("end", () => {
-      res.write("\n🎉 Image generation complete!\n");
-      res.end();
-    });
+    const filename = fileName(".jpg");
+      await upload(response.data, filename);
+      res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (error) {
     console.error("❌ Error:", error.message);
     res.json({ status: "error", response: `❌ Image generation failed: ${error.message}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -676,7 +677,7 @@ app.get("/api/cbg", async (req, res) => {
         form.append("image", fs.createReadStream(imagePath));
         form.append("prompt", prompt);
 
-        const enhanceResponse = await axios.post(
+        const response = await axios.post(
             "https://api.vyro.ai/v2/image/generations/ai-background",
             form,
             {
@@ -684,12 +685,14 @@ app.get("/api/cbg", async (req, res) => {
                     ...form.getHeaders(),
                     Authorization: `Bearer ${process.env.VYRO_API}`,
                 },
-                responseType: "arraybuffer",
+                responseType: "stream",
             }
         );
 
-        res.setHeader("Content-Type", "image/jpeg");
-        res.send(Buffer.from(enhanceResponse.data));
+        const filename = fileName(".jpg");
+        await upload(response.data, filename);
+        res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        
     } catch (error) {
         console.error("Error:", error.message);
         res.status(500).json({ status: "error", response: "An error occurred while processing the image", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -754,9 +757,9 @@ app.get("/api/expend", async (req, res) => {
             responseType: "stream",
         });
 
-        
-        res.setHeader("Content-Type", "image/jpeg");
-        response.data.pipe(res);
+        const filename = fileName(".jpg");
+        await upload(response.data, filename);
+        res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
 
     } catch (error) {
         console.error("expand error:", error.response ? error.response.data : error.message);
@@ -780,9 +783,9 @@ app.get("/api/effect", async (req, res) => {
             responseType: "stream",
         });
 
-        
-        res.setHeader("Content-Type", "image/jpeg");
-        response.data.pipe(res);
+        const filename = fileName(".jpg")
+        await upload(response.data, filename);
+        res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
 
     } catch (error) {
         console.error("expand error:", error.response ? error.response.data : error.message);
@@ -818,7 +821,9 @@ app.get("/api/ultra", async (req, res) => {
       }
     );
 
-    response.data.pipe(res);
+    const filename = fileName(".jpg");
+      await upload(response.data, filename);
+      res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (error) {
     console.error("❌ Error:", error.message);
     res.status(500).json({ status: "error", response: "Image generation failed", details: error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -841,9 +846,10 @@ app.get("/api/fc", async (req, res) => {
             responseType: "stream",
         });
 
-        
-        res.setHeader("Content-Type", "image/jpeg");
-        response.data.pipe(res);
+        const filename = fileName(".jpg");
+        await upload(response.data, filename);
+
+        res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
 
     } catch (error) {
         console.error("error:", error.response ? error.response.data : error.message);
@@ -1044,8 +1050,9 @@ form.append("seed", seed);
                     }
                 );
 
-                res.setHeader("Content-Type", "image/png");
-                clipdropResponse.data.pipe(res);
+                const filename = fileName(".jpg");
+                await upload(clipdropResponse.data, filename);
+                res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
             } catch (error) {
                 console.error("ClipDrop error:", error.response?.data || error.message);
                 res.status(500).json({ status: "error", response: "Error processing the image\nDetails: " + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
