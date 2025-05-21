@@ -729,7 +729,7 @@ app.get("/api/cbg", async (req, res) => {
         
     } catch (error) {
         console.error("Error:", error.message);
-        res.status(500).json({ status: "error", response: "An error occurred while processing the image", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.status(500).json({ status: "error", response: "An error occurred while processing the image, error: " + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
 });
 
