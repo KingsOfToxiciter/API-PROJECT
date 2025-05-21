@@ -50,6 +50,15 @@ await new Promise((resolve, reject) => {
   writer.on("finish", resolve);
   writer.on("error", reject);
 });
+    setTimeout(() => {
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error(`❌ Error deleting ${filename}:`, err.message);
+      } else {
+        console.log(`✅ Deleted file: ${filename}`);
+      }
+    });
+  }, 5 * 60 * 1000);
 };
 
 async function downloadFromUrl(url, path) {
@@ -373,7 +382,7 @@ app.get("/api/infinity", async (req, res) => {
       },
       responseType: "stream",
     });
-      const filename = await fileName(.jpg);
+      const filename = await fileName(".jpg");
       await upload(response.data, filename); 
       res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     
