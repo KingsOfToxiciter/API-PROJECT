@@ -97,7 +97,7 @@ app.get("/api/text-to-video", async (req, res) => {
   if (!prompt) {
       return res.status(400).json({ status: "error", response: "Prompt is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   }
-  res.setHeader("Content-Type", "video/mp4");
+  
 
   try {
     const form = new FormData();
@@ -401,7 +401,6 @@ app.get("/api/infinity", async (req, res) => {
   if (!prompt) {
       return res.status(400).json({ status: "error", response: "Prompt is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   }
-  res.setHeader("Content-Type", "image/png");
 
   try {
     const form = new FormData();
@@ -467,7 +466,7 @@ app.get("/api/enhance", async (req, res) => {
             form.append("image", fs.createReadStream(imagePath));
 
             try {
-                const enhanceResponse = await axios.post(
+                const response = await axios.post(
                     "https://api.vyro.ai/v2/image/enhance",
                     form,
                     {
@@ -480,7 +479,7 @@ app.get("/api/enhance", async (req, res) => {
                 );
 
                const filename = fileName(".jpg");
-               await upload(enhanceResponse.data, filename);
+               await upload(response.data, filename);
 
                 res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
             } catch (error) {
@@ -627,8 +626,7 @@ app.get("/api/imagine", async (req, res) => {
   const prompt = req.query.prompt;
   if (!prompt) {
       return res.status(400).json({ status: "error", response: "Prompt is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-  }
-  res.setHeader("Content-Type", "image/png"); 
+  } 
 
   try {
     const form = new FormData();
@@ -835,7 +833,6 @@ app.get("/api/ultra", async (req, res) => {
   if (!prompt) {
       return res.status(400).json({ status: "error", response: "Prompt is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   }
-  res.setHeader("Content-Type", `image/${output_format}`);
 
   try {
     const form = new FormData();
