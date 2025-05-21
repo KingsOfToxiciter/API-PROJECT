@@ -8,6 +8,7 @@ const util = require("util");
 const cheerio = require("cheerio");
 const cors = require("cors");
 const mongoose = require('mongoose');
+const crypto = require('crypto');
 const Link = require('./models/Link');
 const { spawn } = require("child_process");
 const DOWNLOAD_FOLDER = path.join(__dirname, "downloads");
@@ -31,6 +32,25 @@ function getRandomApi(key) {
   return key[Math.floor(Math.random() * key.length)];
 };
 
+function fileName(ext) {
+    return crypto.randomBytes(5).toString('hex') + ext;
+};
+
+const uploadFolder = path.join(__dirname, 'images');
+app.use('/hasan', express.static(uploadFolder));
+
+async function upload(response, filename) {
+
+const filePath = path.join(uploadFolder, filename);
+const writer = fs.createWriteStream(filePath);
+
+response.pipe(writer);
+
+await new Promise((resolve, reject) => {
+  writer.on("finish", resolve);
+  writer.on("error", reject);
+});
+};
 
 async function downloadFromUrl(url, path) {
   const response = await axios.get(url, { responseType: 'stream', headers: {
@@ -353,8 +373,10 @@ app.get("/api/infinity", async (req, res) => {
       },
       responseType: "stream",
     });
-
-    response.data.pipe(res);
+      const filename = await fileName(.jpg);
+      await upload(response.data, filename); 
+      res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    
   } catch (error) {
     console.error("❌ Error:", error.message);
     res.status(500).json({ status: "error", response: "Image generation failed\nDetails: " + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
