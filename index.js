@@ -20,9 +20,7 @@ if (!fs.existsSync(DOWNLOAD_FOLDER)) {
 const AI_API_KEY = process.env.AI_API;
 const apis = process.env.HG_API.split(',').map(key => key.trim());
 const getNextApiKey = getFallbackKey(apis);
-const getNextApiKey = getFallbackKey(apis);
 const ultraApi = process.env.ST_API.split(',').map(key => key.trim());
-const getUltraKey = getFallbackKey(ultraApi);
 const getUltraKey = getFallbackKey(ultraApi);
 
 const app = express();
