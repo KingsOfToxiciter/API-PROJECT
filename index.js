@@ -11,6 +11,7 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 const Link = require('./models/Link');
 const { spawn } = require("child_process");
+const getFallbackKey = require('./utils/getFallbackKey');
 const DOWNLOAD_FOLDER = path.join(__dirname, "downloads");
 
 if (!fs.existsSync(DOWNLOAD_FOLDER)) {
@@ -18,9 +19,11 @@ if (!fs.existsSync(DOWNLOAD_FOLDER)) {
 };
 const AI_API_KEY = process.env.AI_API;
 const apis = process.env.HG_API.split(',').map(key => key.trim());
-const apiKey = getRandomApi(apis);
+const getNextApiKey = getFallbackKey(apis);
+const getNextApiKey = getFallbackKey(apis);
 const ultraApi = process.env.ST_API.split(',').map(key => key.trim());
-const randomUltraApi = getRandomApi(ultraApi);
+const getUltraKey = getFallbackKey(ultraApi);
+const getUltraKey = getFallbackKey(ultraApi);
 
 const app = express();
 const PORT = 3000;
@@ -602,7 +605,7 @@ app.get("/api/flux", async(req,res)=>{
               
                 {
                     headers: {
-                        Authorization: `Bearer ${apiKey}`,
+                        Authorization: `Bearer ${getNextApiKey()}`,
                         "Content-Type": "application/json",
                     },
                     responseType: 'stream',
@@ -845,7 +848,7 @@ app.get("/api/ultra", async (req, res) => {
       {
         headers: {
           ...form.getHeaders(),
-          Authorization: `Bearer ${randomUltraApi}`, 
+          Authorization: `Bearer ${getUltraKey()}`, 
           Accept: "image/*",
         },
         responseType: "stream",
