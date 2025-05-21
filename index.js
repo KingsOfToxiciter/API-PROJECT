@@ -89,6 +89,40 @@ app.get("/apis", async (req, res) => {
 });
 
 
+
+app.get("/api/text-to-video", async (req, res) => {
+  const prompt = req.query.prompt;
+  const ratio = req.query.ratio || "1:1";
+
+  if (!prompt) {
+      return res.status(400).json({ status: "error", response: "Prompt is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
+  res.setHeader("Content-Type", "video/mp4");
+
+  try {
+    const form = new FormData();
+    form.append("prompt", prompt);
+    form.append("style", "kling-1.0-pro");
+    form.append("aspect_ratio", ratio);
+
+    const response = await axios.post("https://api.vyro.ai/v2/video/text-to-video", form, {
+      headers: {
+        ...form.getHeaders(),
+        Authorization: `Bearer ${process.env.VYRO_API}`
+      },
+      responseType: "stream",
+    });
+      const filename = await fileName(".mp4");
+      await upload(response.data, filename); 
+      res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    
+  } catch (error) {
+    console.error("❌ Error:", error.message);
+    res.status(500).json({ status: "error", response: "Image generation failed\nDetails: " + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
+});
+
+
 app.get("/api/prompt", async (req, res) => {
   const imageUrl = req.query.imageUrl;
     
