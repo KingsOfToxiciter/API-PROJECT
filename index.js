@@ -606,41 +606,7 @@ app.get("/api/rbg", async (req, res) => {
 });
 
 
-
-app.get("/api/flux", async(req,res)=>{
-  const prompt = req.query.prompt;
-    if (!prompt) {
-        return res.json({ status: "error", response: "please provide a prompt", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    }
-        try {
-            const response = await axios.post(
-                "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev",
-              
-                { "inputs": prompt },
-              
-                {
-                    headers: {
-                        Authorization: `Bearer ${getNextApiKey()}`,
-                        "Content-Type": "application/json",
-                    },
-                    responseType: 'stream',
-                }
-            );
-
-          const filename = fileName(".jpg");
-            await upload(response.data, filename);
-
-            res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    } catch (error) {
-          console.log("imagine error",error)
-        res.status(500).json({ status: "error", response: 'Error processing the request', author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-        }
-});
-
-
-
-
-app.get("/api/imagine", async (req, res) => {
+app.get("/api/flux", async (req, res) => {
   const prompt = req.query.prompt;
   if (!prompt) {
       return res.status(400).json({ status: "error", response: "Prompt is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
