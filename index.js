@@ -90,7 +90,7 @@ app.get("/apis", async (req, res) => {
 });
 
 
-app.get("/api/imagine", (req, res) => {
+app.get("/api/imagine", async (req, res) => {
     const prompt = req.query.prompt;
     const model = req.query.model || "infinity";
     const steps = req.query.steps || 30;
