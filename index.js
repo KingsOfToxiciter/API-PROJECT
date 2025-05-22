@@ -94,19 +94,32 @@ app.get("/api/imagine", async (req, res) => {
     const prompt = req.query.prompt;
     const model = req.query.model || "infinity";
     const steps = req.query.steps || 30;
-      if (!prompt) {
-          return res.json({ status: "error", response: "prompt is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-      }
+
+    if (!prompt) {
+        return res.json({ 
+            status: "error", 
+            response: "prompt is required", 
+            author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" 
+        });
+    }
+
     try {
-    const { data } = await axios.get(`https://noobs-scrape-69.onrender.com/imagine?prompt=${encodeURIConponent(prompt)}&model=${model}&steps=${steps}`);
+        const { data } = await axios.get(`https://noobs-scrape-69.onrender.com/imagine?prompt=${encodeURIComponent(prompt)}&model=${model}&steps=${steps}`);
         
-        res.json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.json({ 
+            status: "success", 
+            response: data.response, 
+            author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" 
+        });
     } catch (e) {
         console.log(e);
-        res.json({ status: "error", response: "something wants wrong\nDetails: " + e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.json({ 
+            status: "error", 
+            response: "something went wrong\nDetails: " + e.message, 
+            author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" 
+        });
     }
 });
-
 
 app.get("/api/text-to-video", async (req, res) => {
   const prompt = req.query.prompt;
