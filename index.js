@@ -76,24 +76,11 @@ async function downloadFromUrl(url, path) {
 }
 
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'profile.html'));
-});
-
-app.get('/test-ground', (req, res) => {
-  res.sendFile(path.join(__dirname, 'test.html'));
-});
-
-app.get("/apis", async (req, res) => {
-    const { data } = await axios.get("https://raw.githubusercontent.com/KingsOfToxiciter/APIS/refs/heads/main/toxicitieslordhasan.json");
-    res.json(data);
-});
-
-
 app.get("/api/imagine", async (req, res) => {
     const prompt = req.query.prompt;
     const model = req.query.model || "infinity";
-    const steps = req.query.steps || 30;
+    const seed = req.query.seed || 3663637;
+    const num_img = req.query.num_img || 4;
 
     if (!prompt) {
         return res.json({ 
@@ -104,7 +91,7 @@ app.get("/api/imagine", async (req, res) => {
     }
 
     try {
-        const { data } = await axios.get(`https://noobs-scrape-69.onrender.com/imagine?prompt=${encodeURIComponent(prompt)}&model=${model}&steps=${steps}`);
+        const { data } = await axios.get(`https://noobs-scrape-69.onrender.com/imagine?prompt=${encodeURIComponent(prompt)}&model=${model}&seed=${seed}&num_img=${num_img}`);
         
         res.json({ 
             status: "success", 
@@ -1239,6 +1226,19 @@ app.get("/docs", (req, res) => {
   });
 
   res.json(routes);
+});
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'profile.html'));
+});
+
+app.get('/test-ground', (req, res) => {
+  res.sendFile(path.join(__dirname, 'test.html'));
+});
+
+app.get("/apis", async (req, res) => {
+    const { data } = await axios.get("https://raw.githubusercontent.com/KingsOfToxiciter/APIS/refs/heads/main/toxicitieslordhasan.json");
+    res.json(data);
 });
 
 
