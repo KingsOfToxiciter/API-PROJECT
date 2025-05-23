@@ -11,7 +11,7 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 const Link = require('./models/Link');
 const { spawn } = require("child_process");
-const getFallbackKey = require('./utils/getFallbackKey');
+const { getFallbackKey, getRandomData, fileName, upload, downloadFromUrl } = require('./utils');
 const DOWNLOAD_FOLDER = path.join(__dirname, "downloads");
 
 if (!fs.existsSync(DOWNLOAD_FOLDER)) {
@@ -25,56 +25,10 @@ const getUltraKey = getFallbackKey(ultraApi);
 
 const app = express();
 const PORT = 3000;
+
 app.use(cors());
 app.use(express.json());
-
-
-function getRandomApi(key) {
-  return key[Math.floor(Math.random() * key.length)];
-};
-
-function fileName(ext) {
-    return crypto.randomBytes(5).toString('hex') + ext;
-};
-
-const uploadFolder = path.join(__dirname, 'images');
 app.use('/hasan', express.static(uploadFolder));
-
-async function upload(response, filename) {
-
-const filePath = path.join(uploadFolder, filename);
-const writer = fs.createWriteStream(filePath);
-
-response.pipe(writer);
-
-await new Promise((resolve, reject) => {
-  writer.on("finish", resolve);
-  writer.on("error", reject);
-});
-    setTimeout(() => {
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.error(`❌ Error deleting ${filename}:`, err.message);
-      } else {
-        console.log(`✅ Deleted file: ${filename}`);
-      }
-    });
-  }, 5 * 60 * 1000);
-}
-
-async function downloadFromUrl(url, path) {
-  const response = await axios.get(url, { responseType: 'stream', headers: {
-  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-  } });
-  const writer = fs.createWriteStream(path);
-  response.data.pipe(writer);
-
-  return new Promise((resolve, reject) => {
-    writer.on('finish', resolve);
-    writer.on('error', reject);
-  });
-}
-
 
 app.get("/api/imagine", async (req, res) => {
     const prompt = req.query.prompt;
