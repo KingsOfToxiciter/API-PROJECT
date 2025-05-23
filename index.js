@@ -28,6 +28,7 @@ const PORT = 3000;
 
 app.use(cors());
 app.use(express.json());
+const uploadFolder = path.join(__dirname, 'images');
 app.use('/hasan', express.static(uploadFolder));
 
 app.get("/api/imagine", async (req, res) => {
