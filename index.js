@@ -32,8 +32,8 @@ const uploadFolder = path.join(__dirname, 'images');
 app.use('/hasan', express.static(uploadFolder));
 
 app.get("/api/art", async (req, res) => {
-    const url = request.query.url;
-    const prompt = request.query.prompt || "convert to anime type";
+    const url = req.query.url;
+    const prompt = req.query.prompt || "convert to anime type";
     if(!url) {
         return res.json({ status: "error", response: "url is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
