@@ -31,6 +31,21 @@ app.use(express.json());
 const uploadFolder = path.join(__dirname, 'images');
 app.use('/hasan', express.static(uploadFolder));
 
+app.get("/api/art", async (req, res) => {
+    const url = request.query.url;
+    const prompt = request.query.prompt || "convert to anime type";
+    if(!url) {
+        return res.json({ status: "error", response: "url is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    }
+    try {
+    const { data } = await axios.get(`https://noobs-scrape-69.onrender.com/art?prompt=${encodeURIComponent(prompt)}&url=${encodeURIComponent(url)}`);
+    res.json({ status: "success", data, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    }catch (e) {
+        console.error(e);
+        res.json({ status: "error", response: "something wants wrong\nDetails: "+ e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    }
+});
+
 app.get("/api/imagine", async (req, res) => {
     const prompt = req.query.prompt;
     const model = req.query.model || "infinity";
