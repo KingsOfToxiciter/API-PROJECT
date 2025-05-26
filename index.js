@@ -39,7 +39,7 @@ app.get("/api/edit", async (req, res) => {
         return res.json({ status: "error", response: "url and text are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
     try {
-    const { data } = await axios.get(`https://noobs-scrape-69.onrender.com/edit?url=${encodeURIComponent(url)}&prompt=${encodeURIComponent(text)}`);
+    const { data } = await axios.get(`https://noobs-scrape-69.onrender.com/edit_2?url=${encodeURIComponent(url)}&prompt=${encodeURIComponent(text)}`);
     res.json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }catch (e) {
         console.error(e);
