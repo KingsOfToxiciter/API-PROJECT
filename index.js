@@ -53,9 +53,7 @@ app.get("/api/deepseek-v3", async (req, res) => {
      const { data } = await axios.post(
   'https://chatsandbox.com/api/chat',
   {
-    'messages': [
-      deepseekHistories[uid]
-    ],
+    'messages': deepseekHistories[uid],
     'character': 'deepseek'
   },
   {
