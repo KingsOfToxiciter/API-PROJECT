@@ -32,6 +32,23 @@ const uploadFolder = path.join(__dirname, 'images');
 app.use('/hasan', express.static(uploadFolder));
 
 
+app.get("/api/art-pro", async (req, res) => {
+    const url = req.query.url;
+    const type = req.query.type || "anime";
+    if(!url) {
+        return res.json({ status: "error", response: "url is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    }
+    try {
+    const { data } = await axios.get(`https://noobs-scrape-69.onrender.com/art-pro?url=${encodeURIComponent(url)}&type=${type}`);
+    res.json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    }catch (e) {
+        console.error(e);
+        res.json({ status: "error", response: "something wants wrong\nDetails: "+ e, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    }
+});
+
+
+
 app.get("/api/edit", async (req, res) => {
     const url = req.query.url;
     const text = req.query.text;
