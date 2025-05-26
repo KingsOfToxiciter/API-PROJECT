@@ -31,6 +31,55 @@ app.use(express.json());
 const uploadFolder = path.join(__dirname, 'images');
 app.use('/hasan', express.static(uploadFolder));
 
+const deepseekHistories = {};
+
+app.get("/api/deepseek-v3", async (req, res) => {
+    const uid = req.query.uid;
+    const text = req.query.text;
+    
+    if (!uid || !text) return res.status(400).json({ status: "error", response: "url and text are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎"});
+    
+    if (!deepseekHistories[uid]) {
+        deepseekHistories[uid] = [];
+    }
+    if (text.toLowerCase() === 'clear') {
+        deepseekHistories[uid] = [];
+        return res.json({ status: "success", response: "successfully cleared your chat history", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    }
+
+        deepseekHistories[uid].push({ role: 'user', content: text });
+
+    try {
+     const { data } = await axios.post(
+  'https://chatsandbox.com/api/chat',
+  {
+    'messages': [
+      deepseekHistories[uid]
+    ],
+    'character': 'deepseek'
+  },
+  {
+    headers: {
+      'authority': 'chatsandbox.com',
+      'accept': '*/*',
+      'accept-language': 'en-US,en;q=0.9',
+      'content-type': 'application/json',
+      'cookie': '_ga=GA1.1.1949543520.1748242606; _ga_V22YK5WBFD=deleted; _ga_V22YK5WBFD=GS2.1.s1748242606$o1$g1$t1748242940$j0$l0$h0',
+      'origin': 'https://chatsandbox.com',
+      'referer': 'https://chatsandbox.com/chat/deepseek',
+      'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
+    }
+  }
+);
+    const reply = data.reasoning_content;
+        deepseekHistories[uid].push({ role: 'assistant', content: reply });
+        res.json({ status: "success", response: reply, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    } catch (e) {
+        console.error(e || e.message);
+        res.status(500).json({ status: "error", response: "something wants wrong\nDetails: " + e, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    }
+});
+
 app.get("/api/edit", async (req, res) => {
     const url = req.query.url;
     const text = req.query.text;
