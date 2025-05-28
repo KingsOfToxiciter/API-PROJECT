@@ -112,37 +112,6 @@ app.get("/api/imagine", async (req, res) => {
     }
 });
 
-app.get("/api/text-to-video", async (req, res) => {
-  const prompt = req.query.prompt;
-  const ratio = req.query.ratio || "1:1";
-
-  if (!prompt) {
-      return res.status(400).json({ status: "error", response: "Prompt is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-  }
-  
-
-  try {
-    const form = new FormData();
-    form.append("prompt", prompt);
-    form.append("style", "kling-1.0-pro");
-    form.append("aspect_ratio", ratio);
-
-    const response = await axios.post("https://api.vyro.ai/v2/video/text-to-video", form, {
-      headers: {
-        ...form.getHeaders(),
-        Authorization: `Bearer ${process.env.VYRO_API}`
-      },
-      responseType: "stream",
-    });
-      const filename = await fileName(".mp4");
-      await upload(response.data, filename); 
-      res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    
-  } catch (error) {
-    console.error("❌ Error:", error.message);
-    res.status(500).json({ status: "error", response: "Image generation failed\nDetails: " + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-  }
-});
 
 
 app.get("/api/prompt", async (req, res) => {
@@ -282,12 +251,12 @@ app.get("/api/toxic-ai", async (req, res) => {
     }
 });*/
 
-app.get("/api/alldl", (req, res) => {
-    const videoUrl = req.query.url;
+app.get("/api/alldl", async (req, res) => {
+    const url = req.query.url;
     let format = req.query.format || "mp4";
 
-    if (!videoUrl) {
-        return res.status(400).json({ error: "URL is required" });
+    if (!url) {
+        return res.status(400).json({ status: "error", response: "URL is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
 
     const formatMap = {
@@ -296,42 +265,30 @@ app.get("/api/alldl", (req, res) => {
     };
 
     format = formatMap[format];
-
-    const fileName =
-        ["bestaudio", "worstaudio", "250", "249", "mp3"].includes(format)
-            ? `hasan_${Date.now()}.mp3`
-            : `hasan_${Date.now()}.mp4`;
+    
+ try{
+    let filename = await fileName(".mp4");
+     if (["bestaudio", "worstaudio", "250", "249", "mp3"].includes(format)) {
+         filename = await fileName(".mp3")
+       }
 
     const ytDlp = spawn("yt-dlp", [
         "-f",
         format,
         "-o",
         "-",
-        videoUrl,
+        url,
     ]);
 
-    let responseSent = false;
+    await upload(ytDlp.stdout, filename);
 
-    await upload(ytDlp.stdout, fileName);
+     res.json({ status: "success", url: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+ } catch (e) {
+     console.error(e);
+     res.json({ status: "error", response: "something else\nDetails: " + e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+ }
     
-    ytDlp.on("error", (err) => {
-        if (!responseSent) {
-            res.status(500).json({
-                error: "yt-dlp execution failed",
-                details: err.message,
-            });
-            responseSent = true;
-        }
-    });
-
-    ytDlp.on("close", (code) => {
-        if (code !== 0 && !responseSent) {
-            res.status(500).json({
-                error: `yt-dlp exited with code ${code}`,
-            });
-            responseSent = true;
-        }
-    });
+    
 });
 
 
@@ -492,7 +449,7 @@ app.get("/api/infinity", async (req, res) => {
     });
       const filename = await fileName(".jpg");
       await upload(response.data, filename); 
-      res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+      res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     
   } catch (error) {
     console.error("❌ Error:", error.message);
@@ -516,7 +473,7 @@ app.get("/api/var", async (req, res) => {
         const filename = fileName(".jpg");
         await upload(response.data, filename);
 
-        res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
         
     } catch (error) {
         console.error("error:", error.response ? error.response.data : error.message);
@@ -556,7 +513,7 @@ app.get("/api/enhance", async (req, res) => {
                const filename = fileName(".jpg");
                await upload(response.data, filename);
 
-                res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+                res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
             } catch (error) {
                 console.error("Enhance error:", error);
                 res.status(500).json({ status: "error", response: "Error enhancing the image\nDetails: " + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -569,49 +526,18 @@ app.get("/api/enhance", async (req, res) => {
 });
 
 
-const CLIP_UPS_KEY = process.env.UPS_API; 
-
 app.get("/api/upscale", async (req, res) => {
     const imageUrl = req.query.imageUrl;
 
     if (!imageUrl) {
         return res.status(400).json({ status: "error", response: "Please provide an image URL!", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
-
-    const imagePath = path.join(DOWNLOAD_FOLDER, "input.jpg");
-    await downloadFromUrl(imageUrl, imagePath);
-
     try {
-        const form = new FormData();
-            form.append("image_file", fs.createReadStream(imagePath));
-            form.append("target_width", "1080");
-            form.append("target_height", "1080");
-
-            try {
-                const clipdropResponse = await axios.post(
-                    "https://clipdrop-api.co/image-upscaling/v1/upscale",
-                    form,
-                    {
-                        headers: {
-                            ...form.getHeaders(),
-                            "x-api-key": CLIP_UPS_KEY,
-                        },
-                        responseType: "stream",
-                    }
-                );
-
-                 const filename = fileName(".jpg");
-                 await upload(clipdropResponse.data, filename);
-
-                res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-            } catch (error) {
-                console.error("ClipDrop error:", error.response?.data || error.message);
-                res.status(500).json({ status: "error", response: "Error processing the image", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-            }
-
+        const { data } = await axios.get(`https://scrape.noobx-api.rf.gd/upscale?url=${encodeURIComponent(imageUrl)}`);
+        res.json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     } catch (error) {
         console.error("Fetch error:", error.message);
-        res.status(500).send("Error fetching the image from the URL");
+        res.status(500).send({ status: "error", response: "something have trouble\nDetails: " + error.message });
     }
 });
 
@@ -650,7 +576,7 @@ app.get("/api/rbg", async (req, res) => {
                  const filename = fileName(".jpg");
                 await upload(response.data, filename);
 
-                res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+                res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
                 
             } catch (error) {
                 console.error("Remove.bg error:", error);
@@ -690,7 +616,7 @@ app.get("/api/flux", async (req, res) => {
 
     const filename = fileName(".jpg");
       await upload(response.data, filename);
-      res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+      res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (error) {
     console.error("❌ Error:", error.message);
     res.json({ status: "error", response: `❌ Image generation failed: ${error.message}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -764,7 +690,7 @@ app.get("/api/cbg", async (req, res) => {
 
         const filename = fileName(".jpg");
         await upload(response.data, filename);
-        res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
         
     } catch (error) {
         console.error("Error:", error.message);
@@ -832,7 +758,7 @@ app.get("/api/expend", async (req, res) => {
 
         const filename = fileName(".jpg");
         await upload(response.data, filename);
-        res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
 
     } catch (error) {
         console.error("expand error:", error.response ? error.response.data : error.message);
@@ -858,7 +784,7 @@ app.get("/api/effect", async (req, res) => {
 
         const filename = fileName(".jpg")
         await upload(response.data, filename);
-        res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
 
     } catch (error) {
         console.error("expand error:", error.response ? error.response.data : error.message);
@@ -895,7 +821,7 @@ app.get("/api/ultra", async (req, res) => {
 
     const filename = fileName(".jpg");
       await upload(response.data, filename);
-      res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+      res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (error) {
     console.error("❌ Error:", error.message);
     res.status(500).json({ status: "error", response: "Image generation failed", details: error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -921,7 +847,7 @@ app.get("/api/fc", async (req, res) => {
         const filename = fileName(".jpg");
         await upload(response.data, filename);
 
-        res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
 
     } catch (error) {
         console.error("error:", error.response ? error.response.data : error.message);
@@ -1124,7 +1050,7 @@ form.append("seed", seed);
 
                 const filename = fileName(".jpg");
                 await upload(clipdropResponse.data, filename);
-                res.json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+                res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
             } catch (error) {
                 console.error("ClipDrop error:", error.response?.data || error.message);
                 res.status(500).json({ status: "error", response: "Error processing the image\nDetails: " + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -1289,15 +1215,16 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'profile.html'));
 });
 
-app.get('/test-ground', (req, res) => {
+app.get('/explore', (req, res) => {
   res.sendFile(path.join(__dirname, 'test.html'));
 });
 
-app.get("/apis", async (req, res) => {
-    const { data } = await axios.get("https://raw.githubusercontent.com/KingsOfToxiciter/APIS/refs/heads/main/toxicitieslordhasan.json");
-    res.json(data);
+app.get("/downloader", (req, res) => {
+  res.sendFile(path.join(__dirname, "downloader.html"));
 });
-
+app.get("/uploader", (req, res) => {
+  res.sendFile(path.join(__dirname, "uploader.html"));
+});
 
 
 function getQueryParams(stack) {
