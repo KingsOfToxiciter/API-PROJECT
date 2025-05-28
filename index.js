@@ -302,9 +302,6 @@ app.get("/api/alldl", (req, res) => {
             ? `hasan_${Date.now()}.mp3`
             : `hasan_${Date.now()}.mp4`;
 
-    const filePath = path.join("hasan", fileName);
-
-    
     const ytDlp = spawn("yt-dlp", [
         "-f",
         format,
@@ -313,35 +310,10 @@ app.get("/api/alldl", (req, res) => {
         videoUrl,
     ]);
 
-    const writer = fs.createWriteStream(filePath);
     let responseSent = false;
 
+    await upload(ytDlp.stdout, fileName);
     
-    ytDlp.stdout.pipe(writer);
-
-    
-    ytDlp.stderr.on("data", (data) => {
-        console.log(`yt-dlp: ${data}`);
-    });
-
-    writer.on("finish", () => {
-        if (!responseSent) {
-            const finalUrl = `https://www.noobx.work.gd/${fileName}`;
-           res.json({ status: "success", url: finalUrl, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-            responseSent = true;
-        }
-    });
-
-    writer.on("error", (err) => {
-        if (!responseSent) {
-            res.status(500).json({
-                error: "Failed to write downloaded file",
-                details: err.message,
-            });
-            responseSent = true;
-        }
-    });
-
     ytDlp.on("error", (err) => {
         if (!responseSent) {
             res.status(500).json({
