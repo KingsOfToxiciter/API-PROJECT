@@ -256,7 +256,7 @@ app.get("/api/toxic-ai", async (req, res) => {
 
 
 
-app.get("/api/alldl", async (req, res) => {
+/*app.get("/api/alldl", async (req, res) => {
     const url = req.query.url;
     let format = req.query.format || "b";
 
@@ -280,7 +280,88 @@ app.get("/api/alldl", async (req, res) => {
         console.error(error);
         res.status(500).json({ status: "error", response: "Failed to fetch the media stream\nDetails: " + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
+});*/
+
+app.get("/api/alldl", (req, res) => {
+    const videoUrl = req.query.url;
+    let format = req.query.format || "mp4";
+
+    if (!videoUrl) {
+        return res.status(400).json({ error: "URL is required" });
+    }
+
+    const formatMap = {
+        mp3: "bestaudio",
+        mp4: "b"
+    };
+
+    format = formatMap[format];
+
+    const fileName =
+        ["bestaudio", "worstaudio", "250", "249", "mp3"].includes(format)
+            ? `hasan_${Date.now()}.mp3`
+            : `hasan_${Date.now()}.mp4`;
+
+    const filePath = path.join("hasan", fileName);
+
+    
+    const ytDlp = spawn("yt-dlp", [
+        "-f",
+        format,
+        "-o",
+        "-",
+        videoUrl,
+    ]);
+
+    const writer = fs.createWriteStream(filePath);
+    let responseSent = false;
+
+    
+    ytDlp.stdout.pipe(writer);
+
+    
+    ytDlp.stderr.on("data", (data) => {
+        console.log(`yt-dlp: ${data}`);
+    });
+
+    writer.on("finish", () => {
+        if (!responseSent) {
+            const finalUrl = `https://www.noobx.work.gd/${fileName}`;
+           res.json({ status: "success", url: finalUrl, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+            responseSent = true;
+        }
+    });
+
+    writer.on("error", (err) => {
+        if (!responseSent) {
+            res.status(500).json({
+                error: "Failed to write downloaded file",
+                details: err.message,
+            });
+            responseSent = true;
+        }
+    });
+
+    ytDlp.on("error", (err) => {
+        if (!responseSent) {
+            res.status(500).json({
+                error: "yt-dlp execution failed",
+                details: err.message,
+            });
+            responseSent = true;
+        }
+    });
+
+    ytDlp.on("close", (code) => {
+        if (code !== 0 && !responseSent) {
+            res.status(500).json({
+                error: `yt-dlp exited with code ${code}`,
+            });
+            responseSent = true;
+        }
+    });
 });
+
 
 app.get('/api/dalle-3', async (req, res) => {
   const prompt = req.query.prompt;
