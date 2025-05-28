@@ -31,6 +31,23 @@ app.use(express.json());
 const uploadFolder = path.join(__dirname, 'images');
 app.use('/hasan', express.static(uploadFolder));
 
+app.get("/api/tools", async (req, res) => {
+    const url = req.query.url;
+    const prompt = req.query.prompt;
+    const type = req.query.type;
+    if(!url || !type) {
+        return res.json({ status: "error", response: "url and type are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    }
+    try {
+    const { data } = await axios.get(`https://api.noobx.work.gd/tools?url=${encodeURIComponent(url)}&prompt=${encodeURIComponent(prompt)}&type=${type}`);
+    res.json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    }catch (e) {
+        console.error(e);
+        res.json({ status: "error", response: data.response, details: e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    }
+});
+
+
 
 app.get("/api/art-pro", async (req, res) => {
     const url = req.query.url;
@@ -39,7 +56,7 @@ app.get("/api/art-pro", async (req, res) => {
         return res.json({ status: "error", response: "url is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
     try {
-    const { data } = await axios.get(`https://noobs-scrape-69.onrender.com/art-pro?url=${encodeURIComponent(url)}&type=${type}`);
+    const { data } = await axios.get(`https://api.noobx.work.gd/art-pro?url=${encodeURIComponent(url)}&type=${type}`);
     res.json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }catch (e) {
         console.error(e);
@@ -56,7 +73,7 @@ app.get("/api/edit", async (req, res) => {
         return res.json({ status: "error", response: "url and text are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
     try {
-    const { data } = await axios.get(`https://noobs-scrape-69.onrender.com/edit_2?url=${encodeURIComponent(url)}&prompt=${encodeURIComponent(text)}`);
+    const { data } = await axios.get(`https://api.noobx.work.gd/edit_2?url=${encodeURIComponent(url)}&prompt=${encodeURIComponent(text)}`);
     res.json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }catch (e) {
         console.error(e);
@@ -72,7 +89,7 @@ app.get("/api/art", async (req, res) => {
         return res.json({ status: "error", response: "url is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
     try {
-    const { data } = await axios.get(`https://noobs-scrape-69.onrender.com/art?prompt=${encodeURIComponent(prompt)}&url=${encodeURIComponent(url)}`);
+    const { data } = await axios.get(`https://api.noobx.work.gd/art?prompt=${encodeURIComponent(prompt)}&url=${encodeURIComponent(url)}`);
     res.json({ status: "success", data, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }catch (e) {
         console.error(e);
@@ -95,7 +112,7 @@ app.get("/api/imagine", async (req, res) => {
     }
 
     try {
-        const { data } = await axios.get(`https://noobs-scrape-69.onrender.com/imagine?prompt=${encodeURIComponent(prompt)}&model=${model}&seed=${seed}&num_img=${num_img}`);
+        const { data } = await axios.get(`https://api.noobx.work.gd/imagine?prompt=${encodeURIComponent(prompt)}&model=${model}&seed=${seed}&num_img=${num_img}`);
         
         res.json({ 
             status: "success", 
