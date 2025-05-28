@@ -113,7 +113,7 @@
       result.innerHTML = "Processing... Please wait.";
 
       try {
-        const res = await fetch(`https://www.noobx.work.gd/api/alldl?url=${encodeURIComponent(url)}&format=${format}`);
+        const res = await fetch(`https://download.noobx-api.rf.gd/download?url=${encodeURIComponent(url)}&format=${format}`);
         const data = await res.json();
         
         if (data.url) {
