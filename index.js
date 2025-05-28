@@ -253,7 +253,7 @@ app.get("/api/toxic-ai", async (req, res) => {
 
 app.get("/api/alldl", async (req, res) => {
     const url = req.query.url;
-    let format = req.query.format || "mp4";
+    let format = req.query.format || "b";
 
     if (!url) {
         return res.status(400).json({ status: "error", response: "URL is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -264,7 +264,7 @@ app.get("/api/alldl", async (req, res) => {
         mp4: "b"
     };
 
-    format = formatMap[format];
+    format = formatMap[format] || format;
     
  try{
     let filename = await fileName(".mp4");
