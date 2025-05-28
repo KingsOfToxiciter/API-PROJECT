@@ -511,7 +511,7 @@ app.get("/api/upscale", async (req, res) => {
         return res.status(400).json({ status: "error", response: "Please provide an image URL!", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
     try {
-        const { data } = await axios.get(`https://scrape.noobx-api.rf.gd/upscale?url=${encodeURIComponent(imageUrl)}`);
+        const { data } = await axios.get(`https://api.noobx.work.gd/upscale?url=${encodeURIComponent(imageUrl)}`);
         res.json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     } catch (error) {
         console.error("Fetch error:", error.message);
