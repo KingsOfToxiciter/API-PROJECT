@@ -242,7 +242,7 @@ app.get("/api/toxic-ai", async (req, res) => {
 
 
 
-/*app.get("/api/alldl", async (req, res) => {
+app.get("/api/alldl", async (req, res) => {
     const url = req.query.url;
     let format = req.query.format || "b";
 
@@ -258,7 +258,7 @@ app.get("/api/toxic-ai", async (req, res) => {
     format = formatMap[format] || format;
 
     try {
-        const { data } = await axios.get(`https://kingsoftoxiciter-production.up.railway.app/download?url=${encodeURIComponent(url)}&format=${format}`);
+        const { data } = await axios.get(`https://download.noobx-api.rf.gd/download?url=${encodeURIComponent(url)}&format=${format}`);
         res.json({ status: "success", url: data.url, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
 
         
@@ -266,47 +266,8 @@ app.get("/api/toxic-ai", async (req, res) => {
         console.error(error);
         res.status(500).json({ status: "error", response: "Failed to fetch the media stream\nDetails: " + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
-});*/
-
-app.get("/api/alldl", async (req, res) => {
-    const url = req.query.url;
-    let format = req.query.format || "b";
-
-    if (!url) {
-        return res.status(400).json({ status: "error", response: "URL is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    }
-
-    const formatMap = {
-        mp3: "bestaudio",
-        mp4: "b"
-    };
-
-    format = formatMap[format] || format;
-    
- try{
-    let filename = await fileName(".mp4");
-     if (["bestaudio", "worstaudio", "250", "249", "mp3"].includes(format)) {
-         filename = await fileName(".mp3")
-       }
-
-    const ytDlp = spawn("yt-dlp", [
-        "-f",
-        format,
-        "-o",
-        "-",
-        url,
-    ]);
-
-    await upload(ytDlp.stdout, filename);
-
-     res.json({ status: "success", url: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
- } catch (e) {
-     console.error(e);
-     res.json({ status: "error", response: "something else\nDetails: " + e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
- }
-    
-    
 });
+
 
 
 app.get('/api/dalle-3', async (req, res) => {
@@ -331,7 +292,7 @@ app.get('/api/dalle-3', async (req, res) => {
       }
     );
 
-    res.json({ status: "success", response: response.data.data.url, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    res.json({ status: "success", response: response.data, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (error) {
     console.error(error.response ? error.response.data : error.message);
     res.status(500).json({ status: "error", response: 'Something went wrong!\nDetails: ' + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
