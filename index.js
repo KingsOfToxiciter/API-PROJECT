@@ -11,17 +11,15 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 const Link = require('./models/Link');
 const { spawn } = require("child_process");
-const { getFallbackKey, getRandomData, fileName, upload, downloadFromUrl } = require('./utils');
+const { fallBack, getRandomData, fileName, upload, downloadFromUrl } = require('./utils');
 const DOWNLOAD_FOLDER = path.join(__dirname, "downloads");
 
 if (!fs.existsSync(DOWNLOAD_FOLDER)) {
     fs.mkdirSync(DOWNLOAD_FOLDER);
 };
 const AI_API_KEY = process.env.AI_API;
-const apis = process.env.HG_API.split(',').map(key => key.trim());
-const getNextApiKey = getFallbackKey(apis);
-const ultraApi = process.env.ST_API.split(',').map(key => key.trim());
-const getUltraKey = getFallbackKey(ultraApi);
+const hg_apis = process.env.HG_API.split(',').map(key => key.trim());
+const sd_apis = process.env.ST_API.split(',').map(key => key.trim());
 
 const app = express();
 const PORT = 30009;
@@ -778,6 +776,7 @@ app.get("/api/ultra", async (req, res) => {
       return res.status(400).json({ status: "error", response: "Prompt is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   }
 
+return await fallBack(async (key) => {
   try {
     const form = new FormData();
     form.append("prompt", prompt);
@@ -800,9 +799,10 @@ app.get("/api/ultra", async (req, res) => {
       await upload(response.data, filename);
       res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (error) {
-    console.error("❌ Error:", error.message);
+    throw new Error(error)
     res.status(500).json({ status: "error", response: "Image generation failed", details: error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
    }
+}, sd_apis);
 });
 
 
