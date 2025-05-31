@@ -100,7 +100,6 @@ app.get("/api/art", async (req, res) => {
 app.get("/api/imagine", async (req, res) => {
     const prompt = req.query.prompt;
     const model = req.query.model || "infinity";
-    const seed = req.query.seed || 3663637;
     const num_img = req.query.num_img || 4;
 
     if (!prompt) {
@@ -112,7 +111,7 @@ app.get("/api/imagine", async (req, res) => {
     }
 
     try {
-        const { data } = await axios.get(`https://api.noobx.work.gd/imagine?prompt=${encodeURIComponent(prompt)}&model=${model}&seed=${seed}&num_img=${num_img}`);
+        const { data } = await axios.get(`https://api.noobx.work.gd/imagine?prompt=${encodeURIComponent(prompt)}&model=${model}&num_img=${num_img}`);
         
         res.json({ 
             status: "success", 
@@ -145,7 +144,7 @@ app.get("/api/prompt", async (req, res) => {
         {
           role: "user",
           content: [
-            { type: "text", text: "Explain the image-only prompt style; just give me a gorgeous and fully details prompt without any text." },
+            { type: "text", text: "Explain the image-only prompt style; just give me a gorgeous and fully details prompt without any text and also without any bracket just gimme the prompt." },
             {
               type: "image_url",
               image_url: {
