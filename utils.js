@@ -9,14 +9,16 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 
 
-let current = 0;
-
-function getFallbackKey(keys) {
-  return () => {
-    const key = keys[current];
-    current = (current + 1) % keys.length;
-    return key;
-  };
+async function fallBack(request, keys) {
+  for (let i = 0; i < keys.length; i++) {
+    try {
+      const result = await request(keys[i]);
+      return result;
+    } catch (err) {
+      console.warn(`Attempt ${i + 1} failed`, err.response?.data || err.message);
+      if (i === keys.length - 1) throw err;
+    }
+  }
 }
 
 function getRandomData(key) {
@@ -76,7 +78,7 @@ async function downloadFromUrl(url, path) {
 
 
 module.exports = {
-  getFallbackKey,
+  fallBack,
   getRandomData,
   fileName,
   upload,
