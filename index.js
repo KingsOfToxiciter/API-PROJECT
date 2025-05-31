@@ -788,7 +788,7 @@ return await fallBack(async (key) => {
       {
         headers: {
           ...form.getHeaders(),
-          Authorization: `Bearer ${getUltraKey()}`, 
+          Authorization: `Bearer ${key}`, 
           Accept: "image/*",
         },
         responseType: "stream",
