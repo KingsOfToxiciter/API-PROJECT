@@ -11,7 +11,7 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 const Link = require('./models/Link');
 const { spawn } = require("child_process");
-const { fallBack, getRandomData, fileName, upload, downloadFromUrl } = require('./utils');
+const { fallBack, getRandomData, fileName, upload, downloadFromUrl, downloadImageAsBase64 } = require('./utils');
 const DOWNLOAD_FOLDER = path.join(__dirname, "downloads");
 
 if (!fs.existsSync(DOWNLOAD_FOLDER)) {
@@ -28,6 +28,68 @@ app.use(cors());
 app.use(express.json());
 const uploadFolder = path.join(__dirname, 'images');
 app.use('/hasan', express.static(uploadFolder));
+
+
+app.get("/edit", async (req, res) => {
+  const url = req.query.url;
+  const prompt = req.query.prompt
+
+  if (!url || !prompt) {
+    return res.status(400).json({ status: "error", response: "url and prompt are required.", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
+
+  try {
+    const { base64Image, mimeType } = await downloadImageAsBase64(url);
+
+    const contents = [
+      { text: prompt },
+      {
+        inlineData: {
+          mimeType: mimeType,
+          data: base64Image,
+        },
+      },
+    ];
+
+    
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash-preview-image-generation",
+      contents: contents,
+      config: {
+        responseModalities: [Modality.TEXT, Modality.IMAGE],
+      },
+    });
+
+    const resultParts = response.candidates[0].content.parts;
+    let responseText = "";
+    let filename = null;
+
+    for (const part of resultParts) {
+      if (part.text) {
+        responseText = part.text;
+      } else if (part.inlineData) {
+        const imageData = part.inlineData.data;
+        const buffer = Buffer.from(imageData, "base64");
+        filename = fileName(".jpg");
+        const filePath = path.join(uploadFolder, filename);
+          fs.writeFileSync(filePath, buffer);
+      }
+    }
+
+    res.status(200).json({
+      status: "success",
+      message: "Image generated successfully",
+      response: responseText,
+      url: `https://www.noobx.work.gd/hasan/${filename}`,
+      author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎"
+    });
+
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
 
 app.get("/api/tools", async (req, res) => {
     const url = req.query.url;
