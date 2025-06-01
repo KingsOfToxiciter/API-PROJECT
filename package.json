@@ -13,7 +13,8 @@
     "form-data": "^4.0.2",
     "dotenv": "^16.5.0",
     "cheerio": "^1.0.0",
-    "mongoose": "^8.13.2"
+    "mongoose": "^8.13.2",
+    "@google/genai": "^1.3.0"
   },
   "author": "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎",
   "license": "ISC"
