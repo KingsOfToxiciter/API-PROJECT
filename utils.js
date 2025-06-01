@@ -9,6 +9,14 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 
 
+async function downloadImageAsBase64(url) {
+  const response = await axios.get(url, { responseType: "arraybuffer" });
+  const base64Image = Buffer.from(response.data, "binary").toString("base64");
+  const mimeType = response.headers["content-type"];
+  return { base64Image, mimeType };
+}
+
+
 async function fallBack(request, keys) {
   for (let i = 0; i < keys.length; i++) {
     try {
@@ -82,5 +90,6 @@ module.exports = {
   getRandomData,
   fileName,
   upload,
-  downloadFromUrl
+  downloadFromUrl,
+  downloadImageAsBase64
 };
