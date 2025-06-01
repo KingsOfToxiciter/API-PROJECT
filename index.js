@@ -9,6 +9,7 @@ const cheerio = require("cheerio");
 const cors = require("cors");
 const mongoose = require('mongoose');
 const crypto = require('crypto');
+const { GoogleGenAI, Modality } = require("@google/genai");
 const Link = require('./models/Link');
 const { spawn } = require("child_process");
 const { fallBack, getRandomData, fileName, upload, downloadFromUrl, downloadImageAsBase64 } = require('./utils');
@@ -29,8 +30,8 @@ app.use(express.json());
 const uploadFolder = path.join(__dirname, 'images');
 app.use('/hasan', express.static(uploadFolder));
 
-
-app.get("/edit", async (req, res) => {
+const ai = new GoogleGenAI({ apiKey: "AIzaSyC5DfedomQYoPqlJ4hL-HxTePJ_YCzwuPA" });
+app.get("/api/edit", async (req, res) => {
   const url = req.query.url;
   const prompt = req.query.prompt
 
@@ -126,18 +127,21 @@ app.get("/api/art-pro", async (req, res) => {
 
 
 
-app.get("/api/edit", async (req, res) => {
+app.get("/api/editpro", async (req, res) => {
     const url = req.query.url;
     const text = req.query.text;
+    const key = req.query.key;
+    
+    
     if(!url || !text) {
         return res.json({ status: "error", response: "url and text are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
     try {
-    const { data } = await axios.get(`https://api.noobx.work.gd/edit_2?url=${encodeURIComponent(url)}&prompt=${encodeURIComponent(text)}`);
+    const { data } = await axios.get(`https://api.noobx.work.gd/editpro?url=${encodeURIComponent(url)}&prompt=${encodeURIComponent(text)}&key=${key}`);
     res.json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }catch (e) {
         console.error(e);
-        res.json({ status: "error", response: "something wants wrong\nDetails: "+ e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.json({ status: "error", response: "something wants wrong\nDetails: "+ e.message, error: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
 });
 
