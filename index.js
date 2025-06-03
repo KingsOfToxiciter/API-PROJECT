@@ -12,7 +12,19 @@ const crypto = require('crypto');
 const { GoogleGenAI, Modality } = require("@google/genai");
 const Link = require('./models/Link');
 const { spawn } = require("child_process");
-const { fallBack, getRandomData, fileName, upload, downloadFromUrl, downloadImageAsBase64 } = require('./utils');
+const {
+  fallBack,
+  getDataFromSeaArt,
+  getOnceArtData,
+  seaArtUploader,
+  fluxproGen,
+  getOnceArtUpscale,
+  getRandomData,
+  fileName,
+  upload,
+  downloadFromUrl,
+  downloadImageAsBase64
+     } = require('./utils');
 
 const DOWNLOAD_FOLDER = path.join(__dirname, "downloads");
 if (!fs.existsSync(DOWNLOAD_FOLDER)) {
@@ -1357,22 +1369,6 @@ app.get("/api/enhance", async (req, res) => {
     } catch (error) {
         console.error("Download request error:", error);
         res.status(500).json({ status: "error", response: "invalid image URL", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    }
-});
-
-
-app.get("/api/upscale", async (req, res) => {
-    const imageUrl = req.query.imageUrl;
-
-    if (!imageUrl) {
-        return res.status(400).json({ status: "error", response: "Please provide an image URL!", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    }
-    try {
-        const { data } = await axios.get(`https://api.noobx.work.gd/upscale?url=${encodeURIComponent(imageUrl)}`);
-        res.status(200).json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    } catch (error) {
-        console.error("Fetch error:", error.message);
-        res.status(500).send({ status: "error", response: "something have trouble\nDetails: " + error.message });
     }
 });
 
