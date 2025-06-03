@@ -13,11 +13,12 @@ const { GoogleGenAI, Modality } = require("@google/genai");
 const Link = require('./models/Link');
 const { spawn } = require("child_process");
 const { fallBack, getRandomData, fileName, upload, downloadFromUrl, downloadImageAsBase64 } = require('./utils');
-const DOWNLOAD_FOLDER = path.join(__dirname, "downloads");
 
+const DOWNLOAD_FOLDER = path.join(__dirname, "downloads");
 if (!fs.existsSync(DOWNLOAD_FOLDER)) {
     fs.mkdirSync(DOWNLOAD_FOLDER);
 };
+
 const AI_API_KEY = process.env.AI_API;
 const hg_apis = process.env.HG_API.split(',').map(key => key.trim());
 const sd_apis = process.env.ST_API.split(',').map(key => key.trim());
@@ -27,8 +28,10 @@ const PORT = 30009;
 
 app.use(cors());
 app.use(express.json());
+
 const uploadFolder = path.join(__dirname, 'images');
 app.use('/hasan', express.static(uploadFolder));
+
 
 const ai = new GoogleGenAI({ apiKey: "AIzaSyC5DfedomQYoPqlJ4hL-HxTePJ_YCzwuPA" });
 app.get("/api/edit", async (req, res) => {
@@ -92,104 +95,905 @@ app.get("/api/edit", async (req, res) => {
 });
 
 
+app.get('/api/fluxpro', async (req, res) => {
+  const prompt = req.query.prompt;
+  const num_img = req.query.num_img || 2;
+
+   if(!prompt) return res.status(400).status(400).json({ status: "error", response: "prompt is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  
+  try {
+    const promises = [];
+
+    for (let i = 0; i < num_img; i++) {
+      
+     const imgur = await fluxproGen(prompt);
+       promises.push(imgur);
+    }
+
+    const urls = await Promise.all(promises);
+
+    res.status(200).json({
+      status: "success",
+      response: urls,
+      author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎"
+    });
+
+  } catch (err) {
+     console.error(err)
+    res.status(500).json({
+      status: "error",
+      response: err.message,
+      author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎"
+    });
+  }
+});
+
+
+app.get("/api/upscale_2", async (req, res) => {
+  const url = req.query.url;
+  
+  if (!url) {
+    return res.status(400).json({ status: "error", response: "url is missing!", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
+
+  try {
+    const { data } = await axios.post(
+  'https://queue.fal.run/fal-ai/esrgan',
+  {
+    'image_url': url
+  },
+  {
+    headers: {
+      'sec-ch-ua': '"Chromium";v="137", "Not/A)Brand";v="24"',
+      'sec-ch-ua-mobile': '?1',
+      'Authorization': 'Key be2ef301-67be-4834-a9dc-485549cc1719:b54707a909af99411f1158ceb32184be',
+      'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36',
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Referer': 'https://www.onceart.com/',
+      'sec-ch-ua-platform': '"Android"'
+    }
+  }
+);
+    console.log(data);
+    const status = data.status_url;
+    const response = data.response_url;
+    const image = await getOnceArtUpscale(status, response);
+
+    res.status(200).json({ status: "success", response: image, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ status: "error", response: e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
+});
+
+
+
+app.get("/api/swap", async (req, res) => {
+  const swapFrom = req.query.swapFrom;
+  const swapTo = req.query.swapTo;
+  const type = req.query.type;
+  
+  if(!swapFrom || !swapTo || !type) return res.status(400).json({ status: "error", response: "swapFrom, swapTo and type are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+
+  const sFrom = await seaArtUploader(swapFrom);
+  const sTo = await seaArtUploader(swapTo);
+  
+  const applyMap = {
+    face: "ct2qk8htbv3c73ck5g4g",
+    cloth: "ct7ftkle878c73cdjang",
+  };
+  const applyID = applyMap[type];
+
+  const inputMap = {
+    face: [
+      {
+        'field': 'image',
+        'node_id': '10',
+        'node_type': 'LoadImage',
+        'val': sFrom
+      },
+      {
+        'field': 'image',
+        'node_id': '16',
+        'node_type': 'LoadImage',
+        'val': sTo
+      }
+    ],
+    cloth: [
+      {
+        'field': 'image',
+        'node_id': '54',
+        'node_type': 'LoadImage',
+        'val': sFrom
+      },
+      {
+        'field': 'image',
+        'node_id': '17',
+        'node_type': 'LoadImage',
+        'val': sTo
+      }
+    ]
+  };
+  const input = inputMap[type];
+
+  try {
+    return await fallBack(async (token) => {
+    const response = await axios.post(
+  'https://www.seaart.ai/api/v1/creativity/generate/apply',
+  {
+    'apply_id': applyID,
+    'inputs': input,
+    'g_recaptcha_token': '03AFcWeA6O5AnymDxdmN-RrKVGLAiOCbUEwjX_IqB7auHKIqbVp8a6AxhJ-Bj6E3n6U_xgfTrr2KmhD7a3YKGAp8E6oXfTzQJWzPrGl_kcqEW6dbcoWqHxj-D8JvyHQKmLvhuoIZ7V3Xh0wm9smknsEoV009FaMwxf0vE0CyHV1AwKvcBEAahSILx8UCsokTf1o9Gwe27M9VQGl3lTQf_uAoHjh27OsF6LNhMnEcHXC_oIuid-RKHVxOh7djeVocMwqQdge0g7gKq_d_AdSdvPaYP0K8b3KydDii8hsiRe0vD8EkWdI7wPudqNMH4H9NqdT-mj91eJd5_xeQepw61yPHYvfiYX2x4XmXoq7sE7d33ySC9qHOO9d0gtBE8L6gyVpiS2r2nmeqxLPsMmRHctQngGPQ4FUkWDjAhItsXxhMdKXM-un04TKBRl7SwGV9kmiGqffo6KZRFMR6gqhc21c2DIG30emIT2G49ysas8yQctDJT3SmDz0y4MTDKBZfN8RjYRX96f9kcVGMj5Ew-YZ0RzfR81sOnCuLwQ6DANP1Yo-Rv6X19JvFJICUFHZAQKMS5FE8JvetEb1JSdNzgaADn_gJmwpwD8rqCGo-x39Cb9o31vU8Pg577iXk-nWTtz8ixQwdBLrKShvEMxpkIvtJv97Nof-cUpXPwXTnojAQ2BlTpJtHacvV8GOiU8JkVJS07ojjvTnvrp0wH0ms5lx5GaxATODyx91nIoXoEUOofW5VPeqW3Ran1Yur1TMYXfuMH6-Sp18NOnzmTrgWyGli1TtC11TTmcelXzXKaac31EDZw7H3KgKJ-Iinll-LmLCa8DWYIYkKkmJvGNZSL4OrgwxTeWC4vyR9awJ_qNPfulDCPgNhxHRmSafvfM3qrkeDahEdiiTsm7Q9qd1GV_csmol58V1YgYWY4f72dHvYEB0ZFzuSU8vk67dr1ZzsDf-otRpaPUOoU5B2XOhvfHrke2cvyw9LEgoBNaWnhtecuSnWllzdnBdwXeAapUaidjI9V9RPLuGf1yWQccNgLreZ4aui9TjthYu_rnn8GvubQnwJORFa5Ll3IikFqHFVjGga0dRWEpSAB70ap8oFkWbSsvT8UsWOIWJvHg_ebNse4Z_I6BsWVuiuhYhdyGCRy_i_ytn-Ot5g9Kj6XGy8gBGyaHJNBCeFP3QYCyly5TkSBhsJyHQKgFaf8JtPp2SkqcUYpUKTRLO5AhFqZwMf1zpbt5NTq_87amVjpfVQAXiUoNUSK6kahjJntHX81uCBMvgHdD0fUTgipAuVE-nhYJ51_bOjjRdvsr0zKUQjCasOUEF_UTAt2naBBWXjmIq2M2mLcPVC8u6n6mfWa2yA3oS4IegH4f1zUyJ2lZxSKMsg57_uJhrSAIcZsxDndTraVEg-2H_JD8yF1DzxQrtxhPqfka-NmhbQu42h3FpnJQ9Rr-olAVYGSs6CyYjKII3aCZ0n4TPpimktET7xZMGvdKQtim-vCM86jZggHlKKwXGgo1tm-BlfDvyIiuqtnljpwbz-sE825OTJJzLYOTaVX9vT5JhhrhItgkpVrbZukmEnZ6N7qvPvoscptBS6izrPaGJH8dDAmPg9pGnDnZE4PxpdYHvZXTQohYBXbHRyRAXBgL6k05TKj-8bWPiJGLLTu3yO4jAXpRF6dO2S3rRv_0WbHipfaCGuxrjeDZxGUbqb2_odtilTlBQzzEr_iZ3r--dxq-DDUmZdErRFLhT9jGodLANFtG55THk_sf4M0MIKoxjEGfjrKFS08ropA7F9ZLzMnDjVlIZMxnDouk1i8ou_o8OiIxkU5XL_YFwnLQF_4Lv4NWYysU9QFzFzkGKkaUZWT_1xXvYBC4cRXkpQLV-S_t8GxB28LV8epYeomkQ-bWF1T6OVc2FI3ECnJCOykOwz5GPjFSS56KGKzjox2_hr72C2dothALXOhP-R_MsHKVlMkcSsPD8Z-5wDzfBkYR3_xby6t09-WQsdJwdQeflIeFm8znNzyheOy3_tbRqnEhqHmIwbcM4XkTqP5mBR6yTt1K2K-eSirprOLK5p4iyTeyb8q-IobEtQ',
+    'task_flow_version': 'v2'
+    },
+    {
+     headers: {
+       'authority': 'www.seaart.ai',
+       'accept-language': 'en',
+       'cookie': `_fbp=fb.1.1748332541103.161936213781524982; T=${token}; lang=en; X-Eyes=false; deviceId=71682b86-5e26-441c-a07a-007e87d34350; _ga=GA1.1.471471526.1748334600; _pin_unauth=dWlkPU1EaGlNemd6WmpBdE9EZGtPQzAwTnprekxXSTBObVF0WmpNNFpXVTFPV0ZrWWpObA; _gcl_au=1.1.749810034.1748334604; browserId=d51971dc459c87ce528af797217bc824; _uetsid=fc212df03acf11f086209d83494028c7; _uetvid=fc22cb803acf11f0a833b3237d732b73; enable_tavern=true; locaExpire=1748340501865; isDeadline=false; pageId=9c8551d7-a058-459d-b425-d4a7aadba1e7; _ga_YDMZ43CD3E=GS2.1.s1748340207$o2$g1$t1748340244$j23$l0$h0$dVcQudWXgBhXXodU4tFXop-E2pRKpTUqptQ; _ga_4X5PK5P053=GS2.1.s1748332478$o6$g1$t1748340244$j15$l0$h0$d9DoInIewfx-ECmyfcuZmPaJ4HtBAS_k46Q`,
+       'origin': 'https://www.seaart.ai',
+       'referer': 'https://www.seaart.ai/ai-tools/image-upscaler',
+       'X-Timezone': 'Asia/Dhaka',
+       'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36',
+       'Token': token
+      }
+   }
+);
+      console.log(response.data.status);
+    const status = response.data.status;
+      if(status.code !== 10000) throw new Error(`retrying... ${status.msg}`);
+    
+    const id = response.data?.data?.id;
+    const key = token;
+    const [imageUrls] = await getDataFromSeaArt(id, key);
+    res.status(200).json({ status: "success", response: imageUrls, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    }, tokens);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ status: "error", response: e.message, details: e, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+     }
+
+});
+
+
+
+app.get("/api/remove-background", async (req, res) => {
+  const url = req.query.url;
+  
+  if(!url) return res.status(400).json({ status: "error", response: "url is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+
+  const seaArtUrl = await seaArtUploader(url);
+  try {
+    return await fallBack(async (token) => {
+    const response = await axios.post(
+    'https://www.seaart.ai/api/v1/task/create',
+    {
+      'action': 19,
+      'source': 8,
+      'meta': {
+        'remove_background': {
+          'uri': seaArtUrl
+        }
+      }
+    },
+    {
+     headers: {
+       'authority': 'www.seaart.ai',
+       'accept-language': 'en',
+       'cookie': `_fbp=fb.1.1748332541103.161936213781524982; T=${token}; lang=en; X-Eyes=false; deviceId=71682b86-5e26-441c-a07a-007e87d34350; _ga=GA1.1.471471526.1748334600; _pin_unauth=dWlkPU1EaGlNemd6WmpBdE9EZGtPQzAwTnprekxXSTBObVF0WmpNNFpXVTFPV0ZrWWpObA; _gcl_au=1.1.749810034.1748334604; browserId=d51971dc459c87ce528af797217bc824; _uetsid=fc212df03acf11f086209d83494028c7; _uetvid=fc22cb803acf11f0a833b3237d732b73; enable_tavern=true; locaExpire=1748340501865; isDeadline=false; pageId=9c8551d7-a058-459d-b425-d4a7aadba1e7; _ga_YDMZ43CD3E=GS2.1.s1748340207$o2$g1$t1748340244$j23$l0$h0$dVcQudWXgBhXXodU4tFXop-E2pRKpTUqptQ; _ga_4X5PK5P053=GS2.1.s1748332478$o6$g1$t1748340244$j15$l0$h0$d9DoInIewfx-ECmyfcuZmPaJ4HtBAS_k46Q`,
+       'origin': 'https://www.seaart.ai',
+       'referer': 'https://www.seaart.ai/ai-tools/image-upscaler',
+       'X-Timezone': 'Asia/Dhaka',
+       'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36',
+       'Token': token
+      }
+   }
+);
+      console.log(response.data.status);
+    const status = response.data.status;
+      if(status.code !== 10000) throw new Error(`retrying... ${status.msg}`);
+    
+    const id = response.data?.data?.id;
+    const key = token;
+    const [imageUrls] = await getDataFromSeaArt(id, key);
+    res.status(200).json({ status: "success", response: imageUrls, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    }, tokens);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: e.message, details: e, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+     }
+
+});
+
+
+
 app.get("/api/tools", async (req, res) => {
-    const url = req.query.url;
-    const prompt = req.query.prompt;
-    const type = req.query.type;
-    if(!url || !type) {
-        return res.status(400).json({ status: "error", response: "url and type are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  const url = req.query.url;
+  const prompt = req.query.prompt;
+  const type = req.query.type;
+  if(!url || !type) return res.status(400).json({ status: "error", response: "url and type are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  
+  if (!["upscale", "undress", "removebg", "changebg", "blurbg", "edit", "draw", "art", "upscale_2"].includes(type)) {
+    return res.status(400).json({ status: "error", response: "Invalid type !?\nAvailable: upscale, upscale_2, undress, removebg, changebg, blurbg, edit, draw, art .etc", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" })
+  };
+
+  if (["changebg", "edit"].includes(type) && !prompt) {
+    return res.status(400).json({ status: "error", response: "prompt are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
+
+  const applyMap = {
+    upscale: "d0gugqle878c73fhtctg",
+    upscale_2: "d0gmq65e878c73dgca70",
+    undress: "d0mo88le878c73es98s0",
+    removebg: "cv7m4gte878c73edlg40",
+    changebg: "cqacvqde878c73dj234g",
+    blurbg: "cvd8ucte878c73dd45qg",
+    edit: "d070sqhl2o2c73aou74g",
+    draw: "cqtg92de878c7392oav0",
+    art: "d0g7m2te878c73cc6ls0"
+  };
+    const typeID = applyMap[type];
+     
+    const seaArtUrl = await seaArtUploader(url);
+
+  const inputMap = {
+    upscale: [
+      {
+        'field': 'image',
+        'node_id': '11',
+        'node_type': 'LoadImage',
+        'val': seaArtUrl
+      },
+      {
+        'field': 'Number',
+        'node_id': '54',
+        'node_type': 'Int',
+        'val': '1536'
+      }
+    ],
+    upscale_2: [
+      {
+        'field': 'image',
+        'node_id': '10',
+        'node_type': 'LoadImage',
+        'val': seaArtUrl
+      },
+      {
+        'field': 'Number',
+        'node_id': '80',
+        'node_type': 'Float',
+        'val': '0.25'
+      }
+    ],
+    undress: [
+      {
+        'field': 'image',
+        'node_id': '1',
+        'node_type': 'LoadImage',
+        'val': seaArtUrl
+      }
+    ],
+    removebg: [
+      {
+        'field': 'image',
+        'node_id': '2',
+        'node_type': 'LoadImage',
+        'val': seaArtUrl
+      }
+    ],
+    changebg: [
+      {
+        'field': 'image',
+        'node_id': '11',
+        'node_type': 'LoadImage',
+        'val': seaArtUrl
+      },
+      {
+        'field': 'text',
+        'node_id': '73',
+        'node_type': 'CR Text',
+        'val': prompt
+      },
+      {
+        'field': 'batch_size',
+        'node_id': '42',
+        'node_type': 'EmptyLatentImage',
+        'val': 1
+      }
+    ],
+    blurbg: [
+      {
+        'field': 'image',
+        'node_id': '1',
+        'node_type': 'LoadImage',
+        'val': seaArtUrl
+      },
+      {
+        'field': 'angle',
+        'node_id': '32',
+        'node_type': 'LayerFilter: MotionBlur',
+        'val': -15
+      },
+      {
+        'field': 'blur',
+        'node_id': '32',
+        'node_type': 'LayerFilter: MotionBlur',
+        'val': 25
+      }
+    ],
+    edit: [
+      {
+        'field': 'image',
+        'node_id': '2',
+        'node_type': 'LoadImage',
+        'val': seaArtUrl
+      },
+      {
+        'field': 'prompt',
+        'node_id': '1',
+        'node_type': 'OpenSeaArtImageEdit',
+        'val': prompt
+      }
+    ],
+    draw: [
+      {
+        'field': 'image',
+        'node_id': '33',
+        'node_type': 'LoadImage',
+        'val': seaArtUrl
+      }
+    ],
+    art: [
+      {
+        'field': 'image',
+        'node_id': '11',
+        'node_type': 'LoadImage',
+        'val': seaArtUrl
+      }
+    ]
+  };
+
+  const input = inputMap[type];
+
+  
+  try {
+    return await fallBack(async (token) => {
+    const response = await axios.post(
+  'https://www.seaart.ai/api/v1/creativity/generate/apply',
+  {
+    'apply_id': typeID,
+    'inputs': input,
+    'g_recaptcha_token': '03AFcWeA56LJmvQDnY-4OLt3dXamg5-GpaTebSiMTN_5DgywWhBUUn5mkNO5R1hvm3FLAu4KAMtWi1frSAoGA80VIzIhrD11SBbU1v-4nCuCaVa8VP0Za-WwjP6KuZnXInaMsTrR5ezpV-cOkwdVY9DWrmsEFLoa5Txd53jIgDL-axvIl1_1RRJP-T738uqsol8Mnaj-CcMQ26NmT-1zTz2ZVYuDmSmK8EKUePMyY1-Dk_N9pUtjY0p0j0ZqCzLcQqtQdNEqfciYnTugNOU6mcDfHhMkFqH4N9xLJx3EGg7hAdCltSP6QFDSR154S1AsR6WSMORV-EDy0DdZesxBdSFX4BGp_xXpewpZs6xJQKwpwdzPil1mhusMmlU0DF4uLLOHbv1Z21fsM92G4jy2DsLl0CRqiG-5ZBzaBcHs38I9pfn2thV1fEFlqIAAd6mMYHEGHTQCVdwX4PFcMJa3E2P_iapZgALrbQNMgRCfw1EC8k9btanJKR4NtusPSptJX8326Wznm-bDGqqq7YHHQBJRGV6Krl-j4m3GprQn6p495HOBH1B4mgZmyaH0LbWksVn4y0EaoqIssuafytAypSZhRX_-Er1lnpnhc6OG7dglBtKM6RPRXR_lZo542OrGjKrNKH6TM4AjkS-_pRFlrSrbva3EmxXqsS_HXpMIWJwnBuDdPzHQg6Pc_TP4Gd4bKxDtXGqwjK_QS9mmmzs4v7UCXb-M1z8JGjjG82iiNCdnZzGySR7TCXn-PpDGToTwle2FfLBwTS2B_ds6CVBILcZ9VAiTOEwzb77RHSt8WeM-yMWOZXpgITLxJxZs662dhdyfKBq68_Tf2Ur6atJit93R3teTlsDBoxTSbgnBVWUGC9vzJQkpiFGV2mGlF23_rYrXBwqPZed5FUcVK_Yk1MQKJPMRokZLkgmqCgj-Wa-Di9lc5t92VETpIh32US8apdFsQ3muFmLYFKcBehfOmOoMaQYoNGkHDEr3iudUa3gttEZ0-AGqW2v6Glr2r5qzruFVp0Y2baXUwhEWMRzQzz4IFarO6R5K7H5Eu7JuyGQP3hkLxKabF8VRmZi8QC-whpvHyD83ZPNyWd-yz9hPEgJ2cps9WjOVYnsypsHhU2yat3d_l70MnkOB-OkxQ0aT8htjDEibjwWH3p7YRLWyXdtllcp4WVeOt4scvupJWAMEs0A43CRotfv_crnKbZtEmuKCB02C0cWUpiPP5RDhGOXaHUB2d_FuH2FuoHZT9ffbuehpybFCDRiC7NcEZoqtgzGgKwXMWEA-0ePN4nDsi_wxY5vNBdNeqmEkjIC89dzP6IvLFuHhpJCcO3lUjJH_rFrX1l8ExIX4Tugpahbtr7BYqmrOlqtKtLdZYxcrfgt1KEQWN7q9w5yLpZQNcGnAL1B5AkRZxzD7Sa59g8pFJ8xNuKaCODSye6YHCT6jI8pOUvGNH_ngW6N_jBbFdNOdUtofeQXiRLvbisXwpe7x48gAXuSvaah7SPlhmIvFIae-3iZm7rPRapQowxbgTFgbeQGqzcbxQPXR1VXG5h_FhJg0KYUe3lYI2EcKqEu-5Kkb2eTnLQB3gDDBoIKMfvEuEfOtINBJYBotb53ndS_23Z9bHnzfZ3M6br7NEizzUlLRisVRmm0Jm-E9GOS7jmcohv9LigcsaM7Xi0ZUz3eqxy6RZWT3QW3VUf-JfiheubEuKvFn8iibr6GZO8TMLq4csIv-_j6S-F0RKcWWjrOPSg06BQttNfg1tu9XaS62zRiMvld0AvChBa6k94Qq8-rVEleTEMjbtMGungzH4-kteZ9uB5UmmduWC3WUHHdXy9NO4qiX9xWfSp4itganYtBEG2Xy3ODZlRopQGqX65Gwlw-wJdZ7ydAq2nsLwWfQsuD3GoOl7Nh1hcfFvHaZ121f6BNtE5afZATQ5pALe5raLSIpmLPc3ztJpSEt-xgwyIo2xJC_r0TKxorEHF5Mh8NNiR1x3_MRqllUKGK0crQGMtX2J-z4BJDkCTWFdLu-unXoH-JGhyb4LONoJiBQLJLbuGLP-rDJzihhF0',
+    'task_flow_version': 'v2'
+  },
+  {
+    headers: {
+      'authority': 'www.seaart.ai',
+      'accept-language': 'en',
+      'cookie': `_fbp=fb.1.1748318094574.679225651710543005; T=${token}; lang=en; X-Eyes=true; deviceId=5edc8c93-cac4-406e-9568-10b7328d8d16; pageId=1465561b-c5ed-438c-b263-7146f19b40d8; browserId=d51971dc459c87ce528af797217bc824; _ga=GA1.1.796007903.1748320931; enable_tavern=true; _uetsid=f6061b903ab411f0a52e35fb33000708; _uetvid=f6075ba03ab411f08299a32e5fd816da; _gcl_au=1.1.1030346700.1748320935; _ga_YDMZ43CD3E=GS2.1.s1748320930$o1$g1$t1748320939$j51$l0$h0$dSfwV-8AqpNdbJJ5G6PXPwislQqoFHO6Y3Q; _ga_4X5PK5P053=GS2.1.s1748313152$o3$g1$t1748320939$j56$l0$h0$d9DoInIewfx-ECmyfcuZmPaJ4HtBAS_k46Q`,
+      'origin': 'https://www.seaart.ai',
+      'referer': 'https://www.seaart.ai/create/ai-app?id=d0fge2le878c73en9f9g',
+      'token': token,
+      'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
+      }
+  }
+);
+      console.log(response.data.status);
+    const status = response.data.status;
+      if(status.code !== 10000) throw new Error(`retrying... ${status.msg}`);
+    
+    const id = response.data?.data?.id;
+    const key = token;
+    const [imageUrls] = await getDataFromSeaArt(id, key);
+    res.status(200).json({ status: "success", response: imageUrls, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    }, tokens);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: e.message, details: e, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+     }
+
+});
+                          
+
+
+app.get("/api/upscale", async (req, res) => {
+  const url = req.query.url;
+  const type = req.query.type || 2;
+  const prompt = req.query.prompt || "";
+  const key = req.query.key;
+  
+  if(key !== "toxiciter") return res.status(403).json({ status: "unavailable", details: "It's not for you only owner can use it", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  if(!url) return res.status(400).json({ status: "error", response: "url is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+
+  const seaArtUrl = await seaArtUploader(url);
+  try {
+    return await fallBack(async (token) => {
+    const response = await axios.post(
+  'https://www.seaart.ai/api/v1/task/tool/ultra-hd/create',
+  {
+    'image_url': seaArtUrl,
+    'hd_scale': type,
+    'prompt': prompt,
+    'creativity': 0.5,
+    'fractality': 0.5,
+    'hdr': 0.5,
+    'resemblance': 0.5,
+    'engine': 0,
+    'style': 0
+  },
+  {
+    headers: {
+      'authority': 'www.seaart.ai',
+      'accept-language': 'en',
+      'cookie': `_fbp=fb.1.1748332541103.161936213781524982; T=${token}; lang=en; X-Eyes=false; deviceId=71682b86-5e26-441c-a07a-007e87d34350; _ga=GA1.1.471471526.1748334600; _pin_unauth=dWlkPU1EaGlNemd6WmpBdE9EZGtPQzAwTnprekxXSTBObVF0WmpNNFpXVTFPV0ZrWWpObA; _gcl_au=1.1.749810034.1748334604; browserId=d51971dc459c87ce528af797217bc824; _uetsid=fc212df03acf11f086209d83494028c7; _uetvid=fc22cb803acf11f0a833b3237d732b73; enable_tavern=true; locaExpire=1748340501865; isDeadline=false; pageId=9c8551d7-a058-459d-b425-d4a7aadba1e7; _ga_YDMZ43CD3E=GS2.1.s1748340207$o2$g1$t1748340244$j23$l0$h0$dVcQudWXgBhXXodU4tFXop-E2pRKpTUqptQ; _ga_4X5PK5P053=GS2.1.s1748332478$o6$g1$t1748340244$j15$l0$h0$d9DoInIewfx-ECmyfcuZmPaJ4HtBAS_k46Q`,
+      'origin': 'https://www.seaart.ai',
+      'referer': 'https://www.seaart.ai/ai-tools/image-upscaler',
+      'X-Timezone': 'Asia/Dhaka',
+      'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36',
+      'Token': token
+      }
+  }
+);
+      console.log(response.data.status);
+    const status = response.data.status;
+      if(status.code !== 10000) throw new Error(`retrying... ${status.msg}`);
+    
+    const id = response.data?.data?.id;
+    const key = token;
+    const [imageUrls] = await getDataFromSeaArt(id, key);
+    res.status(200).json({ status: "success", response: imageUrls, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    }, tokens);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: e.message, details: e, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+     }
+
+});
+    
+
+
+app.get("/api/text-to-song", async (req, res) => {
+  const lyrics = req.query.lyrics;
+  
+  if (!lyrics) return res.status(400).json({ status: "error", response: "lyrics parameters is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  
+  try {
+return await fallBack(async (token) => {
+const response = await axios.post(
+  'https://www.seaart.ai/api/v1/creativity/generate/apply',
+  {
+    'apply_id': 'd0fge2le878c73en9f9g',
+    'inputs': [
+      {
+        'field': 'tags',
+        'node_id': '14',
+        'node_type': 'TextEncodeAceStepAudio',
+        'val': 'female vocals, crystal clear tone, dreamy quality, electro-pop, upbeat rhythm, modern electronic effects, commercial quality'
+      },
+      {
+        'field': 'lyrics',
+        'node_id': '14',
+        'node_type': 'TextEncodeAceStepAudio',
+        'val': lyrics
+      },
+      {
+        'field': 'seconds',
+        'node_id': '17',
+        'node_type': 'EmptyAceStepLatentAudio',
+        'val': 40
+      }
+    ],
+    'g_recaptcha_token': '03AFcWeA6H9KmejeaFSU_p4AO6RP9oS8J-X5TwSeQAW_D13LNlf3J5gvxt6oydvIOvvMXk8BMasrttHHWbshuew0tc8Y_eZF9wUDJCAZIlgtwWxo0tBYYQPjU5vYsnp5Qs4LQDeIJyqpYFzF_fst3UN0mDbIk0x7AhG-I7tp7sS4dqv_zpsiGFzlZpf99AJ_K5k5tUgfx6b0bWXuhRE4dbcEsaS--tn2cUY9iVypq0n5MzD0H2MVME7jeNataJGxSFcIqS6fjMMLaHqwnBABCY3CKMg2KOC8x9nRMyXihJfNO2BSuv5vkGYboDkMK-HlWQSMbhRJKSgAGE1DvoXRL7eRsjI0qCuOuUKaTjHilNzo4fmLzZpmqrUyTfD6Q1M-Eui6-FDFmVeUeJCKFRKbG_L2EltJp6klY2LsZqUmtP0usqx43s46pZH7wefiwDGvmva8g2zmijSR51_XuX8NdBg0RVaZKLMer03V2Qa35esM2T8O16qLY91dyNU7dptTcCylT35BRq2WTpIpFzF7B1o_450d7TcubsqNeezLnW5PzZbtL0awCzWkQMLCesms0L74O7SNagfWmdu3TkC-WrxrBF37JlxcwqrjieClVUUg1k1ORlNHL7Vv68I5689wZ5j9ikMzAeAihwp2G0HtDicQH4YHe_Zo5MC_se61cF0fpafT8fBIEzt3NbJYMyRTpcH3h8S7xC2JziMpa8YwUO0w8rydGXcNg_-DC3jkBuK9I_LT3b0ibS-kzUCHzDtL87VDZ16vZtSOc0aP69YB9issu28U-OoLuBi_6Xl3NAFpxk6_r-PgeuMmzUK0ooA3tCVI3UaKnT9uqRJqxQn3BNYZyIuojm-rys3OfVu4z7nVXc4HDw18gxwd3XRjBFqj1Mm4TuhvYZiSyiXuvCs1Doi_wN248R07fB48mFKv5YD7PTnHvq2igB2nZZv_zUA6vuCDbxnrX4__whdbdqh92nwlHel-kQjKR9wFurzve7EnWt_WYrHlvp_EdAdIbcX6Q47i-TULLhu9rYJR_hV706J_jdEXjg3E6ZaP5Z1chB49xG-fa5U7AzCBnJCQr07b6nxwV2ONKUQVnApvEHXmSlTBcFldYvuT31AkvkgiP6Xc4C0ZRD_jCPBBOtIs-MtJWCgFFDDK0fyhQtW40WQGh6GRT2oeCfHvTXibv19CsJEwCII0gjkfV7Oue_Z9IzgqPsUM2XC-cEXBEX6FqKlnmVfJlo_qegwh5Ihj_MKgvgXhJgMUyWCHps4Y0utLwhzlPmfVpE-Vw8UB6rCZiSNxXkD0nPN7vqNn4-Knk0SJDfS60_7eaQ7lYtAGUbP8kb6saT1UiIOzr7aU51K3Mkk3jKIDl73rsIQQRUceKAasRROOtfU-1MwTYb9xajpZrH5zPXDpbvQySSMWlwV--aCm7E7vYo1Nu8CenYcdxdZm-XuEz1tOv1v2afW7ZAuWEEw7ho24p5wF_bLaxK_8WRklgtNtjR4wIGCxqMxVOJPlUslm57JkGvG-WIDjwPLWL799cjzZlgi1w2xWufmJ0BbWAiBgZcbfQ1U-PQlTI29eGD3KTs7Ju39M5l-PfoZ3sSSC8hh1iwIFdJcBZpAqfPgaw4sVRO7w-_k7H2D80yYLy3SLOZrASh-pWP039wRk6Nel3-HxVnUIT8SzeI4mqD1vF0paC3cWo6ybrn15q3S1pwIsn8GuQ_G7plXDgpvKW8qeUvVwwqoRqdYkz6mP3Xzuc8CnI8eHA2Jc1yn2DvIWWiOhwy-Rtadib4kZS6JteDi8-zc2PGYBeR20vEo5TgbmqvdF-ZkZK-1T4xmL8q3Uc_URN_HNfNvbuzP2v0YtBo_FCl4ObFTTiv7vdGl7GvvDbBQcSSiP17Bk7Wzdyxlw4BLc5-u27Yz7udiWG8ty6HrxqMQBdbZaQ-n3fTBMPBoNAIV9vjLyXwOFE40G-IkpXy4x7WspXJrAop8F1uZes2q3i3ugxbcwRZJxz0POV7A0ZaHzjxrdcg9WF2W55ybUrmZ5OnLkEzAuqiHM0_3eNUJHEf3_bvNC4NCAad',
+    'task_flow_version': 'v2'
+  },
+  {
+    headers: {
+      'authority': 'www.seaart.ai',
+      'accept-language': 'en',
+      'cookie': `_fbp=fb.1.1748318094574.679225651710543005; T=${token}; lang=en; X-Eyes=true; deviceId=5edc8c93-cac4-406e-9568-10b7328d8d16; pageId=1465561b-c5ed-438c-b263-7146f19b40d8; browserId=d51971dc459c87ce528af797217bc824; _ga=GA1.1.796007903.1748320931; enable_tavern=true; _uetsid=f6061b903ab411f0a52e35fb33000708; _uetvid=f6075ba03ab411f08299a32e5fd816da; _gcl_au=1.1.1030346700.1748320935; _ga_YDMZ43CD3E=GS2.1.s1748320930$o1$g1$t1748320939$j51$l0$h0$dSfwV-8AqpNdbJJ5G6PXPwislQqoFHO6Y3Q; _ga_4X5PK5P053=GS2.1.s1748313152$o3$g1$t1748320939$j56$l0$h0$d9DoInIewfx-ECmyfcuZmPaJ4HtBAS_k46Q`,
+      'origin': 'https://www.seaart.ai',
+      'referer': 'https://www.seaart.ai/create/ai-app?id=d0fge2le878c73en9f9g',
+      'token': token,
+      'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
     }
-    try {
-    const { data } = await axios.get(`https://api.noobx.work.gd/tools?url=${encodeURIComponent(url)}&prompt=${encodeURIComponent(prompt)}&type=${type}`);
-    res.status(200).json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    }catch (e) {
-        console.error(e);
-        res.status(500).json({ status: "error", response: e.message, details: e, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    }
+  }
+);
+      console.log(response.data.status);
+    const status = response.data.status;
+      if(status.code !== 10000) throw new Error(`retrying... ${status.msg}`);
+    
+    const id = response.data?.data?.id;
+    const key = token;
+    const [imageUrls] = await getDataFromSeaArt(id, key);
+    res.status(200).json({ status: "success", response: imageUrls, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    }, tokens);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ status: "error", response: e.message, details: e, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
+});
+
+
+app.get("/api/editpro", async (req, res) => {
+  const url = req.query.url;
+  const prompt = req.query.prompt;
+  const key = req.query.key;
+
+  if(key !== "toxiciter") return res.status(403).json({ status: "unavailable", response: "It's not for you!. Only owner can use it!. if you want to use this feature? contract with the owner", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  if(!url || !prompt) return res.status(400).json({ status: "error", response: "url and prompt are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+
+  const seaArtUrl = await seaArtUploader(url);
+  try {
+    return await fallBack(async (token) => {
+    const response = await axios.post(
+  'https://www.seaart.ai/api/v1/creativity/generate/apply',
+  {
+    'apply_id': 'd017fv5e878c738ltm1g',
+    'inputs': [
+      {
+        'field': 'image',
+        'node_id': '2',
+        'node_type': 'LoadImage',
+        'val': seaArtUrl
+      },
+      {
+        'field': 'prompt',
+        'node_id': '1',
+        'node_type': 'OpenSeaArtImageEdit',
+        'val': prompt
+      }
+    ],
+    'g_recaptcha_token': '03AFcWeA56LJmvQDnY-4OLt3dXamg5-GpaTebSiMTN_5DgywWhBUUn5mkNO5R1hvm3FLAu4KAMtWi1frSAoGA80VIzIhrD11SBbU1v-4nCuCaVa8VP0Za-WwjP6KuZnXInaMsTrR5ezpV-cOkwdVY9DWrmsEFLoa5Txd53jIgDL-axvIl1_1RRJP-T738uqsol8Mnaj-CcMQ26NmT-1zTz2ZVYuDmSmK8EKUePMyY1-Dk_N9pUtjY0p0j0ZqCzLcQqtQdNEqfciYnTugNOU6mcDfHhMkFqH4N9xLJx3EGg7hAdCltSP6QFDSR154S1AsR6WSMORV-EDy0DdZesxBdSFX4BGp_xXpewpZs6xJQKwpwdzPil1mhusMmlU0DF4uLLOHbv1Z21fsM92G4jy2DsLl0CRqiG-5ZBzaBcHs38I9pfn2thV1fEFlqIAAd6mMYHEGHTQCVdwX4PFcMJa3E2P_iapZgALrbQNMgRCfw1EC8k9btanJKR4NtusPSptJX8326Wznm-bDGqqq7YHHQBJRGV6Krl-j4m3GprQn6p495HOBH1B4mgZmyaH0LbWksVn4y0EaoqIssuafytAypSZhRX_-Er1lnpnhc6OG7dglBtKM6RPRXR_lZo542OrGjKrNKH6TM4AjkS-_pRFlrSrbva3EmxXqsS_HXpMIWJwnBuDdPzHQg6Pc_TP4Gd4bKxDtXGqwjK_QS9mmmzs4v7UCXb-M1z8JGjjG82iiNCdnZzGySR7TCXn-PpDGToTwle2FfLBwTS2B_ds6CVBILcZ9VAiTOEwzb77RHSt8WeM-yMWOZXpgITLxJxZs662dhdyfKBq68_Tf2Ur6atJit93R3teTlsDBoxTSbgnBVWUGC9vzJQkpiFGV2mGlF23_rYrXBwqPZed5FUcVK_Yk1MQKJPMRokZLkgmqCgj-Wa-Di9lc5t92VETpIh32US8apdFsQ3muFmLYFKcBehfOmOoMaQYoNGkHDEr3iudUa3gttEZ0-AGqW2v6Glr2r5qzruFVp0Y2baXUwhEWMRzQzz4IFarO6R5K7H5Eu7JuyGQP3hkLxKabF8VRmZi8QC-whpvHyD83ZPNyWd-yz9hPEgJ2cps9WjOVYnsypsHhU2yat3d_l70MnkOB-OkxQ0aT8htjDEibjwWH3p7YRLWyXdtllcp4WVeOt4scvupJWAMEs0A43CRotfv_crnKbZtEmuKCB02C0cWUpiPP5RDhGOXaHUB2d_FuH2FuoHZT9ffbuehpybFCDRiC7NcEZoqtgzGgKwXMWEA-0ePN4nDsi_wxY5vNBdNeqmEkjIC89dzP6IvLFuHhpJCcO3lUjJH_rFrX1l8ExIX4Tugpahbtr7BYqmrOlqtKtLdZYxcrfgt1KEQWN7q9w5yLpZQNcGnAL1B5AkRZxzD7Sa59g8pFJ8xNuKaCODSye6YHCT6jI8pOUvGNH_ngW6N_jBbFdNOdUtofeQXiRLvbisXwpe7x48gAXuSvaah7SPlhmIvFIae-3iZm7rPRapQowxbgTFgbeQGqzcbxQPXR1VXG5h_FhJg0KYUe3lYI2EcKqEu-5Kkb2eTnLQB3gDDBoIKMfvEuEfOtINBJYBotb53ndS_23Z9bHnzfZ3M6br7NEizzUlLRisVRmm0Jm-E9GOS7jmcohv9LigcsaM7Xi0ZUz3eqxy6RZWT3QW3VUf-JfiheubEuKvFn8iibr6GZO8TMLq4csIv-_j6S-F0RKcWWjrOPSg06BQttNfg1tu9XaS62zRiMvld0AvChBa6k94Qq8-rVEleTEMjbtMGungzH4-kteZ9uB5UmmduWC3WUHHdXy9NO4qiX9xWfSp4itganYtBEG2Xy3ODZlRopQGqX65Gwlw-wJdZ7ydAq2nsLwWfQsuD3GoOl7Nh1hcfFvHaZ121f6BNtE5afZATQ5pALe5raLSIpmLPc3ztJpSEt-xgwyIo2xJC_r0TKxorEHF5Mh8NNiR1x3_MRqllUKGK0crQGMtX2J-z4BJDkCTWFdLu-unXoH-JGhyb4LONoJiBQLJLbuGLP-rDJzihhF0',
+    'task_flow_version': 'v2'
+  },
+  {
+    headers: {
+      'authority': 'www.seaart.ai',
+      'accept-language': 'en',
+      'cookie': `_fbp=fb.1.1748318094574.679225651710543005; T=${token}; lang=en; X-Eyes=true; deviceId=5edc8c93-cac4-406e-9568-10b7328d8d16; pageId=1465561b-c5ed-438c-b263-7146f19b40d8; browserId=d51971dc459c87ce528af797217bc824; _ga=GA1.1.796007903.1748320931; enable_tavern=true; _uetsid=f6061b903ab411f0a52e35fb33000708; _uetvid=f6075ba03ab411f08299a32e5fd816da; _gcl_au=1.1.1030346700.1748320935; _ga_YDMZ43CD3E=GS2.1.s1748320930$o1$g1$t1748320939$j51$l0$h0$dSfwV-8AqpNdbJJ5G6PXPwislQqoFHO6Y3Q; _ga_4X5PK5P053=GS2.1.s1748313152$o3$g1$t1748320939$j56$l0$h0$d9DoInIewfx-ECmyfcuZmPaJ4HtBAS_k46Q`,
+      'origin': 'https://www.seaart.ai',
+      'referer': 'https://www.seaart.ai/create/ai-app?id=d0fge2le878c73en9f9g',
+      'token': token,
+      'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
+      }
+  }
+);
+      console.log(response.data.status);
+    const status = response.data.status;
+      if(status.code !== 10000) throw new Error(`retrying... ${status.msg}`);
+    
+    const id = response.data?.data?.id;
+    const key = token;
+    const [imageUrls] = await getDataFromSeaArt(id, key);
+    res.status(200).json({ status: "success", response: imageUrls, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    }, tokens);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: e.message, details: e, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+     }
+
 });
 
 
 
 app.get("/api/art-pro", async (req, res) => {
-    const url = req.query.url;
-    const type = req.query.type || "anime";
-    if(!url) {
-        return res.status(400).json({ status: "error", response: "url is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    }
-    try {
-    const { data } = await axios.get(`https://api.noobx.work.gd/art-pro?url=${encodeURIComponent(url)}&type=${type}`);
-    res.status(200).json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    }catch (e) {
-        console.error(e);
-        res.status(500).json({ status: "error", response: "something wants wrong\nDetails: "+ e, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    }
-});
+  const url = req.query.url;
+  const type = req.query.type || "anime";
+  
+  if(!url) return res.status(400).json({ status: "error", response: "url is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  if (!["anime", "ghibli", "cyberpunk", "comic", "anime_2", "anime_3", "ultra", "draw"].includes(type)) {
+    return res.status(404).json({ status: "error", response: "Invalid type available: anime, guibli, cyberpunk, comic, anime_2, anime_3, ultra, draw !?", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
 
+  const nodeMap = {
+    anime: "3",
+    anime_2: "12",
+    anime_3: "3",
+    ghibli: "143",
+    cyberpunk: "44",
+    comic: "3",
+    ultra: "31",
+    draw: "90"
+  };
+    const nodeID = nodeMap[type];
 
+  const typeMap = {
+    anime: "cvub12le878c73drh7n0",
+    anime_2: "cvuakcle878c73dqsdu0",
+    anime_3: "cvub2hle878c7389d8gg",
+    ghibli: "cvuae1te878c73dqie2g",
+    cyberpunk: "cvualtte878c73dqutk0",
+    comic: "cvuasnle878c73dr9tog",
+    ultra: "d0ekc0te878c73flbvq0",
+    draw: "d0hd2h5e878c7395pu80"
+    };
 
-app.get("/api/editpro", async (req, res) => {
-    const url = req.query.url;
-    const text = req.query.text;
-    const key = req.query.key;
-    
-    
-    if(!url || !text) {
-        return res.status(400).json({ status: "error", response: "url and text are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    }
-    try {
-    const { data } = await axios.get(`https://api.noobx.work.gd/editpro?url=${encodeURIComponent(url)}&prompt=${encodeURIComponent(text)}&key=${key}`);
-    res.status(200).json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    }catch (e) {
-        console.error(e);
-        res.status(500).json({ status: "error", response: "something wants wrong\nDetails: "+ e.message, error: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    }
+    const typeID = typeMap[type];
+  
+  const seaArtUrl = await seaArtUploader(url);
+  try {
+    return await fallBack(async (token) => {
+    const response = await axios.post(
+  'https://www.seaart.ai/api/v1/creativity/generate/apply',
+  {
+    'apply_id': typeID,
+    'inputs': [
+      {
+        'field': 'image',
+        'node_id': nodeID,
+        'node_type': 'LoadImage',
+        'val': seaArtUrl
+      }
+    ]
+  },
+  {
+    headers: {
+      'authority': 'www.seaart.ai',
+      'Accept-Language': 'en',
+      'X-Timezone': 'Asia/Dhaka',
+      'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36',
+      'origin': 'https://www.seaart.ai',
+      'Referer': 'https://www.seaart.ai/ai-tools/ai-filter',
+      'cookie': `_fbp=fb.1.1748332541103.161936213781524982; T=${token}; lang=en; X-Eyes=false; deviceId=71682b86-5e26-441c-a07a-007e87d34350; _ga=GA1.1.471471526.1748334600; _pin_unauth=dWlkPU1EaGlNemd6WmpBdE9EZGtPQzAwTnprekxXSTBObVF0WmpNNFpXVTFPV0ZrWWpObA; _gcl_au=1.1.749810034.1748334604; browserId=d51971dc459c87ce528af797217bc824; locaExpire=1748336434862; _uetsid=fc212df03acf11f086209d83494028c7; _uetvid=fc22cb803acf11f0a833b3237d732b73; enable_tavern=true; isDeadline=false; pageId=13ec00b7-af1a-48bd-b322-9a70d4b2aca0; _ga_YDMZ43CD3E=GS2.1.s1748334599$o1$g1$t1748336220$j60$l0$h0$dVcQudWXgBhXXodU4tFXop-E2pRKpTUqptQ; _ga_4X5PK5P053=GS2.1.s1748332478$o6$g1$t1748336238$j35$l0$h0$d9DoInIewfx-ECmyfcuZmPaJ4HtBAS_k46Q`,
+      'Token': token
+      }
+  }
+);
+      console.log(response.data.status);
+    const status = response.data.status;
+      if(status.code !== 10000) throw new Error(`retrying... ${status.msg}`);
+      
+    const id = response.data?.data?.id;
+    const key = token;
+    const [imageUrls] = await getDataFromSeaArt(id, key);
+    res.status(200).json({ status: "success", response: imageUrls, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    }, tokens);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ status: "error", response: e.message, details: e, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+     }
+
 });
 
 
 app.get("/api/art", async (req, res) => {
-    const url = req.query.url;
-    const prompt = req.query.prompt || "convert to anime type";
-    if(!url) {
-        return res.status(400).json({ status: "error", response: "url is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    }
-    try {
-    const { data } = await axios.get(`https://api.noobx.work.gd/art?prompt=${encodeURIComponent(prompt)}&url=${encodeURIComponent(url)}`);
-    res.status(200).json({ status: "success", data, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    }catch (e) {
-        console.error(e);
-        res.status(500).json({ status: "error", response: "something wants wrong\nDetails: "+ e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    }
+  const prompt = req.query.prompt || "convert to anime type";
+  const url = req.query.url;
+  if (!url) {
+    return res.status(400).json({ status: "error", response: "url is missing!", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
+
+  try {
+    const { data } = await axios.post(
+      'https://queue.fal.run/fal-ai/fast-sdxl/image-to-image',
+      {
+        'image_url': url,
+        'prompt': prompt,
+        'num_inference_steps': 10,
+        'guidance_scale': 7.5,
+        'num_images': 4,
+        'loras': [],
+        'embeddings': [],
+        'enable_safety_checker': true,
+        'safety_checker_version': 'v1',
+        'format': 'png'
+      },
+      {
+        headers: {
+          'sec-ch-ua': '"Chromium";v="137", "Not/A)Brand";v="24"',
+          'sec-ch-ua-mobile': '?1',
+          'Authorization': 'Key be2ef301-67be-4834-a9dc-485549cc1719:b54707a909af99411f1158ceb32184be',
+          'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Referer': 'https://www.onceart.com/',
+          'sec-ch-ua-platform': '"Android"'
+        }
+      }
+    );
+       console.log(data);
+    const status = data.status_url;
+    const response = data.response_url;
+    const images = await getOnceArtData(status, response);
+
+    res.status(200).json({ status: "success", response: images, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+     } catch (e) {
+    console.error(e);
+    res.status(500).json({ status: "error", response: e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
 });
 
-app.get("/api/imagine", async (req, res) => {
-    const prompt = req.query.prompt;
-    const model = req.query.model || "infinity";
-    const num_img = req.query.num_img || 4;
+app.get("/api/imagine_2", async (req, res) => {
+  const prompt = req.query.prompt;
+  const model = req.query.model || "none";
+  if (!prompt) {
+    return res.status(400).json({ status: "error", response: "Prompt is missing!", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
 
-    if (!prompt) {
-        return res.status(400).json({ 
-            status: "error", 
-            response: "prompt is required", 
-            author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" 
-        });
-    }
+  try {
+    const { data } = await axios.post(
+      'https://queue.fal.run/fal-ai/flux/schnell',
+      {
+        'prompt': `${prompt} style with ${model}`,
+        'image_size': { 'width': 1024, 'height': 1024 },
+        'num_inference_steps': 10,
+        'num_images': 4,
+        'loras': [],
+        'embeddings': [],
+        'enable_safety_checker': true,
+        'safety_checker_version': 'v1',
+        'format': 'png'
+      },
+      {
+        headers: {
+          'sec-ch-ua': '"Chromium";v="137", "Not/A)Brand";v="24"',
+          'sec-ch-ua-mobile': '?1',
+          'Authorization': 'Key be2ef301-67be-4834-a9dc-485549cc1719:b54707a909af99411f1158ceb32184be',
+          'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Referer': 'https://www.onceart.com/',
+          'sec-ch-ua-platform': '"Android"'
+        }
+      }
+    );
+     console.log(data);
+    const status = data.status_url;
+    const response = data.response_url;
+    const images = await getOnceArtData(status, response);
 
-    try {
-        const { data } = await axios.get(`https://api.noobx.work.gd/imagine?prompt=${encodeURIComponent(prompt)}&model=${model}&num_img=${num_img}`);
-        
-        res.status(200).json({ 
-            status: "success", 
-            response: data.response, 
-            author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" 
-        });
-    } catch (e) {
-        console.log(e);
-        res.status(500).json({ 
-            status: "error", 
-            response: "something went wrong\nDetails: " + e.message, 
-            author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" 
-        });
+    res.status(200).json({ status: "success", response: images, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ status: "error", response: e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
+});
+
+
+app.get('/api/imagine', async (req, res) => {
+  const prompt = req.query.prompt;
+  let model = req.query.model || "infinity";
+  const seed = crypto.randomBytes(3).toString('hex');
+  const num_img = req.query.num_img || 4;
+  
+  if (!prompt) return res.status(400).json({ status: "error", response: 'Prompt is required', author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  if (!["infinity", "hentai", "anime", "animeXL", "sci_fi", "anime_sci_fi", "x_niji", "xcvd", "fantasy", "hentaiXL", "nsfw", "nsfwXL", "anime_2", "anime_3", "animix", "animax"].includes(model)) {
+    return res.status(404).json({ status: "error", response: "invalid model available: anime, hentai, infinity, animeXL, sci_fi, anime_sci_fi, x_niji, xcvd, fantasy, hentaiXL, nsfw, nsfwXL, anime_2, anime_3, animix, animax", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
+  
+    const modelMap = {
+      animeXL: "f2755cd95dd840080d622ca62e381fc8",
+      infinity: "f8172af6747ec762bcf847bd60fdf7cd",
+      hentai: "d8300cd33eb1ab8018baa6685ec4a7e9",
+      anime: "45a1f43f49dbbe2f6146194d4369f1ef",
+      sci_fi: "79c49547b12c675723a96a8bcec218df",
+      anime_sci_fi: "cvvjjg5e878c739g9r40",
+      x_niji: "d0g7ride878c73e3rve0",
+      xcvd: "9e582be894f813fb77a3e0ec2198e14f",
+      fantasy: "cre68hte878c73b23nn0",
+      hentaiXL: "d0pol75e878c73cto69g",
+      nsfw: "d08cavle878c738jnqsg",
+      nsfwXL: "2b64aeb365e0ca1abdc3c51caa3fcecb",
+      anime_2: "cvria85e878c73dq36c0",
+      anime_3: "d07jt1de878c739ekk3g",
+      animix: "d089om5e878c739227s0",
+      animax: "808f87d9c26f35625739f99f421ff289"
+      
+    };
+
+    model = modelMap[model];
+  
+   try {
+  return await fallBack(async (token) => {
+   const response = await axios.post(
+      'https://www.seaart.ai/api/v1/task/v2/text-to-img',
+      {
+        model_no: model,
+        speed_type: 1,
+        meta: {
+          prompt: prompt,
+          negative_prompt: "",
+          width: 1024,
+          height: 1024,
+          steps: 30,
+          cfg_scale: 7,
+          sampler_name: "Euler",
+          n_iter: num_img,
+          lora_models: [],
+          vae: "None",
+          clip_skip: 2,
+          seed: seed,
+          restore_faces: false,
+          embeddings: [],
+          generate: {
+            anime_enhance: 2,
+            mode: 0,
+            gen_mode: 0,
+            prompt_magic_mode: 2
+          }
+        }
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Origin': 'https://www.seaart.ai',
+          'Referer': `https://www.seaart.ai/create/image?id=${model}`,
+          'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
+          'token': token,
+          'Cookie': `deviceId=b22cba40-82e8-4a6c-b848-73cca5981832; browserId=ad76c755dbc5f95661f3966b89636995; enable_tavern=true; _fbp=fb.1.1747855321503.311337970280745383; T=${token}; lang=en; X-Eyes=false; locaExpire=1747855729248; enableAI=true; _pin_unauth=dWlkPVpERTVaR013TXpndE9EZzVOaTAwTmpCaUxUazFZall0TjJWa1pETmtaREV6TVRRMg; _ga=GA1.1.276754469.1747855464; pageId=159f4459-f5fa-4bc4-88bd-14ac8c15523c; isDeadline=false; _uetsid=f73af8e0367811f0bd3a9184f4cc5203; _uetvid=f73c4920367811f08b593126b804bb8f; _gcl_au=1.1.1331792051.1747855472; _ga_YDMZ43CD3E=GS2.1.s1747855463$o1$g1$t1747855523$j60$l0$h0$d6yRGdON-vVeizP__A09bqDF3J5_raAlwuw; _ga_4X5PK5P053=GS2.1.s1747854368$o4$g1$t1747855523$j22$l0$h0$dzRIoWr8gMFVSSY6tOrCd7ulrZZS3UpeoJg`
+        }
+      }
+    );
+    console.log(response.data.status);
+    const status = response.data.status;
+      if(status.code !== 10000) throw new Error(`retrying... ${status.msg}`);
+    
+    const id = response.data?.data?.id;
+    const key = token;
+    const imageUrls = await getDataFromSeaArt(id, key);
+    res.status(200).json({ status: "success", response: imageUrls, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+     }, tokens);
+  } catch (error) {
+    console.error(error.response?.data || error.message);
+    res.status(500).json({ status: "error", response: 'Failed to generate image\nDetails: ' + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
+  });
+
+
+app.get("/api/ghibli", async (req, res) => {
+  const url = req.query.url;
+  if (!url) {
+    return res.status(400).json({ status: "error", response: "url is missing!", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
+
+     const seaArtUrl = await seaArtUploader(url);
+  
+  try {
+    return await fallBack(async (token) => {
+   const response = await axios.post(
+  'https://www.seaart.ai/api/v1/creativity/generate/apply',
+  {
+    'apply_id': 'cvl8ti5e878c73f2rqcg',
+    'inputs': [
+      {
+        'field': 'image',
+        'node_id': '143',
+        'node_type': 'LoadImage',
+        'val': seaArtUrl
+      }
+    ],
+   
+    'task_flow_version': 'v2'
+  },
+  {
+    headers: {
+      'authority': 'www.seaart.ai',
+      'accept-language': 'en',
+      'cookie': `_fbp=fb.1.1748015269156.207669377566487270; T=${token}; lang=en; X-Eyes=false; deviceId=87b518c8-a96b-4c2e-8c04-8d91b62c29ab; _pin_unauth=dWlkPU9EVmpNbVV5WXpZdE1tWXhNaTAwWVRnMUxXSmxNamt0T0RBeFpqZ3pabUUwTWpVMg; browserId=98dfea4847152fe8011f93b21df580ca; locaExpire=1748085665641; isDeadline=true; _ga=GA1.1.1934972870.1748085366; _uetsid=56733ea037ed11f0b7cf6da9a6d48567; _uetvid=5674574037ed11f0aeabe994a453d97a; _gcl_au=1.1.92635658.1748085371; enable_tavern=true; pageId=72bff30a-b256-4bd8-bb16-91b8d7bc82c2; _ga_YDMZ43CD3E=GS2.1.s1748085365$o1$g1$t1748085442$j60$l0$h0$ddUzuzGQImLjZxiSsTNWiEed67RdClxHdmQ; _ga_4X5PK5P053=GS2.1.s1748085370$o13$g1$t1748085455$j35$l0$h0$dzRIoWr8gMFVSSY6tOrCd7ulrZZS3UpeoJg`,
+      'origin': 'https://www.seaart.ai',
+      'referer': 'https://www.seaart.ai/create/ai-app?id=cvl8ti5e878c73f2rqcg',
+      'token': token,
+      'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
+      
+    }
+  }
+);
+      console.log(response.data.status);
+    const status = response.data.status;
+      if(status.code !== 10000) throw new Error(`retrying... ${status.msg}`);
+    
+    const id = response.data?.data?.id;
+    const key = token;
+    const imageUrls = await getDataFromSeaArt(id, key);
+    res.status(200).json({ status: "success", response: imageUrls, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    }, tokens);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ status: "error", response: e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
 });
 
 
