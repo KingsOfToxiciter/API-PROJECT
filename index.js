@@ -104,7 +104,7 @@ app.get("/api/tools", async (req, res) => {
     res.status(200).json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }catch (e) {
         console.error(e);
-        res.status(500).json({ status: "error", response: data.response, details: e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.status(500).json({ status: "error", response: e.message, details: e, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
 });
 
