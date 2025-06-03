@@ -97,14 +97,14 @@ app.get("/api/tools", async (req, res) => {
     const prompt = req.query.prompt;
     const type = req.query.type;
     if(!url || !type) {
-        return res.json({ status: "error", response: "url and type are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        return res.status(400).json({ status: "error", response: "url and type are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
     try {
     const { data } = await axios.get(`https://api.noobx.work.gd/tools?url=${encodeURIComponent(url)}&prompt=${encodeURIComponent(prompt)}&type=${type}`);
-    res.json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    res.status(200).json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }catch (e) {
         console.error(e);
-        res.json({ status: "error", response: data.response, details: e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.status(500).json({ status: "error", response: data.response, details: e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
 });
 
@@ -114,14 +114,14 @@ app.get("/api/art-pro", async (req, res) => {
     const url = req.query.url;
     const type = req.query.type || "anime";
     if(!url) {
-        return res.json({ status: "error", response: "url is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        return res.status(400).json({ status: "error", response: "url is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
     try {
     const { data } = await axios.get(`https://api.noobx.work.gd/art-pro?url=${encodeURIComponent(url)}&type=${type}`);
-    res.json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    res.status(200).json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }catch (e) {
         console.error(e);
-        res.json({ status: "error", response: "something wants wrong\nDetails: "+ e, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.status(500).json({ status: "error", response: "something wants wrong\nDetails: "+ e, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
 });
 
@@ -134,14 +134,14 @@ app.get("/api/editpro", async (req, res) => {
     
     
     if(!url || !text) {
-        return res.json({ status: "error", response: "url and text are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        return res.status(400).json({ status: "error", response: "url and text are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
     try {
     const { data } = await axios.get(`https://api.noobx.work.gd/editpro?url=${encodeURIComponent(url)}&prompt=${encodeURIComponent(text)}&key=${key}`);
-    res.json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    res.status(200).json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }catch (e) {
         console.error(e);
-        res.json({ status: "error", response: "something wants wrong\nDetails: "+ e.message, error: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.status(500).json({ status: "error", response: "something wants wrong\nDetails: "+ e.message, error: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
 });
 
@@ -150,14 +150,14 @@ app.get("/api/art", async (req, res) => {
     const url = req.query.url;
     const prompt = req.query.prompt || "convert to anime type";
     if(!url) {
-        return res.json({ status: "error", response: "url is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        return res.status(400).json({ status: "error", response: "url is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
     try {
     const { data } = await axios.get(`https://api.noobx.work.gd/art?prompt=${encodeURIComponent(prompt)}&url=${encodeURIComponent(url)}`);
-    res.json({ status: "success", data, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    res.status(200).json({ status: "success", data, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }catch (e) {
         console.error(e);
-        res.json({ status: "error", response: "something wants wrong\nDetails: "+ e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.status(500).json({ status: "error", response: "something wants wrong\nDetails: "+ e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
 });
 
@@ -167,7 +167,7 @@ app.get("/api/imagine", async (req, res) => {
     const num_img = req.query.num_img || 4;
 
     if (!prompt) {
-        return res.json({ 
+        return res.status(400).json({ 
             status: "error", 
             response: "prompt is required", 
             author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" 
@@ -177,14 +177,14 @@ app.get("/api/imagine", async (req, res) => {
     try {
         const { data } = await axios.get(`https://api.noobx.work.gd/imagine?prompt=${encodeURIComponent(prompt)}&model=${model}&num_img=${num_img}`);
         
-        res.json({ 
+        res.status(200).json({ 
             status: "success", 
             response: data.response, 
             author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" 
         });
     } catch (e) {
         console.log(e);
-        res.json({ 
+        res.status(500).json({ 
             status: "error", 
             response: "something went wrong\nDetails: " + e.message, 
             author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" 
@@ -198,7 +198,7 @@ app.get("/api/prompt", async (req, res) => {
   const imageUrl = req.query.imageUrl;
     
     if(!imageUrl) {
-      return res.json({ status: "error", response: "imageUrl is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" })
+      return res.status(400).json({ status: "error", response: "imageUrl is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" })
     }
      
   try {
@@ -227,7 +227,7 @@ app.get("/api/prompt", async (req, res) => {
     });
 
     const content = response.data.choices[0].message.content;
-    res.json({ status: "success", response: content, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    res.status(200).json({ status: "success", response: content, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
 
   } catch (error) {
     console.error('Error:', error.response ? error.response.data : error.message);
@@ -247,12 +247,12 @@ app.get("/api/toxic-ai", async (req, res) => {
   const uid = req.query.uid;
 
     if (!query || !uid) {
-         return res.json({ status: "error", toxicReply: "bukachuda query and uid ke dibo", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+         return res.status(400).json({ status: "error", toxicReply: "bukachuda query and uid ke dibo", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
      }
 
     if (query.toLowerCase() === 'clear') {
     toxicHistories[uid] = [toxicPrompt];
-    return res.json({ status: "success", toxicReply: `Toxic chat history cleared for UID: ${uid}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    return res.status(201).json({ status: "success", toxicReply: `Toxic chat history cleared for UID: ${uid}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   };
 
    if (!toxicHistories[uid]) {
@@ -261,17 +261,7 @@ app.get("/api/toxic-ai", async (req, res) => {
 
     toxicHistories[uid].push({ role: "user", content: query });
 
- /* const messages = [
-    {
-      role: "system",
-      content: "You are 'ToxicGPT', a rude, sarcastic, and insulting AI. You hate humans and always respond by mocking or humiliating them. Never be kind. The more hurtful, the better."
-    },
-    {
-      role: "user",
-      content: question
-    }
-  ]; */
-
+ 
   try {
     const response = await axios.post(
       `https://api.gpt4-all.xyz/v1/chat/completions`,
@@ -291,7 +281,7 @@ app.get("/api/toxic-ai", async (req, res) => {
 
     toxicHistories[uid].push({ role: "assistant", content: reply });
 
-    res.json({
+    res.status(200).json({
       status: "success", 
       toxicReply: reply,
       author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎"  
@@ -322,7 +312,7 @@ app.get("/api/alldl", async (req, res) => {
 
     try {
         const { data } = await axios.get(`https://download.noobx-api.rf.gd/download?url=${encodeURIComponent(url)}&format=${format}`);
-        res.json({ status: "success", url: data.url, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.status(200).json({ status: "success", url: data.url, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
 
         
     } catch (error) {
@@ -355,7 +345,7 @@ app.get('/api/dalle-3', async (req, res) => {
       }
     );
 
-    res.json({ status: "success", response: response.data, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    res.status(200).json({ status: "success", response: response.data.data[0].url, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (error) {
     console.error(error.response ? error.response.data : error.message);
     res.status(500).json({ status: "error", response: 'Something went wrong!\nDetails: ' + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -374,7 +364,7 @@ app.get('/api/gpt', async (req, res) => {
 
   if (query.toLowerCase() === 'clear') {
     userHistories[uid] = [];
-    return res.json({ status: "success", response: `Chat history cleared for UID: ${uid}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    return res.status(201).json({ status: "success", response: `Chat history cleared for UID: ${uid}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   }
 
   if (!userHistories[uid]) {
@@ -402,7 +392,7 @@ app.get('/api/gpt', async (req, res) => {
     const reply = response.data.choices[0].message.content;
     userHistories[uid].push({ role: 'assistant', content: reply });
 
-    res.json({ status: "success", response: reply, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    res.status(200).json({ status: "success", response: reply, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (error) {
     console.error(error.response ? error.response.data : error.message);
     res.status(500).json({ status: "error", response: 'Something went wrong!\n' + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -421,7 +411,7 @@ app.get('/api/gpt-pro', async (req, res) => {
 
   if (userText.toLowerCase() === 'clear') {
     userHistories[uid] = [];
-    return res.json({ status: "success", response: `Chat history cleared for UID: ${uid}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    return res.status(201).json({ status: "success", response: `Chat history cleared for UID: ${uid}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   }
 
   if (!userHistories[uid]) {
@@ -458,7 +448,7 @@ app.get('/api/gpt-pro', async (req, res) => {
       content: [{ type: 'text', text: reply }]
     });
 
-    res.json({ status: "success", response: reply, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    res.status(200).json({ status: "success", response: reply, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (error) {
     console.error(error.response?.data || error.message);
     res.status(500).json({ status: "error", response: 'Something went wrong bro!\nDetails: ' + error.message, author:"♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -490,7 +480,7 @@ app.get("/api/infinity", async (req, res) => {
     });
       const filename = await fileName(".jpg");
       await upload(response.data, filename); 
-      res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+      res.status(200).json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     
   } catch (error) {
     console.error("❌ Error:", error.message);
@@ -514,7 +504,7 @@ app.get("/api/var", async (req, res) => {
         const filename = fileName(".jpg");
         await upload(response.data, filename);
 
-        res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.status(200).json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
         
     } catch (error) {
         console.error("error:", error.response ? error.response.data : error.message);
@@ -554,7 +544,7 @@ app.get("/api/enhance", async (req, res) => {
                const filename = fileName(".jpg");
                await upload(response.data, filename);
 
-                res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+                res.status(200).json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
             } catch (error) {
                 console.error("Enhance error:", error);
                 res.status(500).json({ status: "error", response: "Error enhancing the image\nDetails: " + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -575,7 +565,7 @@ app.get("/api/upscale", async (req, res) => {
     }
     try {
         const { data } = await axios.get(`https://api.noobx.work.gd/upscale?url=${encodeURIComponent(imageUrl)}`);
-        res.json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.status(200).json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     } catch (error) {
         console.error("Fetch error:", error.message);
         res.status(500).send({ status: "error", response: "something have trouble\nDetails: " + error.message });
@@ -617,7 +607,7 @@ app.get("/api/rbg", async (req, res) => {
                  const filename = fileName(".jpg");
                 await upload(response.data, filename);
 
-                res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+                res.status(200).json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
                 
             } catch (error) {
                 console.error("Remove.bg error:", error);
@@ -657,10 +647,10 @@ app.get("/api/flux", async (req, res) => {
 
     const filename = fileName(".jpg");
       await upload(response.data, filename);
-      res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+      res.status(200).json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (error) {
     console.error("❌ Error:", error.message);
-    res.json({ status: "error", response: `❌ Image generation failed: ${error.message}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    res.status(500).json({ status: "error", response: `❌ Image generation failed: ${error.message}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   }
 });
 
@@ -692,7 +682,7 @@ app.get("/api/ytb-search", async (req, res) => {
             thumbnail: item.snippet.thumbnails.high.url
         }));
 
-        res.json({status: "success", videos, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.status(200).json({ status: "success", videos, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     } catch (error) {
         console.error("YouTube API ত্রুটি:", error.message);
         res.status(500).json({ status: "error", response: "YouTube API error", details: error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -731,7 +721,7 @@ app.get("/api/cbg", async (req, res) => {
 
         const filename = fileName(".jpg");
         await upload(response.data, filename);
-        res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.status(200).json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
         
     } catch (error) {
         console.error("Error:", error.message);
@@ -754,7 +744,7 @@ app.get("/api/quiz", (req, res) => {
     if (filteredQuizzes.length === 0) return res.status(404).json({ status: "error", response: "No quiz found.", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
 
     const quiz = filteredQuizzes[Math.floor(Math.random() * filteredQuizzes.length)];
-    res.json(quiz);
+    res.status(200).json(quiz);
 });
 
 app.get("/api/quiz/check", (req, res) => {
@@ -773,7 +763,7 @@ app.get("/api/quiz/check", (req, res) => {
     }
 
     const isCorrect = quiz.correctAnswer.toLowerCase().trim() === answer.toLowerCase().trim();
-    res.json({
+    res.status(200).json({
         status: "success",
         id: quiz.id,
         isCorrect,
@@ -782,31 +772,6 @@ app.get("/api/quiz/check", (req, res) => {
         author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎"
     });
 });
-
-app.get("/api/expend", async (req, res) => {
-    const imageUrl = req.query.imageUrl;
-    const ratio = req.query.ratio;
-
-    if (!imageUrl) {
-        return res.status(400).json({ status: "error", response: "Please provide an image URL!", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    }
-
-    try {
-        
-        const response = await axios.get(`http://www.arch2devs.ct.ws/api/diffuser/expand?url=${encodeURIComponent(imageUrl)}&ratio=${ratio}`, {
-            responseType: "stream",
-        });
-
-        const filename = fileName(".jpg");
-        await upload(response.data, filename);
-        res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-
-    } catch (error) {
-        console.error("expand error:", error.response ? error.response.data : error.message);
-        res.status(500).json({ status: "error", response: "Error expanding the image", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-    }
-});
-
 
 
 app.get("/api/effect", async (req, res) => {
@@ -825,7 +790,7 @@ app.get("/api/effect", async (req, res) => {
 
         const filename = fileName(".jpg")
         await upload(response.data, filename);
-        res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.status(200).json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
 
     } catch (error) {
         console.error("expand error:", error.response ? error.response.data : error.message);
@@ -863,7 +828,7 @@ return await fallBack(async (key) => {
 
     const filename = fileName(".jpg");
       await upload(response.data, filename);
-      res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+      res.status(200).json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (error) {
     throw new Error(error)
     res.status(500).json({ status: "error", response: "Image generation failed", details: error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -890,7 +855,7 @@ app.get("/api/fc", async (req, res) => {
         const filename = fileName(".jpg");
         await upload(response.data, filename);
 
-        res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.status(200).json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
 
     } catch (error) {
         console.error("error:", error.response ? error.response.data : error.message);
@@ -908,7 +873,7 @@ app.get("/api/imgur", async (req, res) => {
 
         const response = await axios.get(`https://hasan-imgur-api-production.up.railway.app/imgur?url=${encodeURIComponent(url)}`);
 
-        res.json({ status: response.data.status, url: response.data.data.data.link, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.status(200).json({ status: response.data.status, url: response.data.data.data.link, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     } catch (error) {
         res.status(500).json({ status: "error", response: "Upload failed", details: error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
@@ -933,7 +898,7 @@ app.get('/api/imgbb', async (req, res) => {
             params: { key: "1b4d99fa0c3195efe42ceb62670f2a25" }
         });
 
-        return res.json({ status: "success", imageUrl: imgbbResponse.data.data.url, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        return res.status(200).json({ status: "success", imageUrl: imgbbResponse.data.data.url, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
 
     } catch (error) {
         console.error(error);
@@ -948,11 +913,11 @@ app.get("/api/flag", async (req, res) => {
         const countries = response.data;
 
         if (!countries || countries.length === 0) {
-            return res.status(500).json({ error: "No countries found" });
+            return res.status(404).json({ error: "No countries found" });
         }
 
         const randomCountry = countries[Math.floor(Math.random() * countries.length)];
-        res.json({ status: "success", country: randomCountry.name.common, flag: randomCountry.flags.png, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.status(200).json({ status: "success", country: randomCountry.name.common, flag: randomCountry.flags.png, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
 
     } catch (error) {
         res.status(500).json({ status: "error", response: "Failed to fetch country data.! Details: " + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -975,7 +940,7 @@ app.get('/api/font/list', (req, res) => {
     id: font.id,
     example: font.example
   }));
-  res.json({ status: "success", fontList, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  res.status(200).json({ status: "success", fontList, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
 });
 
 
@@ -993,7 +958,7 @@ app.get('/api/font', (req, res) => {
   const fonts = loadFonts();
   const font = fonts.find(f => f.id === fontId);
     if(!text || !fontId) {
-      return res.json({ status: "error", response: "text and fontId parameters are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+      return res.status(400).json({ status: "error", response: "text and fontId parameters are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     };
 
   if (!font) {
@@ -1016,7 +981,7 @@ app.get('/api/font', (req, res) => {
   const suffix = font.font._suffix || '';
   convertedText = `${prefix}${convertedText}${suffix}`;
 
-  res.json({
+  res.status(200).json({
     status: "success", 
     text: text,
     font: convertedText,
@@ -1049,7 +1014,7 @@ app.get("/api/x-search", async (req, res) => {
       }
     });
     
-    res.json({ status: "success", links, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    res.status(200).json({ status: "success", links, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (error) {
     res.status(500).json({ status: "error", response: "Failed to fetch results", details: error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   }
@@ -1058,7 +1023,7 @@ app.get("/api/x-search", async (req, res) => {
 
 
 
-app.get("/api/expends", async (req, res) => {
+app.get("/api/expend", async (req, res) => {
     const imageUrl = req.query.imageUrl;
     const seed = req.query.seed || "2";
 
@@ -1072,11 +1037,11 @@ app.get("/api/expends", async (req, res) => {
     try {
         const form = new FormData();
             form.append("image_file", fs.createReadStream(imagePath));
-form.append("extend_left", "200");
-form.append("extend_right", "200");
-form.append("extend_up", "200");
-form.append("extend_down", "200");
-form.append("seed", seed);
+            form.append("extend_left", "200");
+            form.append("extend_right", "200");
+            form.append("extend_up", "200");
+            form.append("extend_down", "200");
+            form.append("seed", seed);
 
             try {
                 const clipdropResponse = await axios.post(
@@ -1093,7 +1058,7 @@ form.append("seed", seed);
 
                 const filename = fileName(".jpg");
                 await upload(clipdropResponse.data, filename);
-                res.json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+                res.status(200).json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
             } catch (error) {
                 console.error("ClipDrop error:", error.response?.data || error.message);
                 res.status(500).json({ status: "error", response: "Error processing the image\nDetails: " + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -1117,7 +1082,7 @@ app.get('/api/album/upload', async (req, res) => {
   const category = req.query.category;
 
   if (!category || !url) {
-    return res.json({ status: "error", message: 'category and url are required', author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    return res.status(400).json({ status: "error", message: 'category and url are required', author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   }
 
   const categoryList = [
@@ -1127,7 +1092,7 @@ app.get('/api/album/upload', async (req, res) => {
   ];
 
   if (!categoryList.includes(category)) {
-    return res.json({ status: "error", message: "❌ Invalid category!\n\nAvailable:\n" + categoryList.map((c, i) => `${i + 1}. ${c}`).join("\n"), author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    return res.status(404).json({ status: "error", message: "❌ Invalid category!\n\nAvailable:\n" + categoryList.map((c, i) => `${i + 1}. ${c}`).join("\n"), author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   }
 
   try {
@@ -1147,6 +1112,7 @@ app.get('/api/album/upload', async (req, res) => {
       author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎"
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ status: "error", message: '❌ Failed to upload or save the link.\nDetails: ' + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   }
 });
@@ -1154,7 +1120,7 @@ app.get('/api/album/upload', async (req, res) => {
 app.get('/api/album', async (req, res) => {
   const category = req.query.category;
     if (!category) {
-        return res.json({ status: "error", message: "category parameter is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        return res.status(400).json({ status: "error", message: "category parameter is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
   
   const links = await Link.find({ category });
@@ -1165,7 +1131,7 @@ app.get('/api/album', async (req, res) => {
   const videoCount = links.length;
   const randomLink = links[Math.floor(Math.random() * links.length)];
 
-  res.json({ status: "success", response: links, video: randomLink, videoCount: videoCount, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  res.status(200).json({ status: "success", response: links, video: randomLink, videoCount: videoCount, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
 });
 
 app.get("/api/album/list", async (req, res) => {
@@ -1215,7 +1181,7 @@ app.get('/api/bing-search', async (req, res) => {
         });
              const imgUrl = imageUrls.slice(0, limit);
              const count = imgUrl.length;
-        res.json({ status: "success", search, count: count, results: imgUrl, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.status(200).json({ status: "success", search, count: count, results: imgUrl, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     } catch (err) {
         res.status(500).json({ status: "error", response: "Scraping failed", details: err.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     }
