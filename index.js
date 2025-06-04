@@ -25,6 +25,7 @@ const {
   downloadFromUrl,
   downloadImageAsBase64
      } = require('./utils');
+const { tokens, workIDs } = require("./config");
 
 const DOWNLOAD_FOLDER = path.join(__dirname, "downloads");
 if (!fs.existsSync(DOWNLOAD_FOLDER)) {
