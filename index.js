@@ -46,6 +46,20 @@ const uploadFolder = path.join(__dirname, 'images');
 app.use('/hasan', express.static(uploadFolder));
 
 
+app.get("/api/toxiciter", async (req, res) => {
+  const uid = req.query.uid;
+  const message = req.query.message;
+   if (!uid || !message) return res.status(400).json({ status: "error", response: "uid and message parameter are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  try {
+    const { data } = await axios.get(`https://toxiciter-ai.onrender.com/toxiciter?query=${encodeURIComponent(message)}&uid=${uid}`);
+    res.status(200).json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ status: "error", response: "Toxiciter is now displaced please try again later\nDetails: " + e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  };
+});
+
+
 const ai = new GoogleGenAI({ apiKey: "AIzaSyC5DfedomQYoPqlJ4hL-HxTePJ_YCzwuPA" });
 app.get("/api/edit", async (req, res) => {
   const url = req.query.url;
