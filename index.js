@@ -359,7 +359,8 @@ app.get("/api/tools", async (req, res) => {
     blurbg: "cvd8ucte878c73dd45qg",
     edit: "d070sqhl2o2c73aou74g",
     draw: "cqtg92de878c7392oav0",
-    art: "d0g7m2te878c73cc6ls0"
+    art: "d0g7m2te878c73cc6ls0",
+    logo: "d13nj3te878c7382r6mg"
   };
     const typeID = applyMap[type];
      
@@ -479,6 +480,14 @@ app.get("/api/tools", async (req, res) => {
         'node_type': 'LoadImage',
         'val': seaArtUrl
       }
+    ],
+    logo: [
+        {
+            'field': 'image',
+            'node_id': '24',
+            'node_type': 'LoadImage',
+            'val': seaArtUrl
+        },
     ]
   };
 
