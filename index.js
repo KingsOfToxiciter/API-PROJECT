@@ -111,7 +111,7 @@ app.get("/api/edit", async (req, res) => {
       status: "success",
       message: "Image generated successfully",
       response: responseText,
-      url: `https://www.noobx.work.gd/hasan/${filename}`,
+      url: `https://www.noobx-api.rf.gd/hasan/${filename}`,
       author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎"
     });
 
@@ -1375,7 +1375,7 @@ app.get("/api/enhance", async (req, res) => {
                const filename = fileName(".jpg");
                await upload(response.data, filename);
 
-                res.status(200).json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+                res.status(200).json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
             } catch (error) {
                 console.error("Enhance error:", error);
                 res.status(500).json({ status: "error", response: "Error enhancing the image\nDetails: " + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -1422,7 +1422,7 @@ app.get("/api/rbg", async (req, res) => {
                  const filename = fileName(".jpg");
                 await upload(response.data, filename);
 
-                res.status(200).json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+                res.status(200).json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
                 
             } catch (error) {
                 console.error("Remove.bg error:", error);
@@ -1462,7 +1462,7 @@ app.get("/api/flux", async (req, res) => {
 
     const filename = fileName(".jpg");
       await upload(response.data, filename);
-      res.status(200).json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+      res.status(200).json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (error) {
     console.error("❌ Error:", error.message);
     res.status(500).json({ status: "error", response: `❌ Image generation failed: ${error.message}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -1536,7 +1536,7 @@ app.get("/api/cbg", async (req, res) => {
 
         const filename = fileName(".jpg");
         await upload(response.data, filename);
-        res.status(200).json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.status(200).json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
         
     } catch (error) {
         console.error("Error:", error.message);
@@ -1605,7 +1605,7 @@ app.get("/api/effect", async (req, res) => {
 
         const filename = fileName(".jpg")
         await upload(response.data, filename);
-        res.status(200).json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.status(200).json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
 
     } catch (error) {
         console.error("expand error:", error.response ? error.response.data : error.message);
@@ -1643,7 +1643,7 @@ return await fallBack(async (key) => {
 
     const filename = fileName(".jpg");
       await upload(response.data, filename);
-      res.status(200).json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+      res.status(200).json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (error) {
     throw new Error(error)
     res.status(500).json({ status: "error", response: "Image generation failed", details: error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -1670,7 +1670,7 @@ app.get("/api/fc", async (req, res) => {
         const filename = fileName(".jpg");
         await upload(response.data, filename);
 
-        res.status(200).json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.status(200).json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
 
     } catch (error) {
         console.error("error:", error.response ? error.response.data : error.message);
@@ -1873,7 +1873,7 @@ app.get("/api/expend", async (req, res) => {
 
                 const filename = fileName(".jpg");
                 await upload(clipdropResponse.data, filename);
-                res.status(200).json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+                res.status(200).json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
             } catch (error) {
                 console.error("ClipDrop error:", error.response?.data || error.message);
                 res.status(500).json({ status: "error", response: "Error processing the image\nDetails: " + error.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
