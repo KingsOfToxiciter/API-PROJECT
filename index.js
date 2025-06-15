@@ -1287,7 +1287,7 @@ app.get('/api/gpt-pro', async (req, res) => {
 });
 
 
-app.get("/api/infinity", async (req, res) => {
+app.get("/api/flux", async (req, res) => {
   const prompt = req.query.prompt;
   const model = req.query.model || "realistic";
   const ratio = req.query.ratio || "1:1";
@@ -1311,7 +1311,7 @@ app.get("/api/infinity", async (req, res) => {
     });
       const filename = await fileName(".jpg");
       await upload(response.data, filename); 
-      res.status(200).json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+      res.status(200).json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     
   } catch (error) {
     console.error("❌ Error:", error.message);
@@ -1335,7 +1335,7 @@ app.get("/api/var", async (req, res) => {
         const filename = fileName(".jpg");
         await upload(response.data, filename);
 
-        res.status(200).json({ status: "success", response: `https://www.noobx.work.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+        res.status(200).json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
         
     } catch (error) {
         console.error("error:", error.response ? error.response.data : error.message);
@@ -1432,41 +1432,6 @@ app.get("/api/rbg", async (req, res) => {
         console.error("Download request error:", error);
         res.status(500).send("Error fetching the image from the URL");
     }
-});
-
-
-app.get("/api/flux", async (req, res) => {
-  const prompt = req.query.prompt;
-  if (!prompt) {
-      return res.status(400).json({ status: "error", response: "Prompt is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-  } 
-
-  try {
-    const form = new FormData();
-    form.append('prompt', `${prompt}`);
-    form.append("style", "flux-schnell");
-    form.append("aspect_ratio", "1:1");
-
-
-    const response = await axios.post(
-      "https://api.vyro.ai/v2/image/generations",
-      form,
-      {
-        headers: {
-          ...form.getHeaders(),
-          Authorization: `Bearer ${process.env.VYRO_API}`,
-        },
-        responseType: "stream", 
-      }
-    );
-
-    const filename = fileName(".jpg");
-      await upload(response.data, filename);
-      res.status(200).json({ status: "success", response: `https://www.noobx-api.rf.gd/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-  } catch (error) {
-    console.error("❌ Error:", error.message);
-    res.status(500).json({ status: "error", response: `❌ Image generation failed: ${error.message}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-  }
 });
 
 
@@ -1616,7 +1581,7 @@ app.get("/api/effect", async (req, res) => {
 
 app.get("/api/ultra", async (req, res) => {
   const prompt = req.query.prompt;
-  const output_format = req.query.format || "webp";
+  const output_format = req.query.format || "png";
 
   if (!prompt) {
       return res.status(400).json({ status: "error", response: "Prompt is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
