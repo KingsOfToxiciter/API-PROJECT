@@ -342,7 +342,7 @@ app.get("/api/tools", async (req, res) => {
   const type = req.query.type;
   if(!url || !type) return res.status(400).json({ status: "error", response: "url and type are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   
-  if (!["upscale", "undress", "removebg", "changebg", "blurbg", "edit", "draw", "art", "upscale_2"].includes(type)) {
+  if (!["upscale", "undress", "removebg", "changebg", "blurbg", "edit", "draw", "art", "upscale_2", "logo", "undresspro"].includes(type)) {
     return res.status(400).json({ status: "error", response: "Invalid type !?\nAvailable: upscale, upscale_2, undress, removebg, changebg, blurbg, edit, draw, art .etc", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" })
   };
 
@@ -360,7 +360,8 @@ app.get("/api/tools", async (req, res) => {
     edit: "d070sqhl2o2c73aou74g",
     draw: "cqtg92de878c7392oav0",
     art: "d0g7m2te878c73cc6ls0",
-    logo: "d13nj3te878c7382r6mg"
+    logo: "d13nj3te878c7382r6mg",
+    undresspro: "ctakqbde878c73cnjde0"
   };
     const typeID = applyMap[type];
      
@@ -487,6 +488,20 @@ app.get("/api/tools", async (req, res) => {
             'node_id': '24',
             'node_type': 'LoadImage',
             'val': seaArtUrl
+        },
+    ],
+    undresspro: [
+        {
+            'field': 'image',
+            'node_id': '4',
+            'node_type': 'LoadImage',
+            'val': seaArtUrl
+        },
+        {
+            'field': 'text',
+            'node_id': '5',
+            'node_type': 'CLIPTextEncode',
+            'val': 'naked woman, big breasts, small nippls breasts out,  out , dressless, pussy out, naked NSFW',
         },
     ]
   };
