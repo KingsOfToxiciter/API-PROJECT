@@ -342,8 +342,8 @@ app.get("/api/tools", async (req, res) => {
   const type = req.query.type;
   if(!url || !type) return res.status(400).json({ status: "error", response: "url and type are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   
-  if (!["upscale", "undress", "removebg", "changebg", "blurbg", "edit", "draw", "art", "upscale_2", "logo", "undresspro", "gta"].includes(type)) {
-    return res.status(400).json({ status: "error", response: "Invalid type !?\nAvailable: upscale, upscale_2, undress, removebg, changebg, blurbg, edit, draw, art, gta, logo, undresspro .etc", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" })
+  if (!["upscale", "undress", "removebg", "changebg", "blurbg", "edit", "draw", "art", "upscale_2", "logo", "undresspro", "gta", "expend"].includes(type)) {
+    return res.status(400).json({ status: "error", response: "Invalid type !?\nAvailable: upscale, upscale_2, undress, removebg, changebg, blurbg, edit, draw, art, gta, logo, undresspro, expend .etc", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" })
   };
 
   if (["changebg", "edit"].includes(type) && !prompt) {
@@ -362,13 +362,46 @@ app.get("/api/tools", async (req, res) => {
     art: "d0g7m2te878c73cc6ls0",
     logo: "d13nj3te878c7382r6mg",
     undresspro: "ctakqbde878c73cnjde0",
-    gta: "d0dku45e878c73dnpgo0"
+    gta: "d0dku45e878c73dnpgo0",
+    expend: "cos9stle878c738ijfcg"
   };
     const typeID = applyMap[type];
      
     const seaArtUrl = await seaArtUploader(url);
 
   const inputMap = {
+    expend: [
+        {
+            'field': 'image',
+            'node_id': '5',
+            'node_type': 'LoadImage',
+            'val': seaArtUrl
+        },
+        {
+            'field': 'left',
+            'node_id': '50',
+            'node_type': 'ImagePadForOutpaint',
+            'val': 400,
+        },
+        {
+            'field': 'right',
+            'node_id': '50',
+            'node_type': 'ImagePadForOutpaint',
+            'val': 400,
+        },
+        {
+            'field': 'top',
+            'node_id': '50',
+            'node_type': 'ImagePadForOutpaint',
+            'val': 400,
+        },
+        {
+            'field': 'bottom',
+            'node_id': '50',
+            'node_type': 'ImagePadForOutpaint',
+            'val': 400,
+        },
+    ],
     upscale: [
       {
         'field': 'image',
