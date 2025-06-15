@@ -209,7 +209,7 @@ app.get("/api/swap", async (req, res) => {
   
   const applyMap = {
     face: "ct2qk8htbv3c73ck5g4g",
-    cloth: "ct7ftkle878c73cdjang",
+    cloth: "cusbdb5e878c73f5ob90",
   };
   const applyID = applyMap[type];
 
@@ -231,13 +231,13 @@ app.get("/api/swap", async (req, res) => {
     cloth: [
       {
         'field': 'image',
-        'node_id': '54',
+        'node_id': '60',
         'node_type': 'LoadImage',
         'val': sFrom
       },
       {
         'field': 'image',
-        'node_id': '17',
+        'node_id': '61',
         'node_type': 'LoadImage',
         'val': sTo
       }
