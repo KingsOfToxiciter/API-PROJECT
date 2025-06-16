@@ -77,7 +77,7 @@ app.get('/api/gemini', async (req, res) => {
       "https://openrouter.ai/api/v1/chat/completions",
       {
         model: model,
-        messages: userHistories[uid],
+        messages: geminiHistories[uid],
         max_tokens: 1000
       },
       {
