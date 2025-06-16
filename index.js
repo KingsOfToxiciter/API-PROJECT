@@ -45,6 +45,63 @@ app.use(express.json());
 const uploadFolder = path.join(__dirname, 'images');
 app.use('/hasan', express.static(uploadFolder));
 
+const geminiHistories = {};
+app.get('/api/gemini', async (req, res) => {
+  const uid = req.query.uid;
+  const userText = req.query.text || 'explain this image';
+  const imageUrl = req.query.imageUrl;
+  const model = req.query.model || "google/gemini-2.5-pro-preview";
+
+  if (!uid) {
+    return res.status(400).json({ status: "error", response: 'uid is required', author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
+
+  if (userText.toLowerCase() === 'clear') {
+    geminiHistories[uid] = [];
+    return res.status(201).json({ status: "success", response: `Chat history cleared for UID: ${uid}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
+
+  if (!geminiHistories[uid]) {
+    geminiHistories[uid] = [];
+  }
+
+  const contentArray = [{ type: 'text', text: userText }];
+  if (imageUrl) {
+    contentArray.push({ type: 'image_url', image_url: { url: imageUrl } });
+  }
+
+  geminiHistories[uid].push({ role: 'user', content: contentArray });
+
+  try {
+    const response = await axios.post(
+      "https://openrouter.ai/api/v1/chat/completions",
+      {
+        model: model,
+        messages: userHistories[uid],
+        max_tokens: 1000
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer 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`
+        }
+      }
+    );
+
+    const reply = response.data.choices[0].message.content;
+
+    geminiHistories[uid].push({
+      role: 'assistant',
+      content: [{ type: 'text', text: reply }]
+    });
+
+    res.status(200).json({ status: "success", response: reply, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  } catch (error) {
+    console.error(error.response?.data || error.message);
+    res.status(500).json({ status: "error", response: 'Something went wrong bro!\nDetails: ' + error.message, author:"♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
+});
+
 
 app.get("/api/toxiciter", async (req, res) => {
   const uid = req.query.uid;
