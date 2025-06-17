@@ -83,7 +83,7 @@ app.get('/api/gemini', async (req, res) => {
       {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer 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`
+          'Authorization': `Bearer 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`
         }
       }
     );
