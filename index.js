@@ -50,7 +50,7 @@ app.get('/api/gemini', async (req, res) => {
   const uid = req.query.uid;
   const userText = req.query.text || 'explain this image';
   const imageUrl = req.query.imageUrl;
-  const model = req.query.model || "google/gemini-2.5-pro-preview";
+  const model = req.query.model || "google/gemini-2.5-pro";
 
   if (!uid) {
     return res.status(400).json({ status: "error", response: 'uid is required', author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -78,7 +78,7 @@ app.get('/api/gemini', async (req, res) => {
       {
         model: model,
         messages: geminiHistories[uid],
-        max_tokens: 1000
+        max_tokens: 500
       },
       {
         headers: {
