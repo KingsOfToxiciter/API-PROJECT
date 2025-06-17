@@ -399,8 +399,8 @@ app.get("/api/tools", async (req, res) => {
   const type = req.query.type;
   if(!url || !type) return res.status(400).json({ status: "error", response: "url and type are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   
-  if (!["upscale", "undress", "removebg", "changebg", "blurbg", "edit", "draw", "art", "upscale_2", "logo", "undresspro", "gta", "expend"].includes(type)) {
-    return res.status(400).json({ status: "error", response: "Invalid type !?\nAvailable: upscale, upscale_2, undress, removebg, changebg, blurbg, edit, draw, art, gta, logo, undresspro, expend .etc", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" })
+  if (!["upscale", "undress", "removebg", "changebg", "blurbg", "edit", "draw", "art", "upscale_2", "logo", "undresspro", "gta", "expend", "naked"].includes(type)) {
+    return res.status(400).json({ status: "error", response: "Invalid type !?\nAvailable: upscale, upscale_2, undress, removebg, changebg, blurbg, edit, draw, art, gta, logo, undresspro, expend, naked .etc", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" })
   };
 
   if (["changebg", "edit"].includes(type) && !prompt) {
