@@ -416,11 +416,12 @@ app.get("/api/tools", async (req, res) => {
     blurbg: "cvd8ucte878c73dd45qg",
     edit: "d070sqhl2o2c73aou74g",
     draw: "cqtg92de878c7392oav0",
-    art: "d0g7m2te878c73cc6ls0",
+    art: "csc9l35e878c73cn55f0",
     logo: "d13nj3te878c7382r6mg",
-    undresspro: "ctakqbde878c73cnjde0",
+    undresspro: "ctha0dde878c73dbt58g",
     gta: "d0dku45e878c73dnpgo0",
-    expend: "cos9stle878c738ijfcg"
+    expend: "cos9stle878c738ijfcg",
+    naked: "cu0hf6de878c73c1qrag"
   };
     const typeID = applyMap[type];
      
@@ -568,7 +569,7 @@ app.get("/api/tools", async (req, res) => {
     art: [
       {
         'field': 'image',
-        'node_id': '11',
+        'node_id': '3',
         'node_type': 'LoadImage',
         'val': seaArtUrl
       }
@@ -584,15 +585,9 @@ app.get("/api/tools", async (req, res) => {
     undresspro: [
         {
             'field': 'image',
-            'node_id': '4',
+            'node_id': '1',
             'node_type': 'LoadImage',
             'val': seaArtUrl
-        },
-        {
-            'field': 'text',
-            'node_id': '5',
-            'node_type': 'CLIPTextEncode',
-            'val': 'naked woman, big breasts, small nippls breasts out,  out , dressless, pussy out, naked NSFW',
         },
     ],
     gta: [
@@ -601,6 +596,20 @@ app.get("/api/tools", async (req, res) => {
             'node_id': '21',
             'node_type': 'LoadImage',
             'val': seaArtUrl
+        },
+    ],
+    naked: [
+        {
+            'field': 'image',
+            'node_id': '309',
+            'node_type': 'OpenSeaArtLoadImageWithWH',
+            'val': seaArtUrl
+        },
+        {
+            'field': 'expand',
+            'node_id': '170',
+            'node_type': 'GrowMask',
+            'val': 30,
         },
     ]
   };
