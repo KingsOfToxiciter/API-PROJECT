@@ -2114,24 +2114,42 @@ app.get('/api/bing-search', async (req, res) => {
     }
 });
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'profile.html'));
+});
+
+app.get('/explore', (req, res) => {
+  res.sendFile(path.join(__dirname, 'test.html'));
+});
+
+app.get("/downloader", (req, res) => {
+  res.sendFile(path.join(__dirname, "downloader.html"));
+});
+
+app.get("/uploader", (req, res) => {
+  res.sendFile(path.join(__dirname, "uploader.html"));
+});
 
 app.get("/docs", (req, res) => {
   const routes = [];
+  const excludeEndpoints = ["/docs", "/", "/uploader", "/downloader", "/explore"];
 
   app._router.stack.forEach((middleware) => {
     if (middleware.route) {
       const route = middleware.route;
-      const method = Object.keys(route.methods).map(m => m.toUpperCase());
-      const queryParams = getQueryParams(route.stack);
-      routes.push({
-        endpoint: route.path,
-        method,
-        queryParams
-      });
+      if (!excludeEndpoints.includes(route.path)) {
+        const method = Object.keys(route.methods).map(m => m.toUpperCase());
+        const queryParams = getQueryParams(route.stack);
+        routes.push({
+          endpoint: route.path,
+          method,
+          queryParams
+        });
+      }
     } else if (middleware.name === 'router') {
       middleware.handle.stack.forEach((handler) => {
         const route = handler.route;
-        if (route) {
+        if (route && !excludeEndpoints.includes(route.path)) {
           const method = Object.keys(route.methods).map(m => m.toUpperCase());
           const queryParams = getQueryParams(route.stack);
           routes.push({
@@ -2147,22 +2165,6 @@ app.get("/docs", (req, res) => {
   res.json(routes);
 });
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'profile.html'));
-});
-
-app.get('/explore', (req, res) => {
-  res.sendFile(path.join(__dirname, 'test.html'));
-});
-
-app.get("/downloader", (req, res) => {
-  res.sendFile(path.join(__dirname, "downloader.html"));
-});
-app.get("/uploader", (req, res) => {
-  res.sendFile(path.join(__dirname, "uploader.html"));
-});
-
-
 function getQueryParams(stack) {
   const params = new Set();
 
@@ -2174,22 +2176,10 @@ function getQueryParams(stack) {
       const param = m.split('.')[2];
       if (param) params.add(param);
     });
-
-    const destructureMatch = fnStr.match(/{\s*([^}]+)\s*}\s*=\s*req\.query/g) || [];
-    destructureMatch.forEach(m => {
-      const inside = m.match(/{\s*([^}]+)\s*}/);
-      if (inside && inside[1]) {
-        inside[1].split(',').forEach(f => {
-          const field = f.trim().split('=')[0].trim();
-          if (field) params.add(field);
-        });
-      }
-    });
   });
 
   return Array.from(params);
 }
-
 
 app.listen(PORT, () => {
   console.log(`🔥`);
