@@ -87,17 +87,30 @@ async function fluxproGen(prompt) {
   });
 };
 
+let index = 0;
+
 async function fallBack(request, keys) {
+  try {
+    const result = await request(keys[index]);
+    return result;
+  } catch (err) {
+    console.warn(`Default key attempt failed`, err.response?.data || err.message);
+  }
+
   for (let i = 0; i < keys.length; i++) {
+    if (i === index) continue;
     try {
       const result = await request(keys[i]);
+      index = i;
       return result;
     } catch (err) {
-      console.warn(`Attempt ${i + 1} failed`, err.response?.data || err.message);
-      if (i === keys.length - 1) throw err;
+      console.warn(`Fallback attempt ${i + 1} failed`, err.response?.data || err.message);
     }
   }
+
+  throw new Error("All keys failed.");
 }
+
 
 async function getDataFromSeaArt(taskId, token) {
   for (let i = 0; i < 150; i++) {
