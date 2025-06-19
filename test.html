@@ -31,7 +31,7 @@
               return val ? `${q}=${encodeURIComponent(val)}` : '';
             }).filter(Boolean).join("&");
 
-            const url = `${baseUrl}${api.endpoint}${query ? `?${query}` : ""}`;
+            const url = `${api.endpoint}${query ? `?${query}` : ""}`;
             const output = form.querySelector(".output");
             output.textContent = "Loading...";
 
