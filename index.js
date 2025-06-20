@@ -150,6 +150,7 @@ app.get("/api/edit", async (req, res) => {
 
     const resultParts = response.candidates[0].content.parts;
     let responseText = "";
+    let imageData = null;
     
     for (const part of resultParts) {
       if (part.text) {
