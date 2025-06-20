@@ -108,7 +108,9 @@ app.get("/api/toxiciter", async (req, res) => {
   const message = req.query.message;
    if (!uid || !message) return res.status(400).json({ status: "error", response: "uid and message parameter are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   try {
-    const { data } = await axios.get(`https://toxiciter.noobx.ct.ws/toxiciter?query=${encodeURIComponent(message)}&uid=${uid}`);
+    const st = await axios.get("https://raw.githubusercontent.com/KingsOfToxiciter/APIS/refs/heads/main/toxicitieslordhasan.json");
+    const hasan = st.data.toxiciter;
+    const { data } = await axios.get(`${hasan}/toxiciter?query=${encodeURIComponent(message)}&uid=${uid}`);
     res.status(200).json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (e) {
     console.error(e);
