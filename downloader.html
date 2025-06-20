@@ -82,7 +82,7 @@
 
   <div id="apiDoc">
     <h2>API Documentation</h2>
-    <p><strong>Base URL:</strong> <code>https://www.noobx.work.gd</code></p>
+    <p><strong>Base URL:</strong> <code>https://www.noobx.ct.ws</code></p>
     <p><strong>Method:</strong> <code>GET</code></p>
     <p><strong>Endpoint:</strong> <code>/api/alldl</code></p>
     <p><strong>Query Parameters:</strong></p>
@@ -91,7 +91,7 @@
       <li><code>format</code> – (Optional) Format type (e.g., mp4, mp3)</li>
     </ul>
     <p><strong>Example Request:</strong></p>
-    <code>https://www.noobx.work.gd/api/alldl?url=https://vt.tiktok.com/ZShsgLK5r/&format=mp4</code>
+    <code>https://www.noobx.ct.ws/api/alldl?url=https://vt.tiktok.com/ZShsgLK5r/&format=mp4</code>
   </div>
 
   <script>
@@ -113,7 +113,7 @@
       result.innerHTML = "Processing... Please wait.";
 
       try {
-        const res = await fetch(`https://download.noobx-api.rf.gd/download?url=${encodeURIComponent(url)}&format=${format}`);
+        const res = await fetch(`/api/alldl?url=${encodeURIComponent(url)}&format=${format}`);
         const data = await res.json();
         
         if (data.url) {
