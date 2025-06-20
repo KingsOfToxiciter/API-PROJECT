@@ -150,27 +150,34 @@ app.get("/api/edit", async (req, res) => {
 
     const resultParts = response.candidates[0].content.parts;
     let responseText = "";
-    let filename = null;
-
+    
     for (const part of resultParts) {
       if (part.text) {
         responseText = part.text;
-      } else if (part.inlineData) {
-        const imageData = part.inlineData.data;
-        const buffer = Buffer.from(imageData, "base64");
-        filename = fileName(".jpg");
-        const filePath = path.join(uploadFolder, filename);
-          fs.writeFileSync(filePath, buffer);
+      } else if (part.inlineData && part.inlineData.data) {
+        imageData = part.inlineData.data;
       }
     }
 
-    res.status(200).json({
-      status: "success",
-      message: "Image generated successfully",
-      response: responseText,
-      url: `https://www.noobx-api.rf.gd/hasan/${filename}`,
-      author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎"
-    });
+    if (imageData) {
+      const buffer = Buffer.from(imageData, "base64");
+      const filename = fileName(".jpg");
+      const filePath = path.join(uploadFolder, filename);
+      fs.writeFileSync(filePath, buffer);
+
+      return res.status(200).json({
+        status: "success",
+        response: responseText,
+        url: `https://www.noobx-api.rf.gd/hasan/${filename}`,
+        author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎"
+      });
+    } else {
+      return res.status(200).json({
+        status: "unsuccessful",
+        response: responseText || "No image generated.",
+        author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎"
+      });
+    }
 
   } catch (error) {
     console.error(error.message);
