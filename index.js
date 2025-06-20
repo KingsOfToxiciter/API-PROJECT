@@ -1188,7 +1188,7 @@ app.get("/api/prompt", async (req, res) => {
      
   try {
    const response = await axios.post(`https://api.gpt4-all.xyz/v1/chat/completions`, {
-      model: "gpt-3.5-turbo",
+      model: "gpt-4.1-mini",
       messages: [
         {
           role: "user",
