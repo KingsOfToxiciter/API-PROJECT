@@ -42,32 +42,44 @@
     const loading = document.getElementById('loading');
 
     form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    e.preventDefault();
 
-      const number = document.getElementById('number').value;
-      const limit = document.getElementById('limit').value || 100;
+  const number = document.getElementById('number').value;
+  const limit = document.getElementById('limit').value || 100;
 
-      if (!/^01\d{9}$/.test(number)) {
-        alert('⚠️ সঠিক মোবাইল নাম্বার দিন (১১ ডিজিট)');
-        return;
-      }
+  if (!/^01\d{9}$/.test(number)) {
+    resultDiv.textContent = '⚠️ সঠিক ১১ ডিজিটের নাম্বার দিন';
+    resultDiv.className = 'mt-6 text-sm break-words p-4 rounded-xl bg-yellow-600 text-white';
+    resultDiv.classList.remove('hidden');
+    return;
+  }
 
-      resultDiv.classList.add('hidden');
-      loading.classList.remove('hidden');
+  resultDiv.classList.add('hidden');
+  loading.classList.remove('hidden');
 
-      try {
-        const res = await fetch(`https://sms-boomber-production.up.railway.app/sms-boomber?number=${number}&limit=${limit}`);
-        const data = await res.json();
+  try {
+    const res = await fetch(`https://sms-boomber-production.up.railway.app/sms-boomber?number=${number}&limit=${limit}`);
+    const data = await res.json();
 
-        loading.classList.add('hidden');
-        resultDiv.textContent = JSON.stringify(data, null, 2);
-        resultDiv.classList.remove('hidden');
-      } catch (err) {
-        loading.classList.add('hidden');
-        resultDiv.textContent = '❌ অনুরোধ ব্যর্থ হয়েছে। আবার চেষ্টা করুন।';
-        resultDiv.classList.remove('hidden');
-      }
-    });
+    loading.classList.add('hidden');
+
+    if (data.status === "success") {
+      resultDiv.textContent = `✅ ${data.response}\n👤 Author: ${data.author}`;
+      resultDiv.className = 'mt-6 text-sm break-words p-4 rounded-xl bg-green-700 text-white';
+    } else {
+      resultDiv.textContent = `❌ ত্রুটি: ${data.response || 'Unknown error'}`;
+      resultDiv.className = 'mt-6 text-sm break-words p-4 rounded-xl bg-red-700 text-white';
+    }
+
+    resultDiv.classList.remove('hidden');
+
+  } catch (err) {
+    loading.classList.add('hidden');
+    resultDiv.textContent = '❌ অনুরোধ ব্যর্থ হয়েছে। আবার চেষ্টা করুন।';
+    resultDiv.className = 'mt-6 text-sm break-words p-4 rounded-xl bg-red-700 text-white';
+    resultDiv.classList.remove('hidden');
+  }
+});
   </script>
 </body>
 </html>
