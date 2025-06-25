@@ -2140,9 +2140,13 @@ app.get("/uploader", (req, res) => {
   res.sendFile(path.join(__dirname, "uploader.html"));
 });
 
+app.get("/boomber", (req, res) => {
+  res.sendFile(path.join(__dirname, "boomber.html"));
+});
+
 app.get("/docs", (req, res) => {
   const routes = [];
-  const excludeEndpoints = ["/docs", "/", "/uploader", "/downloader", "/explore"];
+  const excludeEndpoints = ["/docs", "/", "/uploader", "/downloader", "/explore", "/boomber"];
 
   app._router.stack.forEach((middleware) => {
     if (middleware.route) {
