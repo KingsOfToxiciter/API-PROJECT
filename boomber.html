@@ -1,1 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SMS Boomber</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-gray-900 to-gray-800 min-h-screen flex items-center justify-center text-white">
 
+  <div class="bg-gray-950 p-8 rounded-2xl shadow-xl w-full max-w-md">
+    <h1 class="text-2xl font-bold text-center mb-6">📱 SMS Boomber</h1>
+
+    <form id="boomberForm" class="space-y-4">
+      <div>
+        <label class="block text-sm font-semibold mb-1">Phone Number</label>
+        <input type="text" id="number" placeholder="01XXXXXXXXX" required
+          class="w-full px-4 py-2 rounded-xl bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold mb-1">Limit</label>
+        <input type="number" id="limit" min="1" max="100" placeholder="Eg: 10"
+          class="w-full px-4 py-2 rounded-xl bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500" />
+      </div>
+
+      <button type="submit"
+        class="w-full bg-green-600 hover:bg-green-700 transition duration-200 px-4 py-2 rounded-xl font-semibold text-white">
+        🚀 Start Attack
+      </button>
+    </form>
+
+    <div id="result" class="mt-6 text-sm break-words bg-gray-800 p-4 rounded-xl hidden"></div>
+    <div id="loading" class="mt-4 text-center hidden">
+      <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-500 mx-auto"></div>
+      <p class="mt-2">Sending SMS...</p>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('boomberForm');
+    const resultDiv = document.getElementById('result');
+    const loading = document.getElementById('loading');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const number = document.getElementById('number').value;
+      const limit = document.getElementById('limit').value || 100;
+
+      if (!/^01\d{9}$/.test(number)) {
+        alert('⚠️ সঠিক মোবাইল নাম্বার দিন (১১ ডিজিট)');
+        return;
+      }
+
+      resultDiv.classList.add('hidden');
+      loading.classList.remove('hidden');
+
+      try {
+        const res = await fetch(`https://sms-boomber-production.up.railway.app/sms-boomber?number=${number}&limit=${limit}`);
+        const data = await res.json();
+
+        loading.classList.add('hidden');
+        resultDiv.textContent = JSON.stringify(data, null, 2);
+        resultDiv.classList.remove('hidden');
+      } catch (err) {
+        loading.classList.add('hidden');
+        resultDiv.textContent = '❌ অনুরোধ ব্যর্থ হয়েছে। আবার চেষ্টা করুন।';
+        resultDiv.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
