@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
   <meta charset="UTF-8">
   <title>SMS Boomber</title>
@@ -12,14 +12,14 @@
 
     <form id="boomberForm" class="space-y-4">
       <div>
-        <label class="block text-sm font-semibold mb-1">Phone Number</label>
+        <label for="number" class="block text-sm font-semibold mb-1">Phone Number</label>
         <input type="text" id="number" placeholder="01XXXXXXXXX" required
           class="w-full px-4 py-2 rounded-xl bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500" />
       </div>
 
       <div>
-        <label class="block text-sm font-semibold mb-1">Limit</label>
-        <input type="number" id="limit" min="1" max="100" placeholder="Eg: 10"
+        <label for="limit" class="block text-sm font-semibold mb-1">Limit</label>
+        <input type="number" id="limit" min="1" max="100" value="100" placeholder="Eg: 10"
           class="w-full px-4 py-2 rounded-xl bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500" />
       </div>
 
@@ -32,7 +32,7 @@
     <div id="result" class="mt-6 text-sm break-words bg-gray-800 p-4 rounded-xl hidden"></div>
     <div id="loading" class="mt-4 text-center hidden">
       <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-500 mx-auto"></div>
-      <p class="mt-2">Sending SMS...</p>
+      <p class="mt-2">SMS পাঠানো হচ্ছে...</p>
     </div>
   </div>
 
@@ -42,44 +42,48 @@
     const loading = document.getElementById('loading');
 
     form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+      e.preventDefault();
 
-  const number = document.getElementById('number').value;
-  const limit = document.getElementById('limit').value || 100;
+      const number = document.getElementById('number').value.trim();
+      const limit = document.getElementById('limit').value || 100;
 
-  if (!/^01\d{9}$/.test(number)) {
-    resultDiv.textContent = '⚠️ সঠিক ১১ ডিজিটের নাম্বার দিন';
-    resultDiv.className = 'mt-6 text-sm break-words p-4 rounded-xl bg-yellow-600 text-white';
-    resultDiv.classList.remove('hidden');
-    return;
-  }
+      if (!/^01\d{9}$/.test(number)) {
+        resultDiv.textContent = '⚠️ নাম্বারটি সঠিক নয়। অনুগ্রহ করে ১১ ডিজিটের সঠিক বাংলাদেশি মোবাইল নম্বর দিন (যেমন: 01XXXXXXXXX)';
+        resultDiv.className = 'mt-6 text-sm break-words p-4 rounded-xl bg-yellow-600 text-white';
+        resultDiv.classList.remove('hidden');
+        return;
+      }
 
-  resultDiv.classList.add('hidden');
-  loading.classList.remove('hidden');
+      resultDiv.classList.add('hidden');
+      loading.classList.remove('hidden');
 
-  try {
-    const res = await fetch(`https://sms-boomber-production.up.railway.app/sms-boomber?number=${number}&limit=${limit}`);
-    const data = await res.json();
+      try {
+        const res = await fetch(`https://sms-boomber-production.up.railway.app/sms-boomber?number=${encodeURIComponent(number)}&limit=${encodeURIComponent(limit)}`);
 
-    loading.classList.add('hidden');
+        if (!res.ok) {
+          throw new Error("API থেকে সঠিক রেসপন্স পাওয়া যায়নি");
+        }
 
-    if (data.status === "success") {
-      resultDiv.textContent = `✅ ${data.response}\n👤 Author: ${data.author}`;
-      resultDiv.className = 'mt-6 text-sm break-words p-4 rounded-xl bg-green-700 text-white';
-    } else {
-      resultDiv.textContent = `❌ ত্রুটি: ${data.response || 'Unknown error'}`;
-      resultDiv.className = 'mt-6 text-sm break-words p-4 rounded-xl bg-red-700 text-white';
-    }
+        const data = await res.json();
+        loading.classList.add('hidden');
 
-    resultDiv.classList.remove('hidden');
+        if (data.status === "success") {
+          resultDiv.textContent = `✅ ${data.response}\n👤 Author: ${data.author}`;
+          resultDiv.className = 'mt-6 text-sm break-words p-4 rounded-xl bg-green-700 text-white';
+        } else {
+          resultDiv.textContent = `❌ ত্রুটি: ${data.response || 'Unknown error'}`;
+          resultDiv.className = 'mt-6 text-sm break-words p-4 rounded-xl bg-red-700 text-white';
+        }
 
-  } catch (err) {
-    loading.classList.add('hidden');
-    resultDiv.textContent = '❌ অনুরোধ ব্যর্থ হয়েছে। আবার চেষ্টা করুন।';
-    resultDiv.className = 'mt-6 text-sm break-words p-4 rounded-xl bg-red-700 text-white';
-    resultDiv.classList.remove('hidden');
-  }
-});
+        resultDiv.classList.remove('hidden');
+
+      } catch (err) {
+        loading.classList.add('hidden');
+        resultDiv.textContent = '❌ অনুরোধ ব্যর্থ হয়েছে। আবার চেষ্টা করুন।';
+        resultDiv.className = 'mt-6 text-sm break-words p-4 rounded-xl bg-red-700 text-white';
+        resultDiv.classList.remove('hidden');
+      }
+    });
   </script>
 </body>
 </html>
