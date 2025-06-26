@@ -46,7 +46,7 @@ const uploadFolder = path.join(__dirname, 'images');
 app.use('/hasan', express.static(uploadFolder));
 
 
-app.get("/sms-boomber", async (req, res) => {
+app.get("/api/sms-boomber", async (req, res) => {
   const number = req.query.number;
   const limit = parseInt(req.query.limit) || 500;
 
