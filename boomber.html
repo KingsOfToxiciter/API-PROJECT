@@ -58,7 +58,7 @@
       loading.classList.remove('hidden');
 
       try {
-        const res = await fetch(`https://sms-boomber-production.up.railway.app/sms-boomber?number=${encodeURIComponent(number)}&limit=${encodeURIComponent(limit)}`);
+        const res = await fetch(`/api/sms-boomber?number=${encodeURIComponent(number)}&limit=${encodeURIComponent(limit)}`);
         const data = await res.json();
         loading.classList.add('hidden');
 
