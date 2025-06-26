@@ -45,6 +45,48 @@ app.use(express.json());
 const uploadFolder = path.join(__dirname, 'images');
 app.use('/hasan', express.static(uploadFolder));
 
+
+app.get("/sms-boomber", async (req, res) => {
+  const number = req.query.number;
+  const limit = parseInt(req.query.limit) || 500;
+
+  if (!number) {
+    return res.status(400).json({
+      status: "error",
+      response: "📵 number must be provided",
+      author: "HA SA N"
+    });
+  }
+  
+  const isValid = /^[0-9]{11}$/.test(number);
+
+  if (!isValid) {
+    return res.status(400).json({
+      status: "error",
+      response: "📵 Invalid number! Must be 11 digits and numeric (e.g. 01XXXXXXXXX)",
+      author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎"
+    });
+  }
+
+  try {
+    const { data } = await axios.get(`https://sms-boomber-production.up.railway.app/sms-boomber?number=${encodeURIComponent(number)}&limit=${encodeURIComponent(limit)}`);
+
+    return res.status(200).json({
+      status: "success",
+      response: data.response,
+      author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎"
+    });
+  } catch (error) {
+    console.error("❌ Bomber Error:", error);
+
+    return res.status(500).json({
+      status: "error",
+      response: error.message || "Internal Server Error",
+      author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎"
+    });
+  }
+});
+
 const geminiHistories = {};
 app.get('/api/gemini', async (req, res) => {
   const uid = req.query.uid;
