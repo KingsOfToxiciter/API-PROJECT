@@ -59,11 +59,6 @@
 
       try {
         const res = await fetch(`https://sms-boomber-production.up.railway.app/sms-boomber?number=${encodeURIComponent(number)}&limit=${encodeURIComponent(limit)}`);
-
-        if (!res.ok) {
-          throw new Error("API থেকে সঠিক রেসপন্স পাওয়া যায়নি");
-        }
-
         const data = await res.json();
         loading.classList.add('hidden');
 
