@@ -1082,7 +1082,7 @@ app.get("/api/imagine_2", async (req, res) => {
 app.get('/api/imagine', async (req, res) => {
   const prompt = req.query.prompt;
   let model = req.query.model || "infinity";
-  const seed = crypto.randomBytes(3).toString('hex');
+  const seed = Date.now();
   const num_img = req.query.num_img || 4;
   
   if (!prompt) return res.status(400).json({ status: "error", response: 'Prompt is required', author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
