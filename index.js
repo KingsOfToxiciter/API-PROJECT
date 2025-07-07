@@ -1969,7 +1969,7 @@ app.get('/api/font', (req, res) => {
 });
 
 
-app.get("/api/x-search", async (req, res) => {
+app.get("/api/xnxx", async (req, res) => {
   const q = req.query.q;
   if (!q) {
     return res.status(400).json({ status: "error", response: "Missing search query", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -1989,9 +1989,10 @@ app.get("/api/x-search", async (req, res) => {
   const title = $(el).find(".thumb-under a").attr("title");
   const videoId = $(el).find("img").attr("data-videoid");
   const videoUrl = "https://www.xnxx.tv" + href;
+  const dl = await xdl(videoId);
 
   if (href && title && videoId) {
-    links.push({ url: videoUrl, title: title, id: videoId });
+    links.push({ title: title, videoUrl: videoUrl, video: dl });
   }
 });
     
@@ -2001,9 +2002,8 @@ app.get("/api/x-search", async (req, res) => {
   }
 });
 
-app.get("/api/x-dl", async (req, res) => {
-  const id = req.query.id;
-  if(!id) return res.status(400).json({ status: "error", response: "id must be needed" });
+async function xdl(id) {
+  if (!id) return "id must be needed";
   try {
     const { data } = await axios.post(
   `https://www.xnxx.tv/video-download/${id}/`,
@@ -2040,16 +2040,12 @@ app.get("/api/x-dl", async (req, res) => {
     const stream = await axios.get(url, { responseType: "stream" });
     const filename = fileName(".mp4");
     await upload(stream.data, filename);
-    res.status(200).json({ status: "success", url: `https://www.noobx-api.rf.gd/hasan/${filename}` });
+    return `https://www.noobx-api.rf.gd/hasan/${filename}`;
     
   } catch (e) {
-    console.error(e);
-    res.status(500).json(e)
-  };
-});
-
-
-
+    throw new Error(e);
+  }
+};
 
 app.get("/api/expend", async (req, res) => {
     const imageUrl = req.query.imageUrl;
