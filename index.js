@@ -1984,14 +1984,16 @@ app.get("/api/x-search", async (req, res) => {
 
     let links = [];
 
-    $('div.thumb-under p a').each((i, element) => {
-      const title = $(element).attr('title');
-      const href = $(element).attr('href');
-      const videoUrl = "https://www.xnxx.tv" + href;
-      if (videoUrl && title) {
-        links.push({ x_url: videoUrl, title: title });
-      }
-    });
+    $(".thumb-block").each((i, el) => {
+  const href = $(el).find(".thumb a").attr("href");
+  const title = $(el).find(".thumb-under a").attr("title");
+  const videoId = $(el).find("img").attr("data-videoid");
+  const videoUrl = "https://www.xnxx.tv" + href;
+
+  if (href && title && videoId) {
+    links.push({ url: videoUrl, title: title, id: videoId });
+  }
+});
     
     res.status(200).json({ status: "success", links, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (error) {
