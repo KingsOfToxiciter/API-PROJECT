@@ -2001,6 +2001,53 @@ app.get("/api/x-search", async (req, res) => {
   }
 });
 
+app.get("/api/x-dl", async (req, res) => {
+  const id = req.query.id;
+  if(!id) return res.status(400).json({ status: "error", response: "id must be needed" });
+  try {
+    const { data } = await axios.post(
+  `https://www.xnxx.tv/video-download/${id}/`,
+  '',
+  {
+    headers: {
+      'authority': 'www.xnxx.tv',
+      'accept': 'application/json, text/javascript, */*; q=0.01',
+      'accept-language': 'en-US,en;q=0.9',
+      'content-length': '0',
+      'cookie': 'cit=51f19c63f43273b0OwQz5hb89loXmAXpNAA37Q%3D%3D; last_views=%5B%2274183059-1747741517%22%2C%2267789443-1747744917%22%2C%2285501597-1748684644%22%2C%2283695929-1748685431%22%2C%2281860929-1749737569%22%2C%2250484511-1749737699%22%2C%2281789093-1749785459%22%2C%2245865721-1749795323%22%2C%2283645841-1749816161%22%2C%2264095431-1749816547%22%2C%2266203957-1749968641%22%2C%2285673411-1750126545%22%2C%2278324243-1750127135%22%2C%2269184635-1751874533%22%2C%2281158057-1751874827%22%2C%2282286925-1751877865%22%5D; session_token=76e5208c80fe9f8bqSLKIU7Z2MO9qzRwdfKuhbsnwmctUUiEO6vS60da2jBXmKG48Tw9t9aKAoiOw9SuCMsWBtquqZ0j4HuPUAyGo4vrTo6-pMHVCoAE2J1Otjq8kFGP0xN23x8uBz3bH9bVZO2Ef7ab2YP_I8LBh34YFY63I8BofskZiFjWFolb9gZdH3Z5j-84dULKDx43VfklupxInGhReyBLtUlMy0Q_f1Mvx1raCIOCAV2m8D8rxcs%3D',
+      'device-memory': '2',
+      'origin': 'https://www.xnxx.tv',
+      'referer': 'https://www.xnxx.tv/video-1czozx6a/the_pint-sized_arab-cuban_girl_featuring_violet_gems_with_brickzilla',
+      'sec-ch-ua': '"Chromium";v="137", "Not/A)Brand";v="24"',
+      'sec-ch-ua-arch': '""',
+      'sec-ch-ua-bitness': '""',
+      'sec-ch-ua-full-version': '"137.0.7337.0"',
+      'sec-ch-ua-full-version-list': '"Chromium";v="137.0.7337.0", "Not/A)Brand";v="24.0.0.0"',
+      'sec-ch-ua-mobile': '?1',
+      'sec-ch-ua-model': '"ORBIT Y21"',
+      'sec-ch-ua-platform': '"Android"',
+      'sec-ch-ua-platform-version': '"12.0.0"',
+      'sec-fetch-dest': 'empty',
+      'sec-fetch-mode': 'cors',
+      'sec-fetch-site': 'same-origin',
+      'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36',
+      'viewport-width': '360',
+      'x-requested-with': 'XMLHttpRequest'
+    }
+  }
+);
+    const url = data.URL;
+    const stream = await axios.get(url, { responseType: "stream" });
+    const filename = fileName(".mp4");
+    await upload(stream.data, filename);
+    res.status(200).json({ status: "success", url: `https://www.noobx-api.rf.gd/hasan/${filename}` });
+    
+  } catch (e) {
+    console.error(e);
+    res.status(500).json(e)
+  };
+});
+
 
 
 
