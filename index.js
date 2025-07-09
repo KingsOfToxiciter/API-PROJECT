@@ -46,6 +46,95 @@ const uploadFolder = path.join(__dirname, 'images');
 app.use('/hasan', express.static(uploadFolder));
 
 
+async function getKey() {
+  const response = await axios.get('https://api.mp3youtube.cc/v2/sanity/key', {
+  headers: {
+    'authority': 'api.mp3youtube.cc',
+    'accept': '*/*',
+    'accept-language': 'en-US,en;q=0.9',
+    'content-type': 'application/json',
+    'if-none-match': 'W/"7e-Xcrp6nLPTZPdL1e3Scx4/pfbzWg-gzip"',
+    'origin': 'https://iframe.y2meta-uk.com',
+    'referer': 'https://iframe.y2meta-uk.com/',
+    'sec-ch-ua': '"Chromium";v="137", "Not/A)Brand";v="24"',
+    'sec-ch-ua-mobile': '?1',
+    'sec-ch-ua-platform': '"Android"',
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'cross-site',
+    'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
+  }
+});
+  return response.data.key;
+};
+
+
+app.get("/api/ytDl", async (req, res) => {
+  const url = req.query.url;
+  const format = req.query.format || "mp4";
+  let quality = req.query.quality || "sd";
+  if(!url) {
+    res.status(400).json({ status: "error", response: "Please provide a youtube video url", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  } else if (!["mp4", "mp3"].includes(format)) {
+    res.status(400).json({ status: "error", response: "Format must be between mp3 and mp4", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  } else if (!["sd", "hd"].includes(quality)) {
+    res.status(400).json({ status: "error", response: "Quality must be between hd or sd", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  };
+  const qualityMap = {
+    sd: "360",
+    hd: "720"
+  };
+  quality = qualityMap[quality];
+  try {
+    const key = await getKey();
+    console.log(key);
+    const { data } = await axios.post(
+  'https://api.mp3youtube.cc/v2/converter',
+  new URLSearchParams({
+    'link': url,
+    'format': format,
+    'audioBitrate': '128',
+    'videoQuality': quality,
+    'filenameStyle': 'pretty',
+    'vCodec': 'h264'
+  }),
+  {
+    headers: {
+      'authority': 'api.mp3youtube.cc',
+      'accept': '*/*',
+      'accept-language': 'en-US,en;q=0.9',
+      'key': key,
+      'origin': 'https://iframe.y2meta-uk.com',
+      'referer': 'https://iframe.y2meta-uk.com/',
+      'sec-ch-ua': '"Chromium";v="137", "Not/A)Brand";v="24"',
+      'sec-ch-ua-mobile': '?1',
+      'sec-ch-ua-platform': '"Android"',
+      'sec-fetch-dest': 'empty',
+      'sec-fetch-mode': 'cors',
+      'sec-fetch-site': 'cross-site',
+      'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
+    }
+  }
+);
+    const stream = await axios.get(data.url, { responseType: "stream", headers: {
+      'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
+      }
+    });
+    let filename = fileName(".mp4");
+    if(format === "mp3") {
+      filename = fileName(".mp3");
+    }
+    await upload(stream.data, filename);
+    
+    res.status(200).json({ status: "success", title: data.filename, response: `https://www.noobx.ct.ws/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ status: "error", response: e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  };
+  
+});
+
+
 app.get("/api/sms-boomber", async (req, res) => {
   const number = req.query.number;
   const limit = parseInt(req.query.limit) || 500;
