@@ -46,6 +46,54 @@ const uploadFolder = path.join(__dirname, 'images');
 app.use('/hasan', express.static(uploadFolder));
 
 
+app.get("/api/tikDl", async (req, res) => {
+  const url = req.query.url;
+  if (!url) return res.status(400).json({ status: "error", response: "url is required" });
+  try {
+  const response = await axios.post(
+  'https://ssstik.io/abc',
+  new URLSearchParams({
+    'id': url,
+    'locale': 'en',
+    'tt': 'ckh5YXE3'
+  }),
+  {
+    params: {
+      'url': 'dl'
+    },
+    headers: {
+      'authority': 'ssstik.io',
+      'accept': '*/*',
+      'accept-language': 'en-US,en;q=0.9',
+      'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      'cookie': '_ga=GA1.1.791678634.1752117892; _ga_ZSF3D6YSLC=GS2.1.s1752117891$o1$g1$t1752118012$j17$l0$h0',
+      'hx-current-url': 'https://ssstik.io/',
+      'hx-request': 'true',
+      'hx-target': 'target',
+      'hx-trigger': '_gcaptcha_pt',
+      'origin': 'https://ssstik.io',
+      'referer': 'https://ssstik.io/',
+      'sec-ch-ua': '"Chromium";v="137", "Not/A)Brand";v="24"',
+      'sec-ch-ua-mobile': '?1',
+      'sec-ch-ua-platform': '"Android"',
+      'sec-fetch-dest': 'empty',
+      'sec-fetch-mode': 'cors',
+      'sec-fetch-site': 'same-origin',
+      'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
+    }
+  }
+);
+  const dlUrl = response.data.split('<a href="')[1].split('"\r\n\t\t\t\tclass=')[0];
+ 
+    res.status(200).json({ status: "success", response: dlUrl });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ status: "error", response: e.message });
+  }
+});
+
+
+
 async function getKey() {
   const response = await axios.get('https://api.mp3youtube.cc/v2/sanity/key', {
   headers: {
