@@ -46,9 +46,67 @@ const uploadFolder = path.join(__dirname, 'images');
 app.use('/hasan', express.static(uploadFolder));
 
 
+app.get("/api/tikVideo", async (req, res) => {
+  const query = req.query.q;
+
+  if (!query) return res.status(400).json({ status: "error", response: "❌ Provide a search query using ?q=", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+
+  try {
+    const encodedQuery = encodeURIComponent(query);
+
+    const url = `https://www.tiktok.com/api/search/general/full/?keyword=${encodedQuery}&offset=0&region=BD&search_source=search_sug&app_name=tiktok_web&device_platform=web_pc&browser_platform=Linux`;
+
+    const response = await axios.get(url, {
+      headers: {
+        'authority': 'www.tiktok.com',
+        'accept': '*/*',
+        'accept-language': 'en-US,en;q=0.9',
+        'cookie': 'tt_chain_token=hQOuCUPAL7s5ANo3N/p7zg==; passport_csrf_token=d662f5a5c53bebd34be85afd3292dff1; passport_csrf_token_default=d662f5a5c53bebd34be85afd3292dff1; d_ticket=abd7a7b047f5c6ced2a0d2033cbf5699bc9f6; last_login_method=email; _ttp=2xhmzAYkTaOHvj5aAkStBH90NB7; delay_guest_mode_vid=3; perf_feed_cache={%22expireTimestamp%22:1752292800000%2C%22itemIds%22:[%227520979738614107399%22%2C%227520183872844270855%22]}; tt_csrf_token=V6Vwfsqi-bZpv8fGBwbGitMafHp3OTm9EKos; s_v_web_id=verify_mcwwhs6m_meWoC4V9_TGsw_40rW_AnLg_TVo3CSDdcQ2w; tiktok_webapp_theme=dark; multi_sids=7128444573172384774%3A806932624bc9502b9adb752c5d819a55; cmpl_token=AgQQAPNYF-RO0rLTvDWxMp0_8k2bBkjHf4XTYN4Ojw; uid_tt=3498daaa520044f4694a6fe20a796c79f477fd054273def0d6c2803b6537bb30; uid_tt_ss=3498daaa520044f4694a6fe20a796c79f477fd054273def0d6c2803b6537bb30; sid_tt=806932624bc9502b9adb752c5d819a55; sessionid=806932624bc9502b9adb752c5d819a55; sessionid_ss=806932624bc9502b9adb752c5d819a55; store-idc=alisg; store-country-code=bd; store-country-code-src=uid; tt-target-idc=alisg; tt-target-idc-sign=ugjGdD16CmaG6yAfq3S2VHdBcizphL0I-jJXYn7P-OYJVicZGdZibsPM43QTIb_fEW6_htH0Moo_Be9QpyXHcuz0YnUaJ6LV7SBEQNDAldPIGbCOSorKkmePfa2BLjuOXpTOMiJctPM6ObWuuZuQ4e1oTLiYL36p53B-8uOay6ZG_ITziWkgenYVFlhHCCpG8_VFKa3mns2xafmW9TGn0lyHkNuvNhDZ53PtkNIDY3ovmt4b3pBxXn6dEwF0SJnQ35QT8R6FCzlCTyaKgPKmQlsAQTxMqmtyOMLW4PZS44_n1pJH6umRnucMX7GEhvVnUZyYnVzGBZxwMi77CjDRDJVq_mGipRCw2mXe2_KNCENtszVygo8eV457iSxfhdlfpZn4LnPPMzeQsZuJXBqE2NwXsj5J4vUPU9id1LAtGf92ptnTn7rhCanU7bxT6FuhBPRReMqdOKtPSgxQ_drK-8ox43nuK2o4NfbRwMdVcQ9baRJPSaI6Qp38ekqaoWwi; tiktok_webapp_theme_source=auto; passport_fe_beating_status=true; ttwid=1%7CuS68HhFC_BddrWqmZWNujJSrJ0M0BwF5sKiR61adsBw%7C1752122600%7C0e79b333de14d174fd20112ab2e6a903c0cc31061b39ec12c70da37692fcc39b; sid_guard=806932624bc9502b9adb752c5d819a55%7C1752122600%7C15551988%7CTue%2C+06-Jan-2026+04%3A43%3A08+GMT; sid_ucp_v1=1.0.0-KGE1MmVhOThiNmRlZGI0MWQxNzg4NWU2Yzg1YmVhZjU5M2Q4MTJjNmYKGgiGiIHIo9LU9mIQ6Im9wwYYsws4AUDqB0gEEAMaAm15IiA4MDY5MzI2MjRiYzk1MDJiOWFkYjc1MmM1ZDgxOWE1NQ; ssid_ucp_v1=1.0.0-KGE1MmVhOThiNmRlZGI0MWQxNzg4NWU2Yzg1YmVhZjU5M2Q4MTJjNmYKGgiGiIHIo9LU9mIQ6Im9wwYYsws4AUDqB0gEEAMaAm15IiA4MDY5MzI2MjRiYzk1MDJiOWFkYjc1MmM1ZDgxOWE1NQ; odin_tt=2c02112e482afdf97858529e35e763f971e0a9dab2c5bf87c2bac22b531ffe16af1a08df708d0c3677f734a88b1844f0e6d462ca61a6e8c36de1f2e456b11766ab125b41f10b14b72d9dec6fb214d224; store-country-sign=MEIEDPV-Yu0Pvc6xxfhy3QQgeDfni-pIluiK6HM01MJlvzbl9jAobhOfhBYddkTmijAEEHmRRTjYFZ8fLfsi8NfFlKg; msToken=Aes7Y7p_GV90Zdmgs273a5TOquhj9Mc7IiNaF3us-Q2SdXbJmOpEG4HSIyH3How81iSLDBszhNrSBg-Qr4al4SZhrVHMoGbZ1od8GhCg7xASHOxdqSSpKWSIyJ6qcQP1jptpTkRecK83Nr2bzByZEMEScw==; msToken=B6nTOjsoaC5zQcCkg9_4T217IG69cT8M-Xo2a6ReNMswXvQIVxZWu-Q0goJnyuDQz9XyCQ_Z-eiDAYN0y_-I8nK1NWsWBOighvoDR7Syrier3rp78dlCu-Xns3Cm3Kk0hQWAaR-2lW920kT89X4fmdkkmw==',
+        'referer': `https://www.tiktok.com/search/video?q=${encodedQuery}&t=1752122641477`,
+        'sec-ch-ua': '"Chromium";v="137", "Not/A)Brand";v="24"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Linux"',
+        'sec-fetch-dest': 'empty',
+        'sec-fetch-mode': 'cors',
+        'sec-fetch-site': 'same-origin',
+        'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
+        'x-mssdk-info': '9d5n02SyoWPFaLu4kFzjeHbJ2KWK7oO6bVks2lXCIJPkcLc.gMnIwp8rOUgFzMD8WYZU.zYORD6HAr4uGK0G9SFGEjirvDYPdHmMcwRCGI.3BAx0k4HRG0jfgHEDlK9.IlOWhxue30543n520MeheytgEhTZqIcDL9uDJ6GlD9WSLbsgq9MsAUP9L5lFO1BezX64cQK6hLQ9U3KVHybMyy1vGRG8cGRR3rAQbosJ0WBZ9wsvbAJ57Uux7PsuQ6Jq4GaRH1031Tn7NOQP30lHxARSYqN9QXJ5MQ1NH8if1aRmSWhhS9rHn6aCXAnGwRSpyDpKX.uKqQkrzI4jmAttKtfXTeeAlGcPWv0O8SayjfDwUwiQMjNVFzI61FmLV2zcY4XF8sor8ASsPOqWkNNEY1bYxewEoBcM1ilyX3sNDgeizwUTBwuDWUkZlWAWmbxp079FanvxV1MmhlpIFJlmMZE0uMcl1IeP4LcxUcRGhmzOadgeEdUjJLz6YJqD52AfT7H6615sVsxD9.3bEGEVVlLwe4Au8I1-IHHhNj9Itu50TeeK3LYoIIPcsRnc2Tj2FP-y2Di0dgXobYb1xVmM74qE4c9MwLx-Sio8i2oELmkIyzN84RdfllLUjsJy5ufLSJWnPg9nd9KXu68C.J9rPH8nXxR7YH6FjRmw68ZvJTvaHCopcwnv5AzNL9Kyo5pAjhjkVmI-aWu4RkjIBSs4QbjD3AYkZQVPMyZV37l8HRp6Rax8u5juHHTFgGKpZN8MfP5rkSZZLWKE4jIv8aLGUsW85S3nti2xqC-KfBbjzDnqB-S2V7fefi2oixxnIk-1ULHm3hbIkphKFkt8FvI3UWhKAEem9JwVhEMKo.CAzezILNEmqCc7xLWD.xZ5zq9e4QoTMbqhSEFLR7HHuTSL1cKPrQI9YhtzNUKsibzx7khufu9xThIzR8TR5x31dQxmlfexr0JBvQ6N8KDHcaz1KxYbVBkoccOQIuk8xaUMn8tGzFxZJnd1ugWjA7Pys8EAiDXRoIwzw5T7Gspnw00ER.ikJXXBUZr.iBxCbPsEuO6kcS1P22oDFPDhrGPg8IC1N0KIuI2ITx8a9CE1sBqjcdGox4bL1ndotvRV2-MvZi8tEWvRJZt.SNDv6Srx.a4.mA7oie45U-7zkTAxP2R.GkK3P8uW-1dZwkGyQxbRwB5FhLYnS3E5HK.0BNWXKiDQKy0b4ki5EgKCY5wJMOCOFLb8zRnjtukWBpNJmYL1KGTDM-gnB4dcRl2AItekSyRjnEFxrwXWeM6qs0t9Bp-Ow27ZmH041E5-MJQDqNsUxWax.52vmGVlU4FWTrkR9rN5WS2hi-G8OrmYVZuVWE.LA0mJdFmoXvEifvjY.ffHHKwDCvC0qB2.BeH5Ml-5Z9jdBSWxcqxq1BZFdH8WGgkih8nupSmGIslYTvwrIBuviwSo8xMIw88x61seo0hVReo7p0i9NLkHNLRkieBTQfYskwN5PeAB6WCwAH0FmkxnZ.lJNtB9kGBvBiad6ZY6nWTf0qS.DA3SVbAPJvabb20tgI3.w93YlPHXt6lSpRilxctP3SbhioXj1W85s8ztS2UNW8-0SAXB8K1u1YtK7jg7AuI-uoM5dyPjNW-nbqHJM8koJrTPks3WmNGaXm3rXs3.gkTM87CzYNaMcec2bMiH08y3qvYFzHCkuQNv0UPIuZJvtzdRrUXyGh3YCGWdbII7gHV10YhVj0FKGl.2YABXWkeKnpFEvPiW-QMlhub8pTbRWPdIEHSclmfHF.nHBX34dvd3Mf61QE8uHRywF72XYiJkYERQxMIv81h5Jq8Kr8Mnlb9FDJv3zyJaLAG.qCiSTvUwcmmlEh8Z5fi-APi4JOW2qDsqW8UDC4twDeSDak06RWXwPpk5Pk6KQloagCaoP3ds7FELdWAhJWdBRsa-H24x3F1jG8qyH8RMj-acnGsI6l1vOYh-VZYPFJWrXr7sEQbfFVYw05uaJdStXxV4BEb.CCo0KuqDCQ4LYFVNM4IjmF-xKpZBYq7ovxYqJFpM6iKliwd7l4fO22Hz7CBHF13qXbHbRevxMgs7oe30SLilUJBMnz25LB5-ADoM6XB5Kq48bUDY8w77RpWemPhZXcDzDCpwo6GcpqPTGnVx504KXg0ALnkQokpIeu0K-4ClA3B0OvzhpKZeduYvWtYVEUtz485VZuPoLzGowU79GGHag96bZcRqt24L.uizN8OQAcW6TMv28EwPpJc7-3vwqQHNLl6XO2j8VZUo-PmSRddDrWcMfDPrlDYBv-wozi6JRyYdYSEqVg-wpK6s3dyOanIAqjWnBW0vjdLwGh7jmN6NqL8xr5iPQMKt4.6d7WbRHPFj305nE7huCm.mtSzQifbJZN68bxzJYmAOdMcmqku287IC2k1ggXSbBBkjofp5Zdws-D1YDsEZCrn8Bx3fkKU8.Wp38uDxCVzjxeChoZCiE47nubErMT4lt-0GIAGzRjL4ziRRGP4ZljFkcUf2V7VEU9u7eVAX4.0j5KJAZuQlThKM.aIcYpdUnX05i-QVXUP4UCcfDyzAmlEYOSjNzA4MoD.Ux2llP3yIhzi1aP-ECEzQEFwGdEmL16JqpGfc.1dwtQ5XmxuvWP2nU.3D2-RApfGobqGzJvZupi5wQ-JE5cxKHYO8aBHDUhQdK.arL44wvbsT41usGi6StMPBhDcRY0KgM3hmseaAmjOnyzyk6rxk36Oge3lTLIq9P-UWQ0CPMDKZYUhcW8HBefkcZjlE7ry.NZ5EG4TmtpbhKUX5RmqmjFzX7owOj0TH4d1tJwdgekLpUAe43nSANNgRkOoXCmpftuzSA-xbRNqYiXRuBpHVuQHnLL18Os770IAUh0NuG7YNn4Q85lZzbFzKo4uxIAUygdYRPOH6NpEWGyd3hEQ='
+      }
+    });
+    const video = response.data.data[0].item.video.playAddr;
+
+    const stream = await axios.get(video, 
+                                   {                                    
+                                     responseType: "stream",             
+                                     headers: {                                  'authority': 'v16-webapp-prime.tiktok.com',
+                                    'accept': '*/*',
+                                    'accept-language': 'en-US,en;q=0.9',
+                                    'cookie': 'tt_chain_token=hQOuCUPAL7s5ANo3N/p7zg==; passport_csrf_token=d662f5a5c53bebd34be85afd3292dff1; passport_csrf_token_default=d662f5a5c53bebd34be85afd3292dff1; d_ticket=abd7a7b047f5c6ced2a0d2033cbf5699bc9f6; _ttp=2xhmzAYkTaOHvj5aAkStBH90NB7; multi_sids=7128444573172384774%3A806932624bc9502b9adb752c5d819a55; cmpl_token=AgQQAPNYF-RO0rLTvDWxMp0_8k2bBkjHf4XTYN4Ojw; uid_tt=3498daaa520044f4694a6fe20a796c79f477fd054273def0d6c2803b6537bb30; uid_tt_ss=3498daaa520044f4694a6fe20a796c79f477fd054273def0d6c2803b6537bb30; sid_tt=806932624bc9502b9adb752c5d819a55; sessionid=806932624bc9502b9adb752c5d819a55; sessionid_ss=806932624bc9502b9adb752c5d819a55; store-idc=alisg; store-country-code=bd; store-country-code-src=uid; tt-target-idc=alisg; tt-target-idc-sign=ugjGdD16CmaG6yAfq3S2VHdBcizphL0I-jJXYn7P-OYJVicZGdZibsPM43QTIb_fEW6_htH0Moo_Be9QpyXHcuz0YnUaJ6LV7SBEQNDAldPIGbCOSorKkmePfa2BLjuOXpTOMiJctPM6ObWuuZuQ4e1oTLiYL36p53B-8uOay6ZG_ITziWkgenYVFlhHCCpG8_VFKa3mns2xafmW9TGn0lyHkNuvNhDZ53PtkNIDY3ovmt4b3pBxXn6dEwF0SJnQ35QT8R6FCzlCTyaKgPKmQlsAQTxMqmtyOMLW4PZS44_n1pJH6umRnucMX7GEhvVnUZyYnVzGBZxwMi77CjDRDJVq_mGipRCw2mXe2_KNCENtszVygo8eV457iSxfhdlfpZn4LnPPMzeQsZuJXBqE2NwXsj5J4vUPU9id1LAtGf92ptnTn7rhCanU7bxT6FuhBPRReMqdOKtPSgxQ_drK-8ox43nuK2o4NfbRwMdVcQ9baRJPSaI6Qp38ekqaoWwi; sid_guard=806932624bc9502b9adb752c5d819a55%7C1752122600%7C15551988%7CTue%2C+06-Jan-2026+04%3A43%3A08+GMT; sid_ucp_v1=1.0.0-KGE1MmVhOThiNmRlZGI0MWQxNzg4NWU2Yzg1YmVhZjU5M2Q4MTJjNmYKGgiGiIHIo9LU9mIQ6Im9wwYYsws4AUDqB0gEEAMaAm15IiA4MDY5MzI2MjRiYzk1MDJiOWFkYjc1MmM1ZDgxOWE1NQ; ssid_ucp_v1=1.0.0-KGE1MmVhOThiNmRlZGI0MWQxNzg4NWU2Yzg1YmVhZjU5M2Q4MTJjNmYKGgiGiIHIo9LU9mIQ6Im9wwYYsws4AUDqB0gEEAMaAm15IiA4MDY5MzI2MjRiYzk1MDJiOWFkYjc1MmM1ZDgxOWE1NQ; tt_csrf_token=CI4qbw8a-dkYI-Fxqyg_Gm7XWbufahxuEyHM; ttwid=1%7CuS68HhFC_BddrWqmZWNujJSrJ0M0BwF5sKiR61adsBw%7C1752124400%7Caacbf0b54b1b25243066d65a3c1805e4477d05dcc2784cb3287c293afd1dccf2; odin_tt=2de7fcc4ad202f029ac6a7001012f6cd1f786bb5b9d9c7f978c7cb78bfe5f58c937b34490bac2f878c626d95989bd497242f44a6e511e57b06a1ba7900f27a0042d5a0cd0e2af9933fad0b549b5ce48c; store-country-sign=MEIEDDMhONriQqVlssypFQQgWGWolvpc7IalWx1wnO3hmvK0P4VzltFWR9AjlkgAfi0EEJrbAWcCWDSukdPSrWOvnsY; s_v_web_id=verify_mcwxmpkg_hDgRTE0V_7VEX_4pzV_BfYD_AqMd4RLCyjwU; msToken=nCaTaVlUkdYHNCRhnHatuRukVYqcw5FQfiKjIURFB8TQeA1hLYCKHBqzeBWRDhgLuTsxrPUpleR4myXrZArg5RmPb9iCuma8JJEb-pSTHHq10VAwvngwLGy_xNdKaGk-7onDUXochJTaVt_Jx5FjqbqnlL4=',
+                                    'range': 'bytes=0-',
+                                    'referer': 'https://www.tiktok.com/',
+                                    'sec-ch-ua': '"Chromium";v="137", "Not/A)Brand";v="24"',
+                                    'sec-ch-ua-mobile': '?0',
+                                    'sec-ch-ua-platform': '"Linux"',
+                                    'sec-fetch-dest': 'video',
+                                    'sec-fetch-mode': 'no-cors',
+                                    'sec-fetch-site': 'same-site',
+                                    'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36'
+                                  }})
+
+    const filename = fileName(".mp4");
+    await upload(stream.data, filename);
+    res.status(200).json({ status: "success", response: `https://www.noobx.ct.ws/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: "error", response: err.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
+});
+
+
 app.get("/api/tikDl", async (req, res) => {
   const url = req.query.url;
-  if (!url) return res.status(400).json({ status: "error", response: "url is required" });
+  if (!url) return res.status(400).json({ status: "error", response: "url is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   try {
   const response = await axios.post(
   'https://ssstik.io/abc',
@@ -85,10 +143,10 @@ app.get("/api/tikDl", async (req, res) => {
 );
   const dlUrl = response.data.split('<a href="')[1].split('"\r\n\t\t\t\tclass=')[0];
  
-    res.status(200).json({ status: "success", response: dlUrl });
+    res.status(200).json({ status: "success", response: dlUrl, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (e) {
     console.log(e);
-    res.status(500).json({ status: "error", response: e.message });
+    res.status(500).json({ status: "error", response: e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   }
 });
 
