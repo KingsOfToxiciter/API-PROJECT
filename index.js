@@ -1556,7 +1556,7 @@ app.get("/api/alldl", async (req, res) => {
     format = formatMap[format] || format;
 
     try {
-        const { data } = await axios.get(`https://download.noobx-api.rf.gd/download?url=${encodeURIComponent(url)}&format=${format}`);
+        const { data } = await axios.get(`https://alldl.koyeb.app/download?url=${encodeURIComponent(url)}&format=${format}`);
         res.status(200).json({ status: "success", url: data.url, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
 
         
