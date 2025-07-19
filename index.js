@@ -264,7 +264,7 @@ app.get("/api/sms-boomber", async (req, res) => {
   }
 
   try {
-    const { data } = await axios.get(`https://sms-boomber-production.up.railway.app/sms-boomber?number=${encodeURIComponent(number)}&limit=${encodeURIComponent(limit)}`);
+    const { data } = await axios.get(`https://alldl.koyeb.app/sms-boomber?number=${encodeURIComponent(number)}&limit=${encodeURIComponent(limit)}`);
 
     return res.status(200).json({
       status: "success",
