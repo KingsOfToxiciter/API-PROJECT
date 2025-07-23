@@ -46,6 +46,55 @@ const uploadFolder = path.join(__dirname, 'images');
 app.use('/hasan', express.static(uploadFolder));
 
 
+app.get("/api/tts", async (req, res) => {
+  const text = req.query.text;
+  if(!text) {
+    return res.status(400).json({ status: "error", response: "text is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
+  try {
+    const { data } = await axios.post(
+  'https://vocloner.com/tts_processprova.php',
+  {
+    'voice': '6f8db788565041cd82a48c5adeeba69f',
+    'text': text,
+    'format': 'mp3',
+    'mode': 'standard'
+  },
+  {
+    headers: {
+      'authority': 'vocloner.com',
+      'accept': '*/*',
+      'accept-language': 'en-US,en;q=0.9',
+      'content-type': 'application/json',
+      'cookie': 'PHPSESSID=oqbctn28b7te4ndt6uhhqi2gj8; _tccl_visitor=f7c9bfc6-412d-403b-baa2-08f0ad1bd175; _tccl_visit=f7c9bfc6-412d-403b-baa2-08f0ad1bd175; _ga=GA1.1.1765327107.1753309979; fpestid=0GAjO1lb3rCtL1Zw1BY73Tl00fVUZL9c8SVTyN4-5xiVvkz8xqgTxTkGrnZ0BUWb2WzmDA; _cc_id=fb6a8f2bb856bf1a77711a68ec3c5044; panoramaId_expiry=1753396381541; _ga_T3P4M8519Q=GS2.1.s1753309979$o1$g0$t1753309986$j53$l0$h0; _scc_session=pc=3&C_TOUCH=2025-07-23T22:33:17.009Z',
+      'origin': 'https://vocloner.com',
+      'sec-ch-ua': '"Chromium";v="137", "Not/A)Brand";v="24"',
+      'sec-ch-ua-mobile': '?1',
+      'sec-ch-ua-platform': '"Android"',
+      'sec-fetch-dest': 'empty',
+      'sec-fetch-mode': 'cors',
+      'sec-fetch-site': 'same-origin',
+      'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
+    }
+  }
+);
+    const url = "https://vocloner.com/" + data.file_path;
+    const stream = await axios.get(url, {
+      responseType: "stream",
+      headers: {
+        'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
+      }
+    });
+    const filename = fileName(".mp3");
+    await upload(stream.data, filename);
+    res.status(200).json({ status: "success", response: `https://www.noobx.ct.ws/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  } catch (e) {
+    console.error(e)
+    res.status(500).json({ status: "error", response: e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
+});
+
+
 app.get("/api/tikVideo", async (req, res) => {
   const query = req.query.q;
 
