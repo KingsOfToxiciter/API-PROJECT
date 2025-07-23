@@ -87,7 +87,7 @@ app.get("/api/tts", async (req, res) => {
     });
     const filename = fileName(".mp3");
     await upload(stream.data, filename);
-    res.status(200).json({ status: "success", response: `https://www.noobx.ct.ws/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    res.status(200).json({ status: "success", response: `https://www.noobx.ct.ws/${filename}`, main: url, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (e) {
     console.error(e)
     res.status(500).json({ status: "error", response: e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
