@@ -85,9 +85,8 @@ app.get("/api/tts", async (req, res) => {
         'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
       }
     });
-    const filename = fileName(".mp3");
-    await upload(stream.data, filename);
-    res.status(200).json({ status: "success", response: `https://www.noobx.ct.ws/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    const purl = await upload(stream.data, "mp3");
+    res.status(200).json({ status: "success", response: purl, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (e) {
     console.error(e)
     res.status(500).json({ status: "error", response: e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -142,9 +141,8 @@ app.get("/api/tikVideo", async (req, res) => {
                                     'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36'
                                   }})
 
-    const filename = fileName(".mp4");
-    await upload(stream.data, filename);
-    res.status(200).json({ status: "success", response: `https://www.noobx.ct.ws/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    const purl = await upload(stream.data, "mp4");
+    res.status(200).json({ status: "success", response: purl, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     
   } catch (err) {
     console.error(err);
@@ -190,9 +188,15 @@ app.get("/api/tikDl", async (req, res) => {
     }
   }
 );
-  const dlUrl = response.data.split('<a href="')[1].split('"\r\n\t\t\t\tclass=')[0];
- 
-    res.status(200).json({ status: "success", response: dlUrl, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    const dlUrl = response.data.split('<a href="')[1].split('"\r\n\t\t\t\tclass=')[0];
+    const stream = await axios.get(dlUrl, {
+      responseType: "stream",
+      headers: {
+        'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
+      }
+    });
+   const purl = await upload(stream.data, "mp4");
+    res.status(200).json({ status: "success", response: purl, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (e) {
     console.log(e);
     res.status(500).json({ status: "error", response: e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -275,13 +279,13 @@ app.get("/api/ytDl", async (req, res) => {
       'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
       }
     });
-    let filename = fileName(".mp4");
+    let ext = "mp4";
     if(format === "mp3") {
-      filename = fileName(".mp3");
+      ext = "mp3";
     }
-    await upload(stream.data, filename);
+    const purl = await upload(stream.data, ext);
     
-    res.status(200).json({ status: "success", title: data.filename, response: `https://www.noobx.ct.ws/hasan/${filename}`, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    res.status(200).json({ status: "success", title: data.filename, response: purl, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   } catch (e) {
     console.error(e);
     res.status(500).json({ status: "error", response: e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
@@ -386,22 +390,6 @@ app.get('/api/gemini', async (req, res) => {
     console.error(error.response?.data || error.message);
     res.status(500).json({ status: "error", response: 'Something went wrong bro!\nDetails: ' + error.message, author:"♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   }
-});
-
-
-app.get("/api/toxiciter", async (req, res) => {
-  const uid = req.query.uid;
-  const message = req.query.message;
-   if (!uid || !message) return res.status(400).json({ status: "error", response: "uid and message parameter are required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-  try {
-    const st = await axios.get("https://raw.githubusercontent.com/KingsOfToxiciter/APIS/refs/heads/main/toxicitieslordhasan.json");
-    const hasan = st.data.toxiciter;
-    const { data } = await axios.get(`${hasan}/toxiciter?query=${encodeURIComponent(message)}&uid=${uid}`);
-    res.status(200).json({ status: "success", response: data.response, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ status: "error", response: "Toxiciter is now displaced please try again later\nDetails: " + e.message, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
-  };
 });
 
 
