@@ -88,12 +88,14 @@ async function fluxproGen(prompt) {
 };
 
 let index = 0;
+let error;
 
 async function fallBack(request, keys) {
   try {
     const result = await request(keys[index]);
     return result;
   } catch (err) {
+    error = err;
     console.warn(`Default key attempt failed`, err.response?.data || err.message);
   }
 
@@ -108,7 +110,7 @@ async function fallBack(request, keys) {
     }
   }
 
-  throw new Error("All keys failed.");
+  throw new Error(error);
 }
 
 
@@ -356,19 +358,20 @@ function fileName(ext) {
     return crypto.randomBytes(5).toString('hex') + ext;
 };
 
-async function upload(response, filename) {
-const uploadFolder = path.join(__dirname, 'images');
+async function upload(response, ext) {
+  const filename = fileName("." + ext);
+  const uploadFolder = path.join(__dirname, 'images');
+  const filePath = path.join(uploadFolder, filename);
+  const writer = fs.createWriteStream(filePath);
 
-const filePath = path.join(uploadFolder, filename);
-const writer = fs.createWriteStream(filePath);
+  response.pipe(writer);
 
-response.pipe(writer);
-
-await new Promise((resolve, reject) => {
-  writer.on("finish", resolve);
-  writer.on("error", reject);
-});
-    setTimeout(() => {
+  await new Promise((resolve, reject) => { 
+    writer.on("finish", resolve);
+    writer.on("error", reject);
+  });
+    
+  setTimeout(() => {
     fs.unlink(filePath, (err) => {
       if (err) {
         console.error(`❌ Error deleting ${filename}:`, err.message);
@@ -377,6 +380,7 @@ await new Promise((resolve, reject) => {
       }
     });
   }, 5 * 60 * 1000);
+  return `https://www.noobx.ct.ws/hasan/${filename}`;
 }
 
 
