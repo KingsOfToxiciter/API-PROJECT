@@ -52,6 +52,32 @@ app.get("/api/tts", async (req, res) => {
     return res.status(400).json({ status: "error", response: "text is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
   }
   try {
+    const response = await axios.get('https://vocloner.com/google.php', {
+      params: {
+        'state': 'HA-MJWUSBZV4I71HOFAP5K6DC93R2EN08QGTLXY',
+        'code': '4/0AVMBsJjxLFC4J2GGFYMopGwWbWYOP5D1Be9tsFK8192oI4attMWsU0LQgDbzpgOZMi2MUA',
+        'scope': 'email profile https://www.googleapis.com/auth/userinfo.email openid https://www.googleapis.com/auth/userinfo.profile',
+        'authuser': '1',
+        'prompt': 'none'
+      },
+      headers: {
+        'authority': 'vocloner.com',
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        'accept-language': 'en-US,en;q=0.9',
+        'cookie': '_tccl_visitor=f7c9bfc6-412d-403b-baa2-08f0ad1bd175; _ga=GA1.1.1765327107.1753309979; fpestid=0GAjO1lb3rCtL1Zw1BY73Tl00fVUZL9c8SVTyN4-5xiVvkz8xqgTxTkGrnZ0BUWb2WzmDA; _cc_id=fb6a8f2bb856bf1a77711a68ec3c5044; panoramaId_expiry=1753396381541; _tccl_visit=c117ab75-5947-4c61-bc16-71f8a999b167; _ga_T3P4M8519Q=GS2.1.s1753331471$o4$g1$t1753331582$j38$l0$h0; PHPSESSID=6hitojrjb82alvtcmem6kik95s; _scc_session=pc=7&C_TOUCH=2025-07-24T04:57:36.730Z',
+        'referer': 'https://accounts.google.com/',
+        'sec-ch-ua': '"Chromium";v="137", "Not/A)Brand";v="24"',
+        'sec-ch-ua-mobile': '?1',
+        'sec-ch-ua-platform': '"Android"',
+        'sec-fetch-dest': 'document',
+        'sec-fetch-mode': 'navigate',
+        'sec-fetch-site': 'cross-site',
+        'sec-fetch-user': '?1',
+        'upgrade-insecure-requests': '1',
+        'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
+      }
+    });
+
     const { data } = await axios.post(
   'https://vocloner.com/tts_processprova.php',
   {
@@ -66,7 +92,7 @@ app.get("/api/tts", async (req, res) => {
       'accept': '*/*',
       'accept-language': 'en-US,en;q=0.9',
       'content-type': 'application/json',
-      'cookie': 'PHPSESSID=oqbctn28b7te4ndt6uhhqi2gj8; _tccl_visitor=f7c9bfc6-412d-403b-baa2-08f0ad1bd175; _tccl_visit=f7c9bfc6-412d-403b-baa2-08f0ad1bd175; _ga=GA1.1.1765327107.1753309979; fpestid=0GAjO1lb3rCtL1Zw1BY73Tl00fVUZL9c8SVTyN4-5xiVvkz8xqgTxTkGrnZ0BUWb2WzmDA; _cc_id=fb6a8f2bb856bf1a77711a68ec3c5044; panoramaId_expiry=1753396381541; _ga_T3P4M8519Q=GS2.1.s1753309979$o1$g0$t1753309986$j53$l0$h0; _scc_session=pc=3&C_TOUCH=2025-07-23T22:33:17.009Z',
+      'cookie': '_tccl_visitor=f7c9bfc6-412d-403b-baa2-08f0ad1bd175; _ga=GA1.1.1765327107.1753309979; fpestid=0GAjO1lb3rCtL1Zw1BY73Tl00fVUZL9c8SVTyN4-5xiVvkz8xqgTxTkGrnZ0BUWb2WzmDA; _cc_id=fb6a8f2bb856bf1a77711a68ec3c5044; panoramaId_expiry=1753396381541; _tccl_visit=c117ab75-5947-4c61-bc16-71f8a999b167; _ga_T3P4M8519Q=GS2.1.s1753331471$o4$g1$t1753331582$j38$l0$h0; PHPSESSID=43ddvm0mrfsvi5ottt8mcj8dmm; _scc_session=pc=12&C_TOUCH=2025-07-24T05:03:05.774Z',
       'origin': 'https://vocloner.com',
       'sec-ch-ua': '"Chromium";v="137", "Not/A)Brand";v="24"',
       'sec-ch-ua-mobile': '?1',
