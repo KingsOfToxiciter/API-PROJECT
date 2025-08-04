@@ -2513,6 +2513,15 @@ app.get("/boomber", (req, res) => {
   res.sendFile(path.join(__dirname, "boomber.html"));
 });
 
+app.get("/changefbstate", (req, res) => {
+  res.sendFile(path.join(__dirname, "changeFbState.html"));
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "404.html"));
+});
+
+
 app.get("/docs", (req, res) => {
   const routes = [];
   const excludeEndpoints = ["/docs", "/", "/uploader", "/downloader", "/explore", "/boomber"];
