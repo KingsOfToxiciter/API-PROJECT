@@ -2524,7 +2524,7 @@ app.get("*", (req, res) => {
 
 app.get("/docs", (req, res) => {
   const routes = [];
-  const excludeEndpoints = ["/docs", "/", "/uploader", "/downloader", "/explore", "/boomber"];
+  const excludeEndpoints = ["/docs", "/", "/uploader", "/downloader", "/explore", "/boomber", "*", "/changefbstate"];
 
   app._router.stack.forEach((middleware) => {
     if (middleware.route) {
