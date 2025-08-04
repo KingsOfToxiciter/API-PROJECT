@@ -2517,9 +2517,7 @@ app.get("/changefbstate", (req, res) => {
   res.sendFile(path.join(__dirname, "changeFbState.html"));
 });
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "404.html"));
-});
+
 
 
 app.get("/docs", (req, res) => {
@@ -2572,6 +2570,11 @@ function getQueryParams(stack) {
 
   return Array.from(params);
 }
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "404.html"));
+});
+
 
 app.listen(PORT, () => {
   console.log(`🔥`);
