@@ -41,10 +41,7 @@ const PORT = 30009;
 
 app.use(cors());
 app.use(express.json());
-// All other routes (must be the LAST route)
-app.use((req, res) => {
-  res.status(404).sendFile(path.join(__dirname, "404.html"));
-});
+
 const uploadFolder = path.join(__dirname, 'images');
 app.use('/hasan', express.static(uploadFolder));
 
@@ -2520,12 +2517,14 @@ app.get("/changefbstate", (req, res) => {
   res.sendFile(path.join(__dirname, "changeFbState.html"));
 });
 
-
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "404.html"));
+});
 
 
 app.get("/docs", (req, res) => {
   const routes = [];
-  const excludeEndpoints = ["/docs", "/", "/uploader", "/downloader", "/explore", "/boomber", "/changefbstate"];
+  const excludeEndpoints = ["/docs", "/", "/uploader", "/downloader", "/explore", "/boomber", "/changefbstate", "*"];
 
   app._router.stack.forEach((middleware) => {
     if (middleware.route) {
