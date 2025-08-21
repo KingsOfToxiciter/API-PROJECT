@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Noobx API Docs</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+  <script defer>
+    async function loadDocs() {
+      const container = document.getElementById("docs-container");
+
+      try {
+        const res = await fetch("/docs");
+        const endpoints = await res.json();
+
+        endpoints.forEach(api => {
+          const section = document.createElement("div");
+          section.className = "border border-gray-700 p-4 rounded mb-4 bg-gray-900 text-white";
+
+          const title = document.createElement("h3");
+          title.className = "text-xl font-bold mb-2";
+          title.textContent = `${api.method.join(", ")} ${api.endpoint}`;
+          section.appendChild(title);
+
+          const form = document.createElement("form");
+          form.className = "space-y-2";
+          form.onsubmit = async (e) => {
+            e.preventDefault();
+            const query = api.queryParams.map(q => {
+              const val = form[q].value.trim();
+              return val ? `${q}=${encodeURIComponent(val)}` : '';
+            }).filter(Boolean).join("&");
+
+            const url = `${api.endpoint}${query ? `?${query}` : ""}`;
+            const output = form.querySelector(".output");
+            output.textContent = "Loading...";
+
+            try {
+              const r = await fetch(url);
+              const j = await r.json();
+              output.textContent = JSON.stringify(j, null, 2);
+            } catch (err) {
+              output.textContent = "Error fetching data.";
+            }
+          };
+
+          api.queryParams.forEach(param => {
+            const input = document.createElement("input");
+            input.type = "text";
+            input.name = param;
+            input.placeholder = param;
+            input.className = "w-full px-3 py-2 rounded bg-gray-800 text-white border border-gray-600";
+            form.appendChild(input);
+          });
+
+          const submit = document.createElement("button");
+          submit.type = "submit";
+          submit.textContent = "Send";
+          submit.className = "bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-white";
+          form.appendChild(submit);
+
+          const output = document.createElement("pre");
+          output.className = "output bg-gray-800 text-green-400 mt-2 p-2 rounded max-h-64 overflow-y-auto text-sm";
+          form.appendChild(output);
+
+          section.appendChild(form);
+          container.appendChild(section);
+        });
+
+      } catch (err) {
+        container.innerHTML = `<p class="text-red-500">Failed to load docs</p>`;
+      }
+    }
+
+    window.onload = loadDocs;
+  </script>
+</head>
+<body class="bg-gray-950 text-white font-sans">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold text-center mb-8">Noobx API Docs</h1>
+    <div id="docs-container"></div>
+  </div>
+</body>
+</html>
