@@ -2494,35 +2494,30 @@ app.get('/api/bing-search', async (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'profile.html'));
+  res.sendFile(path.join(__dirname, "html", "profile.html"));
 });
 
 app.get('/explore', (req, res) => {
-  res.sendFile(path.join(__dirname, 'test.html'));
+  res.sendFile(path.join(__dirname, "html", "explore.html"));
 });
 
 app.get("/downloader", (req, res) => {
-  res.sendFile(path.join(__dirname, "downloader.html"));
+  res.sendFile(path.join(__dirname, "html", "downloader.html"));
 });
 
 app.get("/uploader", (req, res) => {
-  res.sendFile(path.join(__dirname, "uploader.html"));
+  res.sendFile(path.join(__dirname, "html", "uploader.html"));
 });
 
 app.get("/boomber", (req, res) => {
-  res.sendFile(path.join(__dirname, "boomber.html"));
+  res.sendFile(path.join(__dirname, "html", "boomber.html"));
 });
-
-app.get("/changefbstate", (req, res) => {
-  res.sendFile(path.join(__dirname, "changeFbState.html"));
-});
-
 
 
 
 app.get("/docs", (req, res) => {
   const routes = [];
-  const excludeEndpoints = ["/docs", "/", "/uploader", "/downloader", "/explore", "/boomber", "/changefbstate", "*"];
+  const excludeEndpoints = ["/docs", "/", "/uploader", "/downloader", "/explore", "/boomber", "*"];
 
   app._router.stack.forEach((middleware) => {
     if (middleware.route) {
