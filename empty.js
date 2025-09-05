@@ -1,9 +1,5 @@
 const axios = require("axios");
-const fs = require("fs-extra");
-const path = require("path");
-const crypto = require('crypto');
-const { xnxx, facebook, youtube, tiktok } = require('./utils');
-const stored = path.join(__dirname, "hasan");
+const { xnxx, facebook, youtube, tiktok, upload } = require('./utils');
 
 async function download(url, format) {
   if (!url) {
@@ -29,7 +25,7 @@ async function download(url, format) {
 
     
     const { data } = await axios.get(responseUrl, {
-      responseType: "arraybuffer",
+      responseType: "stream",
       headers: {
         'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
       }
@@ -40,14 +36,9 @@ async function download(url, format) {
     } else {
       ext = "mp3";
     };
+    const downloaded = await upload(data, ext);
   
-    const fileName = crypto.randomBytes(5).toString('hex') + "." + ext;
-    const filePath = path.join(stored, fileName);
-    
-    const buffer = Buffer.from(data);
-
-    await fs.writeFile(filePath, buffer);
-    return `https://www.th-hasan.page.gd/hasan/${fileName}`;
+    return downloaded;
   
     } catch (err) {
       throw new Error(err);
