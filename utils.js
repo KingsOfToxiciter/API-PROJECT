@@ -8,6 +8,27 @@ const cors = require("cors");
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 
+async function getKey() {
+  const response = await axios.get('https://api.mp3youtube.cc/v2/sanity/key', {
+  headers: {
+    'authority': 'api.mp3youtube.cc',
+    'accept': '*/*',
+    'accept-language': 'en-US,en;q=0.9',
+    'content-type': 'application/json',
+    'if-none-match': 'W/"7e-Xcrp6nLPTZPdL1e3Scx4/pfbzWg-gzip"',
+    'origin': 'https://iframe.y2meta-uk.com',
+    'referer': 'https://iframe.y2meta-uk.com/',
+    'sec-ch-ua': '"Chromium";v="137", "Not/A)Brand";v="24"',
+    'sec-ch-ua-mobile': '?1',
+    'sec-ch-ua-platform': '"Android"',
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'cross-site',
+    'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
+  }
+});
+  return response.data.key;
+};
 
 
 async function xnxx(url) {
