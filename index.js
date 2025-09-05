@@ -45,6 +45,24 @@ app.use(express.json());
 const uploadFolder = path.join(__dirname, 'images');
 app.use('/hasan', express.static(uploadFolder));
 
+app.get("/api/download", async (req, res) => {
+  const url = req.query.url;
+  const format = req.query.format || "mp4";
+
+  if (!url) {
+    return res.status(400).json({ status: "error", response: "URL is required", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  } else if (!["mp4", "mp3"].includes(format)) {
+    return res.status(400).json({ status: "error", response: "Format must be between mp3 and mp4...!!", author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+  }
+  
+  try {
+    const downloadedURL = await global.download(url, format);
+    res.status(200).json({ status: "success", response: downloadedURL, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ response: "Failed to download video", details: err.message });
+    }
+  });
 
 app.get("/api/tts", async (req, res) => {
   const text = req.query.text;
