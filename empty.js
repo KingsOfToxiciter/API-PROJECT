@@ -44,5 +44,4 @@ async function download(url, format) {
       throw new Error(err);
     }
   };
-
-global.download = download;
+module.exports = { download };
