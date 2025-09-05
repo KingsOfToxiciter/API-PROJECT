@@ -12,6 +12,7 @@ const crypto = require('crypto');
 const { GoogleGenAI, Modality } = require("@google/genai");
 const Link = require('./models/Link');
 const { spawn } = require("child_process");
+const { download } = require("./empty.js");
 const {
   fallBack,
   getDataFromSeaArt,
@@ -56,7 +57,7 @@ app.get("/api/download", async (req, res) => {
   }
   
   try {
-    const downloadedURL = await global.download(url, format);
+    const downloadedURL = await download(url, format);
     res.status(200).json({ status: "success", response: downloadedURL, author: "♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎" });
     } catch (err) {
       console.error(err);
