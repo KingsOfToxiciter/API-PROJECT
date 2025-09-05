@@ -9,6 +9,187 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 
 
+
+async function xnxx(url) {
+  if(!url) {
+    throw new Error("Url must be needed");
+  }
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        'authority': 'www.xnxx.tv',
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        'accept-language': 'en-US,en;q=0.9',
+        'cookie': 'cit=720148e249640c8aqbG-DQxXu4SyBmFbPtWt6g%3D%3D; last_views=%5B%2274183059-1747741517%22%2C%2267789443-1747744917%22%2C%2285501597-1748684644%22%2C%2283695929-1748685431%22%2C%2281860929-1749737569%22%2C%2250484511-1749737699%22%2C%2281789093-1749785459%22%2C%2245865721-1749795323%22%2C%2283645841-1749816161%22%2C%2264095431-1749816547%22%2C%2285673411-1750126545%22%2C%2278324243-1750127135%22%2C%2269184635-1751874533%22%2C%2281158057-1751874827%22%2C%2282286925-1751877865%22%2C%2266203957-1752391011%22%5D; session_token=70164f83aff6fdfe96flGgShwVhWbKDwrbsdl20R7qRejiPCYjJi8XQbU8kgpF6SijFJBoXIjsaVUNakDWphVqTxtCh2Oyt9IopuL0ug-8C-E0LJaKVdj4jJNFzsr8QcE2ZleHxwDwmCeZRGfdn6X6Ryeqgj8hPziyiCBGJN6sACVu4ntJCsB7b-07FaYijrR41bdsN065NsFD1DdsJYdwnC18fl93zEngAbeR7sLLOWOIDAexbhRwUXbPQ%3D',
+        'device-memory': '2',
+        'sec-ch-ua': '"Chromium";v="137", "Not/A)Brand";v="24"',
+        'sec-ch-ua-arch': '""',
+        'sec-ch-ua-bitness': '""',
+        'sec-ch-ua-full-version': '"137.0.7337.0"',
+        'sec-ch-ua-full-version-list': '"Chromium";v="137.0.7337.0", "Not/A)Brand";v="24.0.0.0"',
+        'sec-ch-ua-mobile': '?1',
+        'sec-ch-ua-model': '"ORBIT Y21"',
+        'sec-ch-ua-platform': '"Android"',
+        'sec-ch-ua-platform-version': '"12.0.0"',
+        'sec-fetch-dest': 'document',
+        'sec-fetch-mode': 'navigate',
+        'sec-fetch-site': 'none',
+        'upgrade-insecure-requests': '1',
+        'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36',
+        'viewport-width': '980'
+      }
+    });
+
+    const $ = cheerio.load(response.data);
+
+    const highQualityVideo = $("a:contains('View High Qual')").attr("href");
+
+    const lowQualityVideo = $("a:contains('View Low Qual')").attr("href");
+
+    return lowQualityVideo;
+  
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
+async function facebook(url) {
+  if(!url) {
+    throw new Error("Url must be needed");
+  }
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        'authority': 'www.facebook.com',
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        'accept-language': 'en-US,en;q=0.9',
+        'cookie': 'datr=c1gHaEA27fsp1OHJA5czZ9Xu; sb=c1gHaMNf9Nf9K2sooe1BLUom; ps_l=1; ps_n=1; vpd=v1%3B700x360x2; pas=61574558282971%3AdCQhOqCBYn%2C61571148094230%3AvRlsSrb3l6; dpr=2; c_user=61571148094230; xs=25%3A6nUJpYmb_HdTwA%3A2%3A1752321459%3A-1%3A-1; locale=en_GB; fr=1jcsemZeFFCBfhiea.AWekjxtyk3_-r9Ra14g7zu1l8vSNVAvDHIUIrd_vERd-dTXT4bg.BocsVS..AAA.0.0.Boc2ea.AWclusnQdrnXk5c-UoT_CxqpmEc; fbl_st=101436729%3BT%3A29206560; wl_cbv=v2%3Bclient_version%3A2868%3Btimestamp%3A1752393626%3BCRCM%3A-1335446266',
+        'dpr': '2',
+        'sec-ch-prefers-color-scheme': 'light',
+        'sec-ch-ua': '"Chromium";v="137", "Not/A)Brand";v="24"',
+        'sec-ch-ua-full-version-list': '"Chromium";v="137.0.7337.0", "Not/A)Brand";v="24.0.0.0"',
+        'sec-ch-ua-mobile': '?1',
+        'sec-ch-ua-model': '"ORBIT Y21"',
+        'sec-ch-ua-platform': '"Android"',
+        'sec-ch-ua-platform-version': '"12.0.0"',
+        'sec-fetch-dest': 'document',
+        'sec-fetch-mode': 'navigate',
+        'sec-fetch-site': 'none',
+        'sec-fetch-user': '?1',
+        'upgrade-insecure-requests': '1',
+        'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36',
+        'viewport-width': '980'
+      }
+    });
+
+    const $ = cheerio.load(response.data);
+
+    const videoUrl = $('[data-video-url]').attr('data-video-url');
+
+  return videoUrl;
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
+
+async function youtube(url, format, quality) {
+        if(!url || !format || !quality) {
+           throw new Error("Please provide a youtube video url and also format and quality...!!");
+        } else if (!["mp4", "mp3"].includes(format)) {
+           throw new Error("Format must be between mp3 and mp4...!!");
+        } else if (!["sd", "hd"].includes(quality)) {
+           throw new Error("Quality must be between hd or sd");
+        };
+        const qualityMap = {
+          sd: "360",
+          hd: "720"
+       };
+       quality = qualityMap[quality];
+    try {
+         const key = await getKey();
+         console.log(key);
+         const { data } = await axios.post(
+            'https://api.mp3youtube.cc/v2/converter',
+            new URLSearchParams({
+            'link': url,
+            'format': format,
+            'audioBitrate': '128',
+            'videoQuality': quality,
+            'filenameStyle': 'pretty',
+            'vCodec': 'h264'
+        }),
+      {
+       headers: {
+           'authority': 'api.mp3youtube.cc',
+           'accept': '*/*',
+           'accept-language': 'en-US,en;q=0.9',
+           'key': key,
+           'origin': 'https://iframe.y2meta-uk.com',
+           'referer': 'https://iframe.y2meta-uk.com/',
+           'sec-ch-ua': '"Chromium";v="137", "Not/A)Brand";v="24"',
+           'sec-ch-ua-mobile': '?1',           'sec-ch-ua-platform': '"Android"',
+           'sec-fetch-dest': 'empty',
+           'sec-fetch-mode': 'cors',
+           'sec-fetch-site': 'cross-site',
+           'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
+        }
+     });
+         return data.url;
+      } catch (e) {
+      throw new Error(e);
+   }
+};
+
+
+async function tiktok(url) {
+  if (!url) {
+    throw new Error("url is required");
+  }
+  try {
+  const response = await axios.post(
+  'https://ssstik.io/abc',
+  new URLSearchParams({
+    'id': url,
+    'locale': 'en',
+    'tt': 'ckh5YXE3'
+  }),
+  {
+    params: {
+      'url': 'dl'
+    },
+    headers: {
+      'authority': 'ssstik.io',
+      'accept': '*/*',
+      'accept-language': 'en-US,en;q=0.9',
+      'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      'cookie': '_ga=GA1.1.791678634.1752117892; _ga_ZSF3D6YSLC=GS2.1.s1752117891$o1$g1$t1752118012$j17$l0$h0',
+      'hx-current-url': 'https://ssstik.io/',
+      'hx-request': 'true',
+      'hx-target': 'target',
+      'hx-trigger': '_gcaptcha_pt',
+      'origin': 'https://ssstik.io',
+      'referer': 'https://ssstik.io/',
+      'sec-ch-ua': '"Chromium";v="137", "Not/A)Brand";v="24"',
+      'sec-ch-ua-mobile': '?1',
+      'sec-ch-ua-platform': '"Android"',
+      'sec-fetch-dest': 'empty',
+      'sec-fetch-mode': 'cors',
+      'sec-fetch-site': 'same-origin',
+      'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
+    }
+  }
+);
+  const dlUrl = response.data.split('<a href="')[1].split('"\r\n\t\t\t\tclass=')[0];
+ 
+    return dlUrl;
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
+
+
 async function fluxproGen(prompt) {
   const hash = crypto.randomBytes(6).toString('hex');
   await axios.post(
@@ -380,7 +561,7 @@ async function upload(response, ext) {
       }
     });
   }, 5 * 60 * 1000);
-  return `https://www.noobx.ct.ws/hasan/${filename}`;
+  return `https://www.th-hasan.page.gd/hasan/${filename}`;
 }
 
 
@@ -419,5 +600,9 @@ module.exports = {
   fileName,
   upload,
   downloadFromUrl,
-  downloadImageAsBase64
+  downloadImageAsBase64,
+  xnxx,
+  facebook,
+  youtube,
+  tiktok
 };
